@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Medewerker {
 
-    private String gebruikersnaam, voornaam, achternaam, wachtwoord, email, telefoonnummer;
+    private String voornaam, achternaam, gebruikersnaam,  wachtwoord, email, telefoonnummer;
 
     private Date createdAt;
     private Date updatedAt;
