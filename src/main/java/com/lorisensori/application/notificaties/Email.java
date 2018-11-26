@@ -19,7 +19,7 @@ public class Email extends Bericht {
 	public static void main(String args[])
 	{
 		ArrayList<String> emailAdressen = new ArrayList<>();//enter the email addresses you want to send the notification to here
-		emailAdressen.add("falco.verhagen@prowise.com");
+		emailAdressen.add(" ");
 	    BerichtEnums berichtType = BerichtEnums.ONGEWENSTE_NIVEAU_DALING;
 	    Email javaEmail = new Email();
 	    javaEmail.stuurBericht(emailAdressen, berichtType);    
@@ -42,7 +42,7 @@ public class Email extends Bericht {
 		     * Sender's credentials
 		     * */
 		   String fromUser = "lorisensori@gmail.com";//you can change this to any gmail account
-		   String fromUserEmailPassword = "groep2test";//Falco has the password for this gmail account
+		   String fromUserEmailPassword = "******";//Falco has the password for this gmail account
 		   String emailHost = "smtp.gmail.com";
 		   Transport transport = mailSession.getTransport("smtp");
 		   transport.connect(emailHost, fromUser, fromUserEmailPassword);
