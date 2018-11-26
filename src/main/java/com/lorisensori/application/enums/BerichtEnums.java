@@ -3,10 +3,10 @@ package com.lorisensori.application.enums;
 import java.io.Serializable;
 
 public enum BerichtEnums implements Serializable {
-	ONGEWENSTENIVEAUDALING ("Ongewenste Niveaudaling"),	
+	ONGEWENSTE_NIVEAU_DALING ("Ongewenste Niveaudaling"),
 	TANKEN ("Bijtanken"), 
-	LAAGSPANNINGSNIVEAUACCU ("Laag Spanningsniveau Accu"), 
-	SLOTOPEN ("Slot open buiten openingstijden");
+	LAAG_SPANNINGS_NIVEAU_ACCU ("Laag Spanningsniveau Accu"),
+	SLOT_OPEN ("Slot open buiten openingstijden");
 	
 	static final BerichtEnums DEFAULT = TANKEN;
 	
