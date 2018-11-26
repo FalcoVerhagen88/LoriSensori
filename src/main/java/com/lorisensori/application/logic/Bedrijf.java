@@ -1,35 +1,54 @@
 package com.lorisensori.application.logic;
 
-import com.lorisensori.application.enums.LandEnums;
-import com.lorisensori.application.enums.StatusEnums;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
-public class Bedrijf {
 
+@Entity
+@Table(name = "bedrijf")
+public class Bedrijf implements Serializable {
+
+    private static final long serialVersionUID = 3L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bedrijfId;
+
+    @Column(name = "bedrijfsnaam")
     private String bedrijfsnaam;
-    private String telefoonnummer;
-    private String rekeningnummer;
-    private String btwNummer;
-    private String kvkNummer;
-    private Adres adres;
+
+    @Column(nullable = false)
+    private String telefoonnummer, rekeningnummer, btwNummer, vatNummer, kvkNummer;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "contactpersoon")
     private Medewerker contactpersoon;
-    private StatusEnums status;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    @ElementCollection
     private List<Medewerker> medewerkers;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    @ElementCollection
     private List<Tank> tanks;
+
 
     /////////////////////////////////////////
     //CONSTRUCTORS
     public Bedrijf(String bedrijfsnaam, String telefoonnummer, String rekeningnummer, String btwNummer, String kvkNummer,
-                   Adres adres, Medewerker contactpersoon, StatusEnums status, List<Medewerker> medewerkers, List<Tank> tanks) {
+                   Medewerker contactpersoon, List<Medewerker> medewerkers, List<Tank> tanks) {
         this.bedrijfsnaam = bedrijfsnaam;
         this.telefoonnummer = telefoonnummer;
         this.rekeningnummer = rekeningnummer;
         this.btwNummer = btwNummer;
         this.kvkNummer = kvkNummer;
-        this.adres = adres;
         this.contactpersoon = contactpersoon;
-        this.status = status;
         this.medewerkers = medewerkers;
         this.tanks = tanks;
     }
@@ -37,8 +56,41 @@ public class Bedrijf {
     public Bedrijf() {
     }
 
-    //////////////////////////////////////////////
-    //GETTERS & SETTERS
+
+
+    public List<Medewerker> getMedewerkers() {
+        return medewerkers;
+    }
+
+    public void setMedewerkers(List<Medewerker> medewerkers) {
+        this.medewerkers = medewerkers;
+    }
+
+    public void addMedewerker(Medewerker medewerker) {
+        medewerkers.add(medewerker);
+    }
+
+    public void addTank(Tank tank) {
+        tanks.add(tank);
+    }
+
+
+    ///////////////////////////////////////////////////////////////
+    //GETTERS AND SETTERS
+
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getBedrijfId() {
+        return bedrijfId;
+    }
+
+    public void setBedrijfId(Long bedrijfId) {
+        this.bedrijfId = bedrijfId;
+    }
+
     public String getBedrijfsnaam() {
         return bedrijfsnaam;
     }
@@ -53,6 +105,14 @@ public class Bedrijf {
 
     public void setTelefoonnummer(String telefoonnummer) {
         this.telefoonnummer = telefoonnummer;
+    }
+
+    public Medewerker getContactpersoon() {
+        return contactpersoon;
+    }
+
+    public void setContactpersoon(Medewerker contactpersoon) {
+        this.contactpersoon = contactpersoon;
     }
 
     public String getRekeningnummer() {
@@ -71,36 +131,20 @@ public class Bedrijf {
         this.btwNummer = btwNummer;
     }
 
+    public String getVatNummer() {
+        return vatNummer;
+    }
+
+    public void setVatNummer(String vatNummer) {
+        this.vatNummer = vatNummer;
+    }
+
     public String getKvkNummer() {
         return kvkNummer;
     }
 
     public void setKvkNummer(String kvkNummer) {
         this.kvkNummer = kvkNummer;
-    }
-
-    public Adres getAdres() {
-        return adres;
-    }
-
-    public void setAdres(Adres adres) {
-        this.adres = adres;
-    }
-
-    public Medewerker getContactpersoon() {
-        return contactpersoon;
-    }
-
-    public void setContactpersoon(Medewerker contactpersoon) {
-        this.contactpersoon = contactpersoon;
-    }
-
-    public StatusEnums getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusEnums status) {
-        this.status = status;
     }
 
     public List<Tank> getTanks() {
@@ -111,27 +155,12 @@ public class Bedrijf {
         this.tanks = tanks;
     }
 
-    public List<Medewerker> getMedewerkers() {
-        return medewerkers;
-    }
-
-    public void setMedewerkers(List<Medewerker> medewerkers) {
-        this.medewerkers = medewerkers;
-    }
-
-    public void addMedewerker(Medewerker medewerker) {
-        medewerkers.add(medewerker);
-    }
-
-    public void addTank(Tank tank){tanks.add(tank);}
-
-    public void setAdres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
-//		this.adres = adres;
-        adres.setStraatnaam(straatnaam);
-        adres.setHuisnummer(huisnummer);
-        adres.setHuisnummertoevoeging(huisnummertoevoeging);
-        adres.setPostcode(postcode);
-        adres.setPlaatsnaam(plaatsnaam);
-        adres.setLand(land);
+    public boolean loginverificatie(String username, String password) {
+        // TODO Auto-generated method stub
+        if (username == "Tester" && password == "!Test00") {
+            return true;
+        }
+        return false;
     }
 }
+

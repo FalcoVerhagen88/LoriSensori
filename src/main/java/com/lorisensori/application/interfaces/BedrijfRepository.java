@@ -1,7 +1,7 @@
 package com.lorisensori.application.interfaces;
 
-import com.lorisensori.application.DTO.BedrijfDTO;
+import com.lorisensori.application.logic.Bedrijf;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BedrijfRepository extends JpaRepository<BedrijfDTO, String> {
+public interface BedrijfRepository extends JpaRepository<Bedrijf, Long> {
 }

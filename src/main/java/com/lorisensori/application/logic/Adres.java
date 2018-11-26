@@ -3,32 +3,32 @@ package com.lorisensori.application.logic;
 import com.lorisensori.application.enums.LandEnums;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "adres")
 public class Adres implements Serializable {
-    /**
-     *
-     */
+
     private static final long serialVersionUID = 1L;
 
-    @Id//this annotation is used to define the primary key.
+    @Id
     @Column(name = "adrescode")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long adrescode;
+    private Long adrescode;
 
-    @NotBlank
-    private String straatnaam, postcode, plaatsnaam;
+    @Column(nullable = false)
+    private String straatnaam, postcode, plaatsnaam, huisnummertoevoeging;
 
-
-    private String huisnummertoevoeging;
-
+    @Column(nullable = false)
     private int huisnummer;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private LandEnums land;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    private Bedrijf bedrijf;
 
     public Adres() {
 

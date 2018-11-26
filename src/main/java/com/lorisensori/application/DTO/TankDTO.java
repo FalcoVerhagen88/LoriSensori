@@ -1,48 +1,28 @@
 package com.lorisensori.application.DTO;
 
 import com.lorisensori.application.enums.StatusEnums;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-@Entity
-@Table(name = "tank")
 public class TankDTO {
 
-    @Id
-    @Column(name = "tankid")
     private Long tankId;
 
-    @Column(name = "tanknummer")
-    private int tanknummer;
+    private int tanknummer, diameter, lengte, inhoudLiters, bouwjaar;
 
-    @NotBlank
-    @Column(name = "tanknaam")
-    private String tanknaam;
+    private String tanknaam, type;
 
-    private String type;
-
-    private int inhoudLiters;
-
-    private int bouwjaar;
-
-    private int diameter;
-    private int lengte;
     private double gewicht;
 
-    @Enumerated(EnumType.STRING)
     private StatusEnums status;
 
-    private Date openingstijd;
-    private Date sluitingstijd;
+    private Date openingstijd, sluitingstijd;
 
     private int meldingTanken;
 
-    /////////////////////////////////////////////////////
+    //TODO: LoRa informatie toevoegen
+
+    //////////////////////////////////////
     //GETTERS AND SETTERS
-
-
     public Long getTankId() {
         return tankId;
     }
@@ -147,4 +127,3 @@ public class TankDTO {
         this.meldingTanken = meldingTanken;
     }
 }
-

@@ -1,11 +1,11 @@
 package com.lorisensori.application.rest_controllers;
 
-import com.lorisensori.application.DTO.BedrijfDTO;
-import com.lorisensori.application.DTO.MedewerkerDTO;
-import com.lorisensori.application.DTO.TankDTO;
+import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.BedrijfRepository;
-
+import com.lorisensori.application.logic.Bedrijf;
+import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.logic.Tank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,79 +26,76 @@ public class BedrijfController {
 
     //Get all
     @GetMapping("/bedrijf/")
-    public List<BedrijfDTO> getAllBedrijf(){
+    public List<Bedrijf> getAllBedrijf(){
         return bedrijfRepository.findAll();
     }
 
     //Get one
-    @GetMapping("/bedrijf/{bedrijfsnaam}")
-    public BedrijfDTO getBedrijfByBedrijfsnaam(@PathVariable(value= "bedrijfsnaam") String bedrijfsnaam) {
-        return bedrijfRepository.findById(bedrijfsnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
+    @GetMapping("/bedrijf/{bedrijfId}")
+    public Bedrijf getBedrijfByBedrijfId(@PathVariable(value= "bedrijfId") Long bedrijfId) {
+        return bedrijfRepository.findById(bedrijfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfId", bedrijfId));
     }
 
     //Create new Bedrijf
     @PostMapping("/bedrijf/")
-    public BedrijfDTO createBedrijf(@Valid @RequestBody BedrijfDTO bedrijf) {
+    public Bedrijf createBedrijf(@Valid @RequestBody Bedrijf bedrijf) {
         return bedrijfRepository.save(bedrijf);
     }
 
     //Add medewerker bedrijf
-    @PutMapping("/bedrijf/addmedewerker/{bedrijfsnaam}")
-    public BedrijfDTO addMedewerker(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody MedewerkerDTO medewerkerDetails) {
-        BedrijfDTO bedrijf = bedrijfRepository.findById(bedrijfsnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        bedrijf.addMedewerker(medewerkerDetails);
-
-        BedrijfDTO updatedBedrijf = bedrijfRepository.save(bedrijf);
-        return updatedBedrijf;
+    @PutMapping("/bedrijf/addmedewerker/{bedrijfId}")
+    public Bedrijf addMedewerker(@PathVariable(value = "bedrijfId") Long bedrijfId, @Valid @RequestBody Medewerker medewerkerDetails) {
+        Bedrijf bedrijf = bedrijfRepository.findById(bedrijfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfId", bedrijfId));
+        if (!bedrijfRepository.existsById(medewerkerDetails.getMedewerkerId())) {
+            bedrijf.addMedewerker(medewerkerDetails);
+        }else {
+            throw new EntityExistsException("Medewerker", "MedewerkerId", medewerkerDetails.getMedewerkerId());
+        }
+        return bedrijfRepository.save(bedrijf);
     }
 
     //Add contactpersoon van bedrijf
-    @PutMapping("/bedrijf/setcontactpersoon/{bedrijfsnaam}")
-    public BedrijfDTO setContactpersoon(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody MedewerkerDTO medewerkerDetails) {
-        BedrijfDTO bedrijf = bedrijfRepository.findById(bedrijfsnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
+    @PutMapping("/bedrijf/setcontactpersoon/{bedrijfId}")
+    public Bedrijf setContactpersoon(@PathVariable(value = "bedrijfId") Long bedrijfId, @Valid @RequestBody Medewerker medewerkerDetails) {
+        Bedrijf bedrijf = bedrijfRepository.findById(bedrijfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfId", bedrijfId));
         bedrijf.setContactpersoon(medewerkerDetails);
 
-        BedrijfDTO updatedBedrijf = bedrijfRepository.save(bedrijf);
-        return updatedBedrijf;
+        return bedrijfRepository.save(bedrijf);
     }
 
     //Add tank to bedrijf
-    @PutMapping("/bedrijf/addtank/{bedrijfsnaam}")
-    public BedrijfDTO addTank(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody TankDTO tankDetails) {
-        BedrijfDTO bedrijf = bedrijfRepository.findById(bedrijfsnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
+    @PutMapping("/bedrijf/addtank/{bedrijfId}")
+    public Bedrijf addTank(@PathVariable(value = "bedrijfId") Long bedrijfId, @Valid @RequestBody Tank tankDetails) {
+        Bedrijf bedrijf = bedrijfRepository.findById(bedrijfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfId", bedrijfId));
         bedrijf.addTank(tankDetails);
 
-        BedrijfDTO updatedBedrijf = bedrijfRepository.save(bedrijf);
-        return updatedBedrijf;
+        return bedrijfRepository.save(bedrijf);
     }
     //Update a Bedrijf
-    @PutMapping("/bedrijf/{bedrijfsnaam}")
-    public BedrijfDTO updateBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam,
-                                            @Valid @RequestBody BedrijfDTO bedrijfDetails){
-        BedrijfDTO bedrijf = bedrijfRepository.findById(bedrijfsnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
+    @PutMapping("/bedrijf/{bedrijfId}")
+    public Bedrijf updateBedrijf(@PathVariable(value = "bedrijfId") Long bedrijfId,
+                                 @Valid @RequestBody Bedrijf bedrijfDetails){
+        Bedrijf bedrijf = bedrijfRepository.findById(bedrijfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfId", bedrijfId));
         bedrijf.setBtwNummer(bedrijfDetails.getBtwNummer());
-        bedrijf.setAdres(bedrijfDetails.getAdres());
         bedrijf.setContactpersoon(bedrijfDetails.getContactpersoon());
         bedrijf.setKvkNummer(bedrijfDetails.getKvkNummer());
         bedrijf.setRekeningnummer(bedrijfDetails.getRekeningnummer());
         bedrijf.setTelefoonnummer(bedrijfDetails.getTelefoonnummer());
         bedrijf.setVatNummer(bedrijfDetails.getVatNummer());
-        bedrijf.setStatus(bedrijfDetails.getStatus());
 
-        BedrijfDTO updatedBedrijf = bedrijfRepository.save(bedrijf);
-        return updatedBedrijf;
+        return bedrijfRepository.save(bedrijf);
     }
 
     //Delete a Bedrijf
-    @DeleteMapping("/bedrijf/{bedrijfsnaam}")
-    public ResponseEntity<?> deleteBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam){
-        BedrijfDTO bedrijf = bedrijfRepository.findById(bedrijfsnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
+    @DeleteMapping("/bedrijf/{bedrijfId}")
+    public ResponseEntity<?> deleteBedrijf(@PathVariable(value = "bedrijfId") Long bedrijfId){
+        Bedrijf bedrijf = bedrijfRepository.findById(bedrijfId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfId", bedrijfId));
 
         bedrijfRepository.delete(bedrijf);
         return ResponseEntity.ok().build();

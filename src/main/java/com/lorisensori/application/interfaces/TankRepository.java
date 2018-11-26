@@ -1,11 +1,11 @@
 package com.lorisensori.application.interfaces;
 
 
-import com.lorisensori.application.DTO.TankDTO;
+import com.lorisensori.application.logic.Tank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TankRepository extends JpaRepository<TankDTO, Long> {
+public interface TankRepository extends JpaRepository<Tank, Long> {
 
 }

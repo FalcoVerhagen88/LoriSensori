@@ -1,13 +1,34 @@
 package com.lorisensori.application.logic;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.lorisensori.application.DTO.MedewerkerDTO;
+import org.modelmapper.ModelMapper;
 
+import javax.persistence.*;
 import java.util.Date;
 
-public class Medewerker {
+@Entity
+@Table(name = "medewerker")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Medewerker
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long medewerkerId;
 
-    private String gebruikersnaam, voornaam, achternaam, wachtwoord, email, telefoonnummer;
+    @Column(name = "gebruikersnaam", nullable = false)
+    private String gebruikersnaam;
 
-    private Date createdAt;
-    private Date updatedAt;
+    @Column(nullable = false)
+    private String voornaam, achternaam, wachtwoord, email, telefoonnummer;
+
+    @ManyToOne
+    @JoinColumn(name = "bedrijfId")
+    private Bedrijf bedrijf;
+
+    @ManyToOne
+    @JoinColumn(name = "tankId")
+    private Tank tank;
+
 
     /////////////////////////////////////////
     //CONSTRUCTORS
@@ -18,14 +39,30 @@ public class Medewerker {
         this.wachtwoord = wachtwoord;
         this.email = email;
         this.telefoonnummer = telefoonnummer;
+
     }
 
     public Medewerker() {
-
     }
 
-    ////////////////////////////////////////////////////////////
+    public Medewerker convertDTOtoMedewerker(MedewerkerDTO medewerkerDTO, Medewerker medewerker){
+        ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.map(medewerkerDTO, medewerker);
+        return medewerker;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS
+
+
+    public Long getMedewerkerId() {
+        return medewerkerId;
+    }
+
+    public void setMedewerkerId(Long medewerkerId) {
+        this.medewerkerId = medewerkerId;
+    }
 
     public String getVoornaam() {
         return voornaam;
@@ -75,9 +112,10 @@ public class Medewerker {
         this.telefoonnummer = telefoonnummer;
     }
 
+
     public String toString() {
         return "Voornaam: " + voornaam + ", Achternaam: " + achternaam + ", Gebruikersnaam: " + gebruikersnaam + ", Wachtwoord: " + wachtwoord + ", E-mail: " + email +
-                ", Telefoonnummer: " + telefoonnummer + ", Gecreëerd op: " + createdAt + "Laatste update: " + updatedAt;
+                ", Telefoonnummer: " + telefoonnummer;
 
     }
 }
