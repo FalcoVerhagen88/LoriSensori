@@ -1,61 +1,71 @@
 package com.lorisensori.application.logic;
 
+import com.lorisensori.application.enums.LandEnums;
+import com.lorisensori.application.enums.StatusEnums;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
 
 @Entity
-@Table(name = "bedrijf")
-public class Bedrijf implements Serializable {
-
+@Table(name = "Bedrijf")
+public class Bedrijf implements Serializable
+{
+    /**
+     *
+     */
     private static final long serialVersionUID = 3L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long bedrijfId;
-
     @Column(name = "bedrijfsnaam")
     private String bedrijfsnaam;
 
-    @Column(nullable = false)
-    private String telefoonnummer, rekeningnummer, btwNummer, vatNummer, kvkNummer;
+    @Column(name = "telefoonnummer")
+    @NotBlank
+    private String telefoonnummer;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = "rekeningnummer")
+    @NotBlank
+    private String rekeningnummer;
+
+    @Column(name = "btwNummer")
+    @NotBlank
+    private String btwNummer;
+
+    @Column(name = "vatNummer")
+    @NotBlank
+    private String vatNummer;
+
+    @Column(name = "kvkNummer")
+    @NotBlank
+    private String kvkNummer;
+
+    @OneToOne()
+    @JoinColumn(name = "adrescode")
+    private Adres adres;
+
+    @OneToOne()
     @JoinColumn(name = "contactpersoon")
     private Medewerker contactpersoon;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
-    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private StatusEnums status;
+
+    @ManyToMany
+    @JoinTable(
+            name = "medewerkers_bedrijf",
+            joinColumns=@JoinColumn(name="BEDRIJF_BEDRIJFSNAAM", referencedColumnName="bedrijfsnaam"),
+            inverseJoinColumns=@JoinColumn(name="MEDEWERKER_GEBRUIKERSNAAM", referencedColumnName="gebruikersnaam"))
     private List<Medewerker> medewerkers;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Fetch(FetchMode.SUBSELECT)
-    @ElementCollection
+
+    @OneToMany
+    @JoinColumn(name = "bedrijfsnaam")
     private List<Tank> tanks;
-
-
-    /////////////////////////////////////////
-    //CONSTRUCTORS
-    public Bedrijf(String bedrijfsnaam, String telefoonnummer, String rekeningnummer, String btwNummer, String kvkNummer,
-                   Medewerker contactpersoon, List<Medewerker> medewerkers, List<Tank> tanks) {
-        this.bedrijfsnaam = bedrijfsnaam;
-        this.telefoonnummer = telefoonnummer;
-        this.rekeningnummer = rekeningnummer;
-        this.btwNummer = btwNummer;
-        this.kvkNummer = kvkNummer;
-        this.contactpersoon = contactpersoon;
-        this.medewerkers = medewerkers;
-        this.tanks = tanks;
-    }
-
-    public Bedrijf() {
-    }
-
 
 
     public List<Medewerker> getMedewerkers() {
@@ -70,33 +80,56 @@ public class Bedrijf implements Serializable {
         medewerkers.add(medewerker);
     }
 
-    public void addTank(Tank tank) {
-        tanks.add(tank);
+    public Bedrijf() {
+
     }
 
-
-    ///////////////////////////////////////////////////////////////
-    //GETTERS AND SETTERS
-
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public StatusEnums getStatus() {
+        return status;
     }
 
-    public Long getBedrijfId() {
-        return bedrijfId;
+    public void setStatus(StatusEnums status) {
+        this.status = status;
     }
 
-    public void setBedrijfId(Long bedrijfId) {
-        this.bedrijfId = bedrijfId;
+    public Bedrijf(String bedrijfsnaam, Adres adres, String telefoonnummer, Medewerker contactpersoon, String rekeningnummer, String btwNummer, String vatNummer, String kvkNummer, StatusEnums status)
+    {
+        this.bedrijfsnaam = bedrijfsnaam;
+        this.adres = adres;
+        this.telefoonnummer = telefoonnummer;
+        this.contactpersoon = contactpersoon;
+        this.rekeningnummer = rekeningnummer;
+        this.btwNummer = btwNummer;
+        this.vatNummer = vatNummer;
+        this.kvkNummer = kvkNummer;
+        this.status = status;
     }
 
+    public void setAdres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
+//		this.adres = adres;
+        adres.setStraatnaam(straatnaam);
+        adres.setHuisnummer(huisnummer);
+        adres.setHuisnummertoevoeging(huisnummertoevoeging);
+        adres.setPostcode(postcode);
+        adres.setPlaatsnaam(plaatsnaam);
+        adres.setLand(land);
+    }
+
+    // getters en setters
     public String getBedrijfsnaam() {
         return bedrijfsnaam;
     }
 
     public void setBedrijfsnaam(String bedrijfsnaam) {
         this.bedrijfsnaam = bedrijfsnaam;
+    }
+
+    public Adres getAdres() {
+        return adres;
+    }
+
+    public void setAdres(Adres adres) {
+        this.adres = adres;
     }
 
     public String getTelefoonnummer() {
@@ -155,12 +188,18 @@ public class Bedrijf implements Serializable {
         this.tanks = tanks;
     }
 
+    public void addTank(Tank tank) {
+        tanks.add(tank);
+    }
+
+    public String toString() {
+        return bedrijfsnaam + "(" + adres + ")";
+    }
+
+
     public boolean loginverificatie(String username, String password) {
         // TODO Auto-generated method stub
-        if (username == "Tester" && password == "!Test00") {
-            return true;
-        }
-        return false;
+        return username.equals("Tester") && password.equals("!Test00");
     }
 }
 

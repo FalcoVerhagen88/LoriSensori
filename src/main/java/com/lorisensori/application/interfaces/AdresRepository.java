@@ -1,9 +1,10 @@
 package com.lorisensori.application.interfaces;
 
-import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.logic.Adres;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MedewerkerRepository extends JpaRepository<Medewerker, String> {
+public interface AdresRepository extends JpaRepository<Adres, Long> {
+
 }

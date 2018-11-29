@@ -1,9 +1,8 @@
 package com.lorisensori.application.rest_controllers;
 
-import com.lorisensori.application.DTO.MedewerkerDTO;
-import com.lorisensori.application.logic.Medewerker;
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.MedewerkerRepository;
+import com.lorisensori.application.logic.Medewerker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,23 +27,25 @@ public class MedewerkerController {
         return medewerkerRepository.findAll();
     }
 
+
+
     //Create a new Medewerker
     @PostMapping("/medewerker/")
     public Medewerker createMedewerker(@Valid @RequestBody Medewerker medewerker){
         return medewerkerRepository.save(medewerker);
     }
     //Get a single Medewerker
-    @GetMapping("/medewerker/{medewerkerId}")
-    public Medewerker getMedewerkerByid(@PathVariable(value = "medewerkerId") Long medewerkerId){
-        return medewerkerRepository.findById(medewerkerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", medewerkerId ));
+    @GetMapping("/medewerker/{gebruikersnaam}")
+    public Medewerker getMedewerkerByid(@PathVariable(value = "gebruikersnaam") String gebruikersnaam){
+        return medewerkerRepository.findById(gebruikersnaam)
+                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam ));
     }
     //Update a Medewerker
-    @PutMapping("/medewerker/{medewerkerId}")
-    public Medewerker updateMedewerker(@PathVariable(value = "medewerkerId") Long medewerkerId,
+    @PutMapping("/medewerker/{gebruikersnaam}")
+    public Medewerker updateMedewerker(@PathVariable(value = "gebruikersnaam") String gebruikersnaam,
                                        @Valid @RequestBody Medewerker medewerkerDetails){
-        Medewerker medewerker = medewerkerRepository.findById(medewerkerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", medewerkerId));
+        Medewerker medewerker = medewerkerRepository.findById(gebruikersnaam)
+                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam));
         medewerker.setVoornaam(medewerkerDetails.getVoornaam());
         medewerker.setAchternaam(medewerkerDetails.getAchternaam());
 
@@ -52,10 +53,10 @@ public class MedewerkerController {
         return updatedMedewerker;
     }
     //Delete a Medewerker
-    @DeleteMapping("/medewerker/{medewerkerId}")
-    public ResponseEntity<?> deleteMedewerker(@PathVariable(value = "medewerkerId") Long medewerkerId){
-        Medewerker medewerker = medewerkerRepository.findById(medewerkerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", medewerkerId));
+    @DeleteMapping("/medewerker/{gebruikersnaam}")
+    public ResponseEntity<?> deleteMedewerker(@PathVariable(value = "gebruikersnaam") String gebruikersnaam){
+        Medewerker medewerker = medewerkerRepository.findById(gebruikersnaam)
+                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam));
 
         medewerkerRepository.delete(medewerker);
         return ResponseEntity.ok().build();

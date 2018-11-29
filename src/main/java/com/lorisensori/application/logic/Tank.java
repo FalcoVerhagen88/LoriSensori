@@ -4,86 +4,62 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "tank")
-public class Tank implements Serializable {
+public class Tank {
 
-    private static final long serialVersionUID = 7608348957147640413L;
     @Id
     @Column(name = "tankId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tankId;
+    private Long tankid;
 
-    @Column(nullable = false)
-    private String tanknaam, type;
+    @Column(name = "tanknummer")
+    private int tanknummer;
 
-    @Column(nullable = false)
-    private int inhoudLiters, bouwjaar, diameter, lengte, meldingTanken;
+    @NotBlank
+    @Column(name = "tanknaam")
+    private String tanknaam;
 
-    @Column(nullable = false)
+    private String type;
+
+    private int inhoudLiters;
+
+    private int bouwjaar;
+
+    private int diameter;
+    private int lengte;
     private double gewicht;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private StatusEnums status;
 
-    @Column(nullable = false)
-    private Date openingstijd, sluitingstijd;
+    private Date openingstijd;
+    private Date sluitingstijd;
 
-    @ManyToOne
-    @JoinColumn(name = "bedrijfId")
-    private Bedrijf bedrijf;
+    private int meldingTanken;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @ElementCollection
-    private List<Medewerker> tankBeheerders;
+    private String bedrijfsnaam;
 
+    @OneToMany
+    @JoinColumn(name = "tankId")
+    private List<Sensorgegevens> sensorgegevens;
 
-    public Tank(Long tankId, int diameter, int lengte, int inhoudLiters, int bouwjaar, String tanknaam,
-                   String type, double gewicht, StatusEnums status, Date openingstijd, Date sluitingstijd, int meldingTanken) {
-        this.tankId = tankId;
-        this.diameter = diameter;
-        this.lengte = lengte;
-        this.inhoudLiters = inhoudLiters;
-        this.bouwjaar = bouwjaar;
-        this.tanknaam = tanknaam;
-        this.type = type;
-        this.gewicht = gewicht;
-        this.status = status;
-        this.openingstijd = openingstijd;
-        this.sluitingstijd = sluitingstijd;
-        this.meldingTanken = meldingTanken;
+    //TODO: LoRa informatie toevoegen
+
+    Tank() {
+
     }
 
-    public Tank() {
+
+    public int getTanknummer() {
+        return tanknummer;
     }
 
-    public void addTankBeheerder(Medewerker medewerker){
-        tankBeheerders.add(medewerker);
-    }
-
-    /////////////////////////////////////////////////////
-    //GETTERS AND SETTERS
-
-
-    public List<Medewerker> getTankBeheerders() {
-        return tankBeheerders;
-    }
-
-    public void setTankBeheerders(List<Medewerker> tankBeheerders) {
-        this.tankBeheerders = tankBeheerders;
-    }
-
-    public Long getTankId() {
-        return tankId;
-    }
-
-    public void setTankId(Long tankId) {
-        this.tankId = tankId;
+    public void setTanknummer(int tanknummer) {
+        this.tanknummer = tanknummer;
     }
 
     public String getTanknaam() {
@@ -172,6 +148,16 @@ public class Tank implements Serializable {
 
     public void setMeldingTanken(int meldingTanken) {
         this.meldingTanken = meldingTanken;
+    }
+
+
+    public String getBedrijfsnaam() {
+        return bedrijfsnaam;
+    }
+
+
+    public void setBedrijfsnaam(String bedrijfsnaam) {
+        this.bedrijfsnaam = bedrijfsnaam;
     }
 }
 

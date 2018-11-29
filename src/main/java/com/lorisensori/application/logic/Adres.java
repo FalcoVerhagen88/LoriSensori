@@ -3,38 +3,38 @@ package com.lorisensori.application.logic;
 import com.lorisensori.application.enums.LandEnums;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "adres")
+@Table( name = "adres" )
 public class Adres implements Serializable {
-
+    /**
+     *
+     */
     private static final long serialVersionUID = 1L;
 
-    @Id
+    @Id//this annotation is used to define the primary key.
     @Column(name = "adrescode")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long adrescode;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//this annotation is used to define the primary key generation strategy. In the above case, we have declared the primary key to be an Auto Increment field.
+    private long adrescode;
 
-    @Column(nullable = false)
-    private String straatnaam, postcode, plaatsnaam, huisnummertoevoeging;
+    @NotBlank
+    private String straatnaam, postcode, plaatsnaam;
 
-    @Column(nullable = false)
+
+    private String huisnummertoevoeging;
+
     private int huisnummer;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private LandEnums land;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private Bedrijf bedrijf;
-
-    public Adres() {
+    public Adres(){
 
     }
 
-    Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
+    Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land){
         this.straatnaam = straatnaam;
         this.huisnummer = huisnummer;
         this.huisnummertoevoeging = huisnummertoevoeging;
@@ -106,3 +106,4 @@ public class Adres implements Serializable {
 
 
 }
+
