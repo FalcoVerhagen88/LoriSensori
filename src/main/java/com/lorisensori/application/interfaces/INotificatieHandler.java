@@ -1,9 +1,7 @@
 package com.lorisensori.application.interfaces;
 
-
 import com.lorisensori.application.enums.BerichtEnums;
 import com.lorisensori.application.logic.Medewerker;
-
 
 import java.util.ArrayList;
 

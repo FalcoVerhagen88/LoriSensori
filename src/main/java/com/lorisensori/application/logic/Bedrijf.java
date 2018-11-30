@@ -13,8 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Bedrijf")
-public class Bedrijf implements Serializable
-{
+public class Bedrijf implements Serializable {
     /**
      *
      */
@@ -44,26 +43,26 @@ public class Bedrijf implements Serializable
     @NotBlank
     private String kvkNummer;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "adrescode")
     private Adres adres;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "contactpersoon")
     private Medewerker contactpersoon;
 
     @Enumerated(EnumType.STRING)
     private StatusEnums status;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "medewerkers_bedrijf",
-            joinColumns=@JoinColumn(name="BEDRIJF_BEDRIJFSNAAM", referencedColumnName="bedrijfsnaam"),
-            inverseJoinColumns=@JoinColumn(name="MEDEWERKER_GEBRUIKERSNAAM", referencedColumnName="gebruikersnaam"))
+            joinColumns = @JoinColumn(name = "BEDRIJF_BEDRIJFSNAAM", referencedColumnName = "bedrijfsnaam"),
+            inverseJoinColumns = @JoinColumn(name = "MEDEWERKER_GEBRUIKERSNAAM", referencedColumnName = "gebruikersnaam"))
     private List<Medewerker> medewerkers;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "bedrijfsnaam")
     private List<Tank> tanks;
 
@@ -92,8 +91,7 @@ public class Bedrijf implements Serializable
         this.status = status;
     }
 
-    public Bedrijf(String bedrijfsnaam, Adres adres, String telefoonnummer, Medewerker contactpersoon, String rekeningnummer, String btwNummer, String vatNummer, String kvkNummer, StatusEnums status)
-    {
+    public Bedrijf(String bedrijfsnaam, Adres adres, String telefoonnummer, Medewerker contactpersoon, String rekeningnummer, String btwNummer, String vatNummer, String kvkNummer, StatusEnums status) {
         this.bedrijfsnaam = bedrijfsnaam;
         this.adres = adres;
         this.telefoonnummer = telefoonnummer;

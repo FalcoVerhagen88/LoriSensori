@@ -12,18 +12,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class SensorgegevensController {
-	
-	private final SensorgegevensRepository sensorgegevensRepository;
-	
-	@Autowired
-	public SensorgegevensController(SensorgegevensRepository sensorgegevensRepository) {
-		this.sensorgegevensRepository = sensorgegevensRepository;
-	}
-	
-	@GetMapping("/sensorgegevens")
-	public List<Sensorgegevens> getAllSensorgegevens(){
-		return sensorgegevensRepository.findAll();
-		
-		
-	}
+
+    private final SensorgegevensRepository sensorgegevensRepository;
+
+    @Autowired
+    public SensorgegevensController(SensorgegevensRepository sensorgegevensRepository) {
+        this.sensorgegevensRepository = sensorgegevensRepository;
+    }
+
+    @GetMapping("/sensorgegevens")
+    public List<Sensorgegevens> getAllSensorgegevens() {
+        return sensorgegevensRepository.findAll();
+
+
+    }
 }

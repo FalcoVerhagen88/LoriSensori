@@ -1,16 +1,17 @@
 package com.lorisensori.application.logic;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lorisensori.application.DTO.MedewerkerDTO;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "medewerker")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Medewerker
-{
+public class Medewerker implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long medewerkerId;
@@ -22,7 +23,7 @@ public class Medewerker
     private String voornaam, achternaam, wachtwoord, email, telefoonnummer;
 
     @ManyToOne
-    @JoinColumn(name = "bedrijfId")
+    @JoinColumn(name = "bedrijfsnaam")
     private Bedrijf bedrijf;
 
     @ManyToOne
@@ -45,7 +46,7 @@ public class Medewerker
     public Medewerker() {
     }
 
-    public Medewerker convertDTOtoMedewerker(MedewerkerDTO medewerkerDTO, Medewerker medewerker){
+    public Medewerker convertDTOtoMedewerker(MedewerkerDTO medewerkerDTO, Medewerker medewerker) {
         ModelMapper modelMapper = new ModelMapper();
 
         modelMapper.map(medewerkerDTO, medewerker);
@@ -55,6 +56,7 @@ public class Medewerker
     ///////////////////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS
 
+//    public Long getBedrijfId(){return bedrijf.get}
 
     public Long getMedewerkerId() {
         return medewerkerId;

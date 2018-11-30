@@ -12,18 +12,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class TankController {
-	private final TankRepository tankRepository;
-	
-	@Autowired
-	public TankController(TankRepository tankRepository) {
-		this.tankRepository = tankRepository;
-	}
-	
-	//Get all Tanks
-	@GetMapping("/tank/")
-	public List<Tank> getAllTank(){
-		return tankRepository.findAll();
-	}
+    private final TankRepository tankRepository;
+
+    @Autowired
+    public TankController(TankRepository tankRepository) {
+        this.tankRepository = tankRepository;
+    }
+
+    //Get all Tanks
+    @GetMapping("/tank/")
+    public List<Tank> getAllTank() {
+        return tankRepository.findAll();
+    }
 	
 /*	
 	//Get all Tank from Bedrijf
@@ -32,18 +32,18 @@ public class TankController {
 		return tankRepository.findAll();
 	}
 */
-	
-	//Get one tank
-	@GetMapping("/tank/{tankid}")
-	public Tank getTankById(@PathVariable(value = "tankid") Long tankId) {
-		return tankRepository.findById(tankId)
-				.orElseThrow(() -> new ResourceNotFoundException("Tank", "tankId", tankId));
-	}
-	
-	//Create a new Tank
-	@PostMapping("/tank/")
-	public Tank createTank(@Valid @RequestBody Tank tank) {
-		return tankRepository.save(tank);
-	}
+
+    //Get one tank
+    @GetMapping("/tank/{tankid}")
+    public Tank getTankById(@PathVariable(value = "tankid") Long tankId) {
+        return tankRepository.findById(tankId)
+                .orElseThrow(() -> new ResourceNotFoundException("Tank", "tankId", tankId));
+    }
+
+    //Create a new Tank
+    @PostMapping("/tank/")
+    public Tank createTank(@Valid @RequestBody Tank tank) {
+        return tankRepository.save(tank);
+    }
 
 }

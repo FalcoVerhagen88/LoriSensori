@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity
-@Table( name = "adres" )
+@Table(name = "adres")
 public class Adres implements Serializable {
     /**
      *
@@ -16,7 +16,8 @@ public class Adres implements Serializable {
 
     @Id//this annotation is used to define the primary key.
     @Column(name = "adrescode")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//this annotation is used to define the primary key generation strategy. In the above case, we have declared the primary key to be an Auto Increment field.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//this annotation is used to define the primary key generation strategy. In the above case, we have declared the primary key to be an Auto Increment field.
     private long adrescode;
 
     @NotBlank
@@ -30,11 +31,11 @@ public class Adres implements Serializable {
     @Enumerated(EnumType.STRING)
     private LandEnums land;
 
-    public Adres(){
+    public Adres() {
 
     }
 
-    Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land){
+    Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
         this.straatnaam = straatnaam;
         this.huisnummer = huisnummer;
         this.huisnummertoevoeging = huisnummertoevoeging;

@@ -4,9 +4,9 @@ public class EntityExistsException extends RuntimeException {
 
     private String resourceName;
     private String fieldName;
-    private Long fieldValue;
+    private String fieldValue;
 
-    public EntityExistsException(String resourceName, String fieldName, Long fieldValue){
+    public EntityExistsException(String resourceName, String fieldName, String fieldValue) {
         super(String.format("%s already exist with %s : '%s' ", resourceName, fieldName, fieldValue));
         this.resourceName = resourceName;
         this.fieldName = fieldName;
@@ -21,7 +21,7 @@ public class EntityExistsException extends RuntimeException {
         return fieldName;
     }
 
-    public Long getFieldValue() {
+    public String getFieldValue() {
         return fieldValue;
     }
 }

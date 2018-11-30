@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@RestController//this annotation is a combination of Spring’s @Controller and @ResponseBody annotations. The @Controller annotation is used to define a controller and the @ResponseBody annotation is used to indicate that the return value of a method should be used as the response body of the request.
-@RequestMapping("/api")//this annotation  declares that the url for all the apis in this controller will start with /api.
+@RestController
+//this annotation is a combination of Spring’s @Controller and @ResponseBody annotations. The @Controller annotation is used to define a controller and the @ResponseBody annotation is used to indicate that the return value of a method should be used as the response body of the request.
+@RequestMapping("/api")
+//this annotation  declares that the url for all the apis in this controller will start with /api.
 public class MedewerkerController {
 
     private final MedewerkerRepository medewerkerRepository;
@@ -23,27 +25,28 @@ public class MedewerkerController {
 
     //Get all Medewerkers
     @GetMapping("/medewerker/")
-    public List<Medewerker> getAllMedewerkers(){
+    public List<Medewerker> getAllMedewerkers() {
         return medewerkerRepository.findAll();
     }
 
 
-
     //Create a new Medewerker
     @PostMapping("/medewerker/")
-    public Medewerker createMedewerker(@Valid @RequestBody Medewerker medewerker){
+    public Medewerker createMedewerker(@Valid @RequestBody Medewerker medewerker) {
         return medewerkerRepository.save(medewerker);
     }
+
     //Get a single Medewerker
     @GetMapping("/medewerker/{gebruikersnaam}")
-    public Medewerker getMedewerkerByid(@PathVariable(value = "gebruikersnaam") String gebruikersnaam){
+    public Medewerker getMedewerkerByid(@PathVariable(value = "gebruikersnaam") String gebruikersnaam) {
         return medewerkerRepository.findById(gebruikersnaam)
-                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam ));
+                .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam));
     }
+
     //Update a Medewerker
     @PutMapping("/medewerker/{gebruikersnaam}")
     public Medewerker updateMedewerker(@PathVariable(value = "gebruikersnaam") String gebruikersnaam,
-                                       @Valid @RequestBody Medewerker medewerkerDetails){
+                                       @Valid @RequestBody Medewerker medewerkerDetails) {
         Medewerker medewerker = medewerkerRepository.findById(gebruikersnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam));
         medewerker.setVoornaam(medewerkerDetails.getVoornaam());
@@ -52,9 +55,10 @@ public class MedewerkerController {
         Medewerker updatedMedewerker = medewerkerRepository.save(medewerker);
         return updatedMedewerker;
     }
+
     //Delete a Medewerker
     @DeleteMapping("/medewerker/{gebruikersnaam}")
-    public ResponseEntity<?> deleteMedewerker(@PathVariable(value = "gebruikersnaam") String gebruikersnaam){
+    public ResponseEntity<?> deleteMedewerker(@PathVariable(value = "gebruikersnaam") String gebruikersnaam) {
         Medewerker medewerker = medewerkerRepository.findById(gebruikersnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "gebruikersnaam", gebruikersnaam));
 

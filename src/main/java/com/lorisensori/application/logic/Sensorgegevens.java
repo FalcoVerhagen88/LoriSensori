@@ -11,111 +11,111 @@ import java.util.Date;
 @Entity
 @Table(name = "sensorgegevens")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value= {"timestamp"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
 public class Sensorgegevens implements Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 10L;
 
-	@Id
-	@Column(name = "sensorId")
-	private Long sensorId;
-	
-	private boolean slotStatus;
-	private double dieselniveau;
-	private double accuniveau;
-	private double vermogenZonnepaneel;
-	private int gpsBreedtegraad;
-	private int gpsLengtegraad;
-	@Column(nullable = false, updatable = false)
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreatedDate
-	private Date timestamp;
-	
-	private Long tankId;
-	
-	@OneToOne()
-	@JoinColumn(name = "slotGeopendDoor")
-	private Medewerker medewerkerSlot;
-	
-	public Long getSensorId() {
-		return sensorId;
-	}
+    /**
+     *
+     */
+    private static final long serialVersionUID = 10L;
 
+    @Id
+    @Column(name = "sensorId")
+    private Long sensorId;
 
-	public void setSensorId(Long sensorId) {
-		this.sensorId = sensorId;
-	}
+    private boolean slotStatus;
+    private double dieselniveau;
+    private double accuniveau;
+    private double vermogenZonnepaneel;
+    private int gpsBreedtegraad;
+    private int gpsLengtegraad;
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    private Date timestamp;
+
+    private Long tankId;
+
+    @OneToOne()
+    @JoinColumn(name = "slotGeopendDoor")
+    private Medewerker medewerkerSlot;
+
+    public Long getSensorId() {
+        return sensorId;
+    }
 
 
-	public boolean isSlotStatus() {
-		return slotStatus;
-	}
+    public void setSensorId(Long sensorId) {
+        this.sensorId = sensorId;
+    }
 
 
-	public void setSlotStatus(boolean slotStatus) {
-		this.slotStatus = slotStatus;
-	}
+    public boolean isSlotStatus() {
+        return slotStatus;
+    }
 
 
-	public double getDieselniveau() {
-		return dieselniveau;
-	}
+    public void setSlotStatus(boolean slotStatus) {
+        this.slotStatus = slotStatus;
+    }
 
 
-	public void setDieselniveau(double dieselniveau) {
-		this.dieselniveau = dieselniveau;
-	}
+    public double getDieselniveau() {
+        return dieselniveau;
+    }
 
 
-	public double getAccuniveau() {
-		return accuniveau;
-	}
+    public void setDieselniveau(double dieselniveau) {
+        this.dieselniveau = dieselniveau;
+    }
 
 
-	public void setAccuniveau(double accuniveau) {
-		this.accuniveau = accuniveau;
-	}
+    public double getAccuniveau() {
+        return accuniveau;
+    }
 
 
-	public double getVermogenZonnepaneel() {
-		return vermogenZonnepaneel;
-	}
+    public void setAccuniveau(double accuniveau) {
+        this.accuniveau = accuniveau;
+    }
 
 
-	public void setVermogenZonnepaneel(double vermogenZonnepaneel) {
-		this.vermogenZonnepaneel = vermogenZonnepaneel;
-	}
+    public double getVermogenZonnepaneel() {
+        return vermogenZonnepaneel;
+    }
 
 
-	public int getGpsBreedtegraad() {
-		return gpsBreedtegraad;
-	}
+    public void setVermogenZonnepaneel(double vermogenZonnepaneel) {
+        this.vermogenZonnepaneel = vermogenZonnepaneel;
+    }
 
 
-	public void setGpsBreedtegraad(int gpsBreedtegraad) {
-		this.gpsBreedtegraad = gpsBreedtegraad;
-	}
+    public int getGpsBreedtegraad() {
+        return gpsBreedtegraad;
+    }
 
 
-	public int getGpsLengtegraad() {
-		return gpsLengtegraad;
-	}
+    public void setGpsBreedtegraad(int gpsBreedtegraad) {
+        this.gpsBreedtegraad = gpsBreedtegraad;
+    }
 
 
-	public void setGpsLengtegraad(int gpsLengtegraad) {
-		this.gpsLengtegraad = gpsLengtegraad;
-	}
+    public int getGpsLengtegraad() {
+        return gpsLengtegraad;
+    }
 
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    public void setGpsLengtegraad(int gpsLengtegraad) {
+        this.gpsLengtegraad = gpsLengtegraad;
+    }
 
 
-	Sensorgegevens(){
-		
-	}
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+
+    Sensorgegevens() {
+
+    }
 }

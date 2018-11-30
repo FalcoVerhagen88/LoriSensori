@@ -13,11 +13,11 @@ public class MedewerkerDTO implements Serializable {
     private String gebruikersnaam, voornaam, achternaam, wachtwoord, email, telefoonnummer;
 
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 
-    public MedewerkerDTO convertMedewerkerToDTO(Medewerker medewerker, MedewerkerDTO medewerkerDTO){
+    public MedewerkerDTO convertMedewerkerToDTO(Medewerker medewerker, MedewerkerDTO medewerkerDTO) {
         ModelMapper modelMapper = new ModelMapper();
 
         modelMapper.map(medewerker, medewerkerDTO);

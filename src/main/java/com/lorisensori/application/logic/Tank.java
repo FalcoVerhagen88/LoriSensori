@@ -10,14 +10,11 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Tank {
+public class Tank implements Serializable {
 
     @Id
-    @Column(name = "tankId")
-    private Long tankid;
-
-    @Column(name = "tanknummer")
-    private int tanknummer;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long tankId;
 
     @NotBlank
     @Column(name = "tanknaam")
@@ -43,7 +40,7 @@ public class Tank {
 
     private String bedrijfsnaam;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "tankId")
     private List<Sensorgegevens> sensorgegevens;
 
@@ -53,13 +50,20 @@ public class Tank {
 
     }
 
-
-    public int getTanknummer() {
-        return tanknummer;
+    public Long getTankid() {
+        return tankId;
     }
 
-    public void setTanknummer(int tanknummer) {
-        this.tanknummer = tanknummer;
+    public void setTankid(Long tankId) {
+        this.tankId = tankId;
+    }
+
+    public List<Sensorgegevens> getSensorgegevens() {
+        return sensorgegevens;
+    }
+
+    public void setSensorgegevens(List<Sensorgegevens> sensorgegevens) {
+        this.sensorgegevens = sensorgegevens;
     }
 
     public String getTanknaam() {

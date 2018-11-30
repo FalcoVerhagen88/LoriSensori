@@ -105,7 +105,9 @@ public class BedrijfDTO {
         medewerkers.add(medewerker);
     }
 
-    public void addTank(TankDTO tank){tanks.add(tank);}
+    public void addTank(TankDTO tank) {
+        tanks.add(tank);
+    }
 
     public void setAdres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
 //		this.adres = adres;
