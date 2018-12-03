@@ -1,8 +1,6 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
 import com.lorisensori.application.enums.RechtEnums;
-
-import java.util.Date;
 
 public class FunctioneelBeheerder extends Medewerker {
 

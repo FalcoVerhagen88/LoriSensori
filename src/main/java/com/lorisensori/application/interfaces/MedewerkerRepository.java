@@ -1,13 +1,15 @@
 package com.lorisensori.application.interfaces;
 
-import com.lorisensori.application.logic.Bedrijf;
-import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.domain.Medewerker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface MedewerkerRepository extends JpaRepository<Medewerker, String> {
-    boolean existsByBedrijf_Bedrijfsnaam(String bedrijfsnaam);
+public interface MedewerkerRepository extends JpaRepository<Medewerker, Long> {
+
+    boolean existsByVoornaam(String voornaam);
+
+    Optional<Medewerker> findByVoornaam (String voornaam);
 }

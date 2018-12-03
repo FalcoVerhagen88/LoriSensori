@@ -1,4 +1,4 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.data.annotation.CreatedDate;
@@ -33,8 +33,6 @@ public class Sensorgegevens implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date timestamp;
-
-    private Long tankId;
 
     @OneToOne()
     @JoinColumn(name = "slotGeopendDoor")

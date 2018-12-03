@@ -1,6 +1,6 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
@@ -38,16 +38,34 @@ public class Tank implements Serializable {
 
     private int meldingTanken;
 
-    private String bedrijfsnaam;
+    @ManyToOne
+    @JoinColumn(name = "bedrijfsnaam")
+    @JsonBackReference(value = "tanks")
+    private Bedrijf bedrijf;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "tankId")
     private List<Sensorgegevens> sensorgegevens;
 
     //TODO: LoRa informatie toevoegen
 
     Tank() {
 
+    }
+
+    public Long getTankId() {
+        return tankId;
+    }
+
+    public void setTankId(Long tankId) {
+        this.tankId = tankId;
+    }
+
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
     }
 
     public Long getTankid() {
@@ -154,14 +172,5 @@ public class Tank implements Serializable {
         this.meldingTanken = meldingTanken;
     }
 
-
-    public String getBedrijfsnaam() {
-        return bedrijfsnaam;
-    }
-
-
-    public void setBedrijfsnaam(String bedrijfsnaam) {
-        this.bedrijfsnaam = bedrijfsnaam;
-    }
 }
 

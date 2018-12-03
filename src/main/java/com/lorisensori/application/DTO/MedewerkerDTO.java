@@ -1,9 +1,8 @@
 package com.lorisensori.application.DTO;
 
-import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.domain.Medewerker;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.expression.ParseException;
 
 import java.io.Serializable;
 

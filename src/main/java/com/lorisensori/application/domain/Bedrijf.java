@@ -1,18 +1,16 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.List;
 
 
 @Entity
-@Table(name = "Bedrijf")
+@Table(name = "bedrijf")
 public class Bedrijf implements Serializable {
     /**
      *
@@ -20,28 +18,11 @@ public class Bedrijf implements Serializable {
     private static final long serialVersionUID = 3L;
 
     @Id
-    @Column(name = "bedrijfsnaam")
+    @Column
     private String bedrijfsnaam;
 
-    @Column(name = "telefoonnummer")
-    @NotBlank
-    private String telefoonnummer;
-
-    @Column(name = "rekeningnummer")
-    @NotBlank
-    private String rekeningnummer;
-
-    @Column(name = "btwNummer")
-    @NotBlank
-    private String btwNummer;
-
-    @Column(name = "vatNummer")
-    @NotBlank
-    private String vatNummer;
-
-    @Column(name = "kvkNummer")
-    @NotBlank
-    private String kvkNummer;
+    @Column
+    private String telefoonnummer, rekeningnummer, btwNummer, vatNummer, kvkNummer;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "adrescode")
@@ -54,16 +35,12 @@ public class Bedrijf implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusEnums status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "medewerkers_bedrijf",
-            joinColumns = @JoinColumn(name = "BEDRIJF_BEDRIJFSNAAM", referencedColumnName = "bedrijfsnaam"),
-            inverseJoinColumns = @JoinColumn(name = "MEDEWERKER_GEBRUIKERSNAAM", referencedColumnName = "gebruikersnaam"))
+    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "medewerkers")
     private List<Medewerker> medewerkers;
 
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bedrijfsnaam")
+    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonManagedReference(value = "tanks")
     private List<Tank> tanks;
 
 
@@ -76,7 +53,12 @@ public class Bedrijf implements Serializable {
     }
 
     public void addMedewerker(Medewerker medewerker) {
+
         medewerkers.add(medewerker);
+    }
+
+    public void addTank(Tank tank) {
+        tanks.add(tank);
     }
 
     public Bedrijf() {
@@ -186,9 +168,6 @@ public class Bedrijf implements Serializable {
         this.tanks = tanks;
     }
 
-    public void addTank(Tank tank) {
-        tanks.add(tank);
-    }
 
     public String toString() {
         return bedrijfsnaam + "(" + adres + ")";

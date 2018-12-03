@@ -2,7 +2,7 @@ package com.lorisensori.application.rest_controllers;
 
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.AdresRepository;
-import com.lorisensori.application.logic.Adres;
+import com.lorisensori.application.domain.Adres;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

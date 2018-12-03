@@ -1,8 +1,9 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.TankRepository;
-import com.lorisensori.application.logic.Tank;
+import com.lorisensori.application.domain.Tank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +25,6 @@ public class TankController {
     public List<Tank> getAllTank() {
         return tankRepository.findAll();
     }
-	
-/*	
-	//Get all Tank from Bedrijf
-	@GetMapping("/tank/{bedrijfsnaam}")
-	public List<Tank> getAllTankBedrijf(){
-		return tankRepository.findAll();
-	}
-*/
 
     //Get one tank
     @GetMapping("/tank/{tankid}")
@@ -43,7 +36,13 @@ public class TankController {
     //Create a new Tank
     @PostMapping("/tank/")
     public Tank createTank(@Valid @RequestBody Tank tank) {
-        return tankRepository.save(tank);
+
+        if (!tankRepository.existsByTanknaam(tank.getTanknaam())) {
+
+            return tankRepository.save(tank);
+        } else {
+            throw new EntityExistsException("Tank", "Tanknaam", tank.getTanknaam());
+        }
     }
 
 }

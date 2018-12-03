@@ -1,16 +1,14 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.lorisensori.application.DTO.MedewerkerDTO;
 import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "medewerker")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Medewerker implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,14 +20,14 @@ public class Medewerker implements Serializable {
     @Column(nullable = false)
     private String voornaam, achternaam, wachtwoord, email, telefoonnummer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "bedrijfsnaam")
+    @JsonBackReference(value = "medewerkers")
     private Bedrijf bedrijf;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tankId")
     private Tank tank;
-
 
     /////////////////////////////////////////
     //CONSTRUCTORS
@@ -40,7 +38,6 @@ public class Medewerker implements Serializable {
         this.wachtwoord = wachtwoord;
         this.email = email;
         this.telefoonnummer = telefoonnummer;
-
     }
 
     public Medewerker() {
@@ -56,7 +53,19 @@ public class Medewerker implements Serializable {
     ///////////////////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS
 
-//    public Long getBedrijfId(){return bedrijf.get}
+
+    @Override
+    public String toString() {
+        return "Medewerker{" +
+                "medewerkerId=" + medewerkerId +
+                ", gebruikersnaam='" + gebruikersnaam + '\'' +
+                ", voornaam='" + voornaam + '\'' +
+                ", achternaam='" + achternaam + '\'' +
+                ", wachtwoord='" + wachtwoord + '\'' +
+                ", email='" + email + '\'' +
+                ", telefoonnummer='" + telefoonnummer + '\'' +
+                '}';
+    }
 
     public Long getMedewerkerId() {
         return medewerkerId;
@@ -64,6 +73,14 @@ public class Medewerker implements Serializable {
 
     public void setMedewerkerId(Long medewerkerId) {
         this.medewerkerId = medewerkerId;
+    }
+
+    public String getGebruikersnaam() {
+        return gebruikersnaam;
+    }
+
+    public void setGebruikersnaam(String gebruikersnaam) {
+        this.gebruikersnaam = gebruikersnaam;
     }
 
     public String getVoornaam() {
@@ -80,14 +97,6 @@ public class Medewerker implements Serializable {
 
     public void setAchternaam(String achternaam) {
         this.achternaam = achternaam;
-    }
-
-    public String getGebruikersnaam() {
-        return gebruikersnaam;
-    }
-
-    public void setGebruikersnaam(String gebruikersnaam) {
-        this.gebruikersnaam = gebruikersnaam;
     }
 
     public String getWachtwoord() {
@@ -114,10 +123,19 @@ public class Medewerker implements Serializable {
         this.telefoonnummer = telefoonnummer;
     }
 
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
 
-    public String toString() {
-        return "Voornaam: " + voornaam + ", Achternaam: " + achternaam + ", Gebruikersnaam: " + gebruikersnaam + ", Wachtwoord: " + wachtwoord + ", E-mail: " + email +
-                ", Telefoonnummer: " + telefoonnummer;
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
+    }
 
+    public Tank getTank() {
+        return tank;
+    }
+
+    public void setTank(Tank tank) {
+        this.tank = tank;
     }
 }

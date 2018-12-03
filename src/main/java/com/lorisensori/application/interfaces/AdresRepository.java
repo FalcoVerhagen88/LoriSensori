@@ -1,6 +1,6 @@
 package com.lorisensori.application.interfaces;
 
-import com.lorisensori.application.logic.Adres;
+import com.lorisensori.application.domain.Adres;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
