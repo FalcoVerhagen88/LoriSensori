@@ -46,7 +46,13 @@ public class BedrijfController {
     //Create new Bedrijf
     @PostMapping("/bedrijf/")
     public Bedrijf createBedrijf(@Valid @RequestBody Bedrijf bedrijf) {
-        return bedrijfRepository.save(bedrijf);
+
+        if (!bedrijfRepository.existsByBedrijfsnaam(bedrijf.getBedrijfsnaam())){
+
+            return bedrijfRepository.save(bedrijf);
+        }else {
+            throw new EntityExistsException("Bedrijf", "Bedrijfsnaam", bedrijf.getBedrijfsnaam());
+        }
     }
 
     //Add medewerker bedrijf
@@ -54,11 +60,16 @@ public class BedrijfController {
     public Bedrijf addMedewerker(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Medewerker medewerkerDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (!medewerkerRepository.existsByBedrijf_Bedrijfsnaam(bedrijfsnaam)) {
-            bedrijf.addMedewerker(medewerkerDetails);
+        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())){
+            Medewerker existingMedewerker = medewerkerRepository.findByVoornaam(medewerkerDetails.getVoornaam())
+                    .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "Voornaam", medewerkerDetails.getVoornaam()));
+            bedrijf.addMedewerker(existingMedewerker);
+            existingMedewerker.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
-        } else {
-            throw new EntityExistsException("Medewerker", "Gebruikersnaam", medewerkerDetails.getGebruikersnaam());
+        }else {
+            bedrijf.addMedewerker(medewerkerDetails);
+            medewerkerDetails.setBedrijf(bedrijf);
+            return bedrijfRepository.save(bedrijf);
         }
     }
 
@@ -66,11 +77,16 @@ public class BedrijfController {
     public Bedrijf addTank(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Tank tankDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (!tankRepository.existsByBedrijfsnaam(bedrijfsnaam)) {
-            bedrijf.addTank(tankDetails);
+        if (tankRepository.existsByTanknaam(tankDetails.getTanknaam())){
+            Tank existingTank = tankRepository.findByTanknaam(tankDetails.getTanknaam())
+                    .orElseThrow(() -> new ResourceNotFoundException("Tank", "TankNaam", tankDetails.getTanknaam()));
+            bedrijf.addTank(existingTank);
+            existingTank.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
-        } else {
-            throw new EntityExistsException("Tank", "TankNaam", tankDetails.getTanknaam());
+        }else {
+            bedrijf.addTank(tankDetails);
+            tankDetails.setBedrijf(bedrijf);
+            return bedrijfRepository.save(bedrijf);
         }
     }
 
@@ -79,11 +95,14 @@ public class BedrijfController {
     public Bedrijf setContactpersoon(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Medewerker medewerkerDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (bedrijf.getContactpersoon() == null) {
+        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())){
+            Medewerker existingMedewerker = medewerkerRepository.findByVoornaam(medewerkerDetails.getVoornaam())
+                    .orElseThrow(() -> new ResourceNotFoundException("Contactpersoon", "Voornaam", medewerkerDetails.getVoornaam()));
+            bedrijf.setContactpersoon(existingMedewerker);
+            return bedrijfRepository.save(bedrijf);
+        }else {
             bedrijf.setContactpersoon(medewerkerDetails);
             return bedrijfRepository.save(bedrijf);
-        } else {
-            throw new EntityExistsException("ContactPersoon", "Voornaam", medewerkerDetails.getVoornaam());
         }
     }
 

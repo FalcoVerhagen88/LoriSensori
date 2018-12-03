@@ -34,8 +34,6 @@ public class Sensorgegevens implements Serializable {
     @CreatedDate
     private Date timestamp;
 
-    private Long tankId;
-
     @OneToOne()
     @JoinColumn(name = "slotGeopendDoor")
     private Medewerker medewerkerSlot;
