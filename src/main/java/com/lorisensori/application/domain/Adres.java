@@ -1,4 +1,4 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
 import com.lorisensori.application.enums.LandEnums;
 

@@ -3,7 +3,7 @@ package com.lorisensori.application.rest_controllers;
 import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.TankRepository;
-import com.lorisensori.application.logic.Tank;
+import com.lorisensori.application.domain.Tank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

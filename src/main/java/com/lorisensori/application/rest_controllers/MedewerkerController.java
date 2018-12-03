@@ -4,7 +4,7 @@ import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.BedrijfRepository;
 import com.lorisensori.application.interfaces.MedewerkerRepository;
-import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.domain.Medewerker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +35,9 @@ public class MedewerkerController {
     //Create a new Medewerker
     @PostMapping("/medewerker/")
     public Medewerker createMedewerker(@Valid @RequestBody Medewerker medewerker) {
-        if (!medewerkerRepository.existsByVoornaam(medewerker.getVoornaam())){
+        if (!medewerkerRepository.existsByVoornaam(medewerker.getVoornaam())) {
             return medewerkerRepository.save(medewerker);
-        }else {
+        } else {
             throw new EntityExistsException("Medewerker", "Voornaam", medewerker.getVoornaam());
         }
     }

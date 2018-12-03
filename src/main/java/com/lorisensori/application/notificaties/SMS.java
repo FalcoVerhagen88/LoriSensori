@@ -1,7 +1,7 @@
 package com.lorisensori.application.notificaties;
 
 import com.lorisensori.application.enums.BerichtEnums;
-import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.domain.Medewerker;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;

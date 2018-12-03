@@ -1,7 +1,6 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;

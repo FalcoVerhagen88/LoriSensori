@@ -2,7 +2,7 @@ package com.lorisensori.application.DTO;
 
 import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
-import com.lorisensori.application.logic.Adres;
+import com.lorisensori.application.domain.Adres;
 
 import java.util.List;
 

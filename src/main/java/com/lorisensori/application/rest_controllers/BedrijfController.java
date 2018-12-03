@@ -5,9 +5,9 @@ import com.lorisensori.application.exceptions.ResourceNotFoundException;
 import com.lorisensori.application.interfaces.BedrijfRepository;
 import com.lorisensori.application.interfaces.MedewerkerRepository;
 import com.lorisensori.application.interfaces.TankRepository;
-import com.lorisensori.application.logic.Bedrijf;
-import com.lorisensori.application.logic.Medewerker;
-import com.lorisensori.application.logic.Tank;
+import com.lorisensori.application.domain.Bedrijf;
+import com.lorisensori.application.domain.Medewerker;
+import com.lorisensori.application.domain.Tank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +47,10 @@ public class BedrijfController {
     @PostMapping("/bedrijf/")
     public Bedrijf createBedrijf(@Valid @RequestBody Bedrijf bedrijf) {
 
-        if (!bedrijfRepository.existsByBedrijfsnaam(bedrijf.getBedrijfsnaam())){
+        if (!bedrijfRepository.existsByBedrijfsnaam(bedrijf.getBedrijfsnaam())) {
 
             return bedrijfRepository.save(bedrijf);
-        }else {
+        } else {
             throw new EntityExistsException("Bedrijf", "Bedrijfsnaam", bedrijf.getBedrijfsnaam());
         }
     }
@@ -60,13 +60,13 @@ public class BedrijfController {
     public Bedrijf addMedewerker(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Medewerker medewerkerDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())){
+        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())) {
             Medewerker existingMedewerker = medewerkerRepository.findByVoornaam(medewerkerDetails.getVoornaam())
                     .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "Voornaam", medewerkerDetails.getVoornaam()));
             bedrijf.addMedewerker(existingMedewerker);
             existingMedewerker.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
-        }else {
+        } else {
             bedrijf.addMedewerker(medewerkerDetails);
             medewerkerDetails.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
@@ -77,13 +77,13 @@ public class BedrijfController {
     public Bedrijf addTank(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Tank tankDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (tankRepository.existsByTanknaam(tankDetails.getTanknaam())){
+        if (tankRepository.existsByTanknaam(tankDetails.getTanknaam())) {
             Tank existingTank = tankRepository.findByTanknaam(tankDetails.getTanknaam())
                     .orElseThrow(() -> new ResourceNotFoundException("Tank", "TankNaam", tankDetails.getTanknaam()));
             bedrijf.addTank(existingTank);
             existingTank.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
-        }else {
+        } else {
             bedrijf.addTank(tankDetails);
             tankDetails.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
@@ -95,12 +95,12 @@ public class BedrijfController {
     public Bedrijf setContactpersoon(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Medewerker medewerkerDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())){
+        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())) {
             Medewerker existingMedewerker = medewerkerRepository.findByVoornaam(medewerkerDetails.getVoornaam())
                     .orElseThrow(() -> new ResourceNotFoundException("Contactpersoon", "Voornaam", medewerkerDetails.getVoornaam()));
             bedrijf.setContactpersoon(existingMedewerker);
             return bedrijfRepository.save(bedrijf);
-        }else {
+        } else {
             bedrijf.setContactpersoon(medewerkerDetails);
             return bedrijfRepository.save(bedrijf);
         }
@@ -121,8 +121,7 @@ public class BedrijfController {
         bedrijf.setVatNummer(bedrijfDetails.getVatNummer());
         bedrijf.setStatus(bedrijfDetails.getStatus());
 
-        Bedrijf updatedBedrijf = bedrijfRepository.save(bedrijf);
-        return updatedBedrijf;
+        return bedrijfRepository.save(bedrijf);
     }
 
     //Delete a Bedrijf

@@ -1,18 +1,11 @@
-package com.lorisensori.application.logic;
+package com.lorisensori.application.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -174,7 +167,6 @@ public class Bedrijf implements Serializable {
     public void setTanks(List<Tank> tanks) {
         this.tanks = tanks;
     }
-
 
 
     public String toString() {

@@ -1,7 +1,7 @@
 package com.lorisensori.application.notificaties;
 
 import com.lorisensori.application.enums.BerichtEnums;
-import com.lorisensori.application.logic.Medewerker;
+import com.lorisensori.application.domain.Medewerker;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
