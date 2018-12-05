@@ -126,6 +126,7 @@ BerichtPointerLengte Uplink::maakBericht(Sensoren *s)   //bekijkt welk bericht/s
     berichtWSlotstandUl(&slotstandWijziging, s);
     berichtPointerLengte.berichtLengte = slotstandWijziging.berichtLengte;
     berichtPointerLengte.berichtPointer = (uint8_t*)&slotstandWijziging;
+    VorigeSlotstand = s->slotstandmeting();
     return berichtPointerLengte;
   }
 
@@ -159,4 +160,21 @@ TankUl Uplink::maakAliveBericht(Sensoren *s)   //bekijkt welk bericht/status tan
  {
   berichtTankUl(&alive, s); 
   return alive;
+ }
+
+ //-------------------------------------- Get slotstandwijziging --------------------------------------//
+
+  WSlotstandUl Uplink::getSlotstandWijziging(Sensoren *s)
+  {
+    berichtWSlotstandUl(&slotstandWijziging, s);
+    return slotstandWijziging;
+  }
+
+  
+  //-------------------------------------- Get Dieselalarmniveau wijziging --------------------------------------//
+
+ WDieselniveauUl Uplink::getAlarmNiveauDieselWijziging(Sensoren *s)
+ {
+   berichtWDieselniveauUl(&alarmniveauDieselWijziging, s);
+   return alarmniveauDieselWijziging;
  }

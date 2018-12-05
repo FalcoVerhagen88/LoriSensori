@@ -16,17 +16,17 @@ class Sensoren
   NMEAGPS gps;                        // Klasse die de NMEA gps zinnen verwerkt
   gps_fix fix;                        // Struct die de laatste gps waarde vasthoud
   
-  const int ACCUNIVEAUPIN = A0;       // inputpin om de spanning van de batterij te meten
-  const int DIESELNIVEAUPIN = A1;     // inputpin voor de potmeter die het dieselniveau simuleert
-  const int VOLTZONNEPANEELPIN = A2;  // inputpin om de spanning van het zonnepaneel te meten
-  const int AMPZONNEPANEELPIN = A3;   // inputpin om de stroom die geleverd wordt door het zonnepaneel te meten
-  const int SLOTOPENPIN = 3;          // simulatie eindstandmelder slot open, kijkt of de groene led brandt
-  const int SLOTDICHTPIN = 5;         // simulatie eindstandmelder slot dicht, kijkt of de rode led brandt
-  const int DIESELNIVEAUMAX = 1024;   // initialiseert de maximale waarde van de potmeter/dieselniveau
-  const int DIESELNIVEAUMIN = 0;      // initialiseert de minimale waarde van de potmeter/dieselniveau
-  const int ACCUNIVEAUMAX = 920;      // initialiseert de maximale waarde van de accuniveaumapping 100%
-  const int ACCUNIVEAUMIN = 765;      // initialiseert de minimale waarde van de accuniveaumapping 0%
-  const int ACCUALARMNIVEAU = 25;      // initialiseert de minimale waarde van het accu alarm niveau 25%
+  #define ACCUNIVEAUPIN (A0)       // inputpin om de spanning van de batterij te meten
+  #define DIESELNIVEAUPIN (A1)    // inputpin voor de potmeter die het dieselniveau simuleert
+  #define VOLTZONNEPANEELPIN (A2)  // inputpin om de spanning van het zonnepaneel te meten
+  #define AMPZONNEPANEELPIN (A3)   // inputpin om de stroom die geleverd wordt door het zonnepaneel te meten
+  #define SLOTOPENPIN 3          // simulatie eindstandmelder slot open, kijkt of de groene led brandt
+  #define SLOTDICHTPIN 5         // simulatie eindstandmelder slot dicht, kijkt of de rode led brandt
+  #define DIESELNIVEAUMAX 1024   // initialiseert de maximale waarde van de potmeter/dieselniveau
+  #define DIESELNIVEAUMIN 0      // initialiseert de minimale waarde van de potmeter/dieselniveau
+  #define ACCUNIVEAUMAX 920      // initialiseert de maximale waarde van de accuniveaumapping 100%
+  #define ACCUNIVEAUMIN 765      // initialiseert de minimale waarde van de accuniveaumapping 0%
+  #define ACCUALARMNIVEAU 25      // initialiseert de minimale waarde van het accu alarm niveau 25%
 
   int dieselniveau;                   // variabele om de inkomende waarde van het dieselniveau op te slaan 
   int vorigeDieselNiveau = 999;              // variabele om het vorige dieselniveau op te slaan                             
