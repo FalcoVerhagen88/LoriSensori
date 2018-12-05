@@ -26,6 +26,8 @@ import java.util.Base64;
  *zorgen dat gegevens per tank goed worden opgeslagen in de db
  *zorgen dat ack berichten naar de applicatie doorkomen
  *
+ *Start automatisch op als er een bericht binnenkomt, daarom message weg gecomment
+ *
  */
 
 public class TheThingsNetwork {
@@ -63,7 +65,7 @@ public class TheThingsNetwork {
         CLIENT.onMessage((String _devId, DataMessage _data) ->
                 System.out.println("Message: " + _devId + " " + _data));
         CLIENT.onMessage((String devId, DataMessage data) -> System.out.println("Message: " + devId + " " + Arrays.toString(((UplinkMessage) data).getPayloadRaw())));
-        CLIENT.onMessage((String _devId, DataMessage _data) -> {
+       /* CLIENT.onMessage((String _devId, DataMessage _data) /*-> {
             try {
                 // Toggle the LED
                 DownlinkMessage response = new DownlinkMessage(1, new byte[]{0x00, 0x01});
@@ -71,13 +73,13 @@ public class TheThingsNetwork {
                 /**
                  * If you don't have an encoder payload function:
                  * client.send(_devId, _data.equals("true") ? new byte[]{0x00} : new byte[]{0x01}, 0);
-                 */
+                 *//*
                 System.out.println("Sending: " + response);
                 CLIENT.send(_devId, response);
             } catch (Exception ex) {
                 System.out.println("Response failed: " + ex.getMessage());
             }
-        });
+        });*/
 
         CLIENT.start();
         testDecoder();
