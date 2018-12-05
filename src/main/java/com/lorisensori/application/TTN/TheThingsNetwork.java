@@ -13,11 +13,26 @@ import java.util.Base64;
 
 //Run application with: mvn clean compile exec:java -Dexec.mainClass="com.lorisensori.application.TTN.TheThingsNetwork"
 
+/*
+ * TODO:
+ * uitzoeken hoe per klant in te loggen bij TTN
+ * uitzoeken hoe per klant de berichten opgehaald kunnen worden
+ * er zal wel multi threading moeten worden toegepast
+ * hoe moet dat dan opgebouwd worden?
+ *
+ *een thread starten per bedrijf dat tanks heeft bij het starten van de server
+ *tanks gegevens ophalen van bedrijf
+ *zorgen dat elke tank apart kan worden aangesproken
+ *zorgen dat gegevens per tank goed worden opgeslagen in de db
+ *zorgen dat ack berichten naar de applicatie doorkomen
+ *
+ */
+
 public class TheThingsNetwork {
 
-    private static final String REGION = System.getenv("REGION");
-    private static final String APP_ID = System.getenv("APP_ID");
-    private static final String ACCESS_KEY = System.getenv("ACCESS_KEY");
+    private static final String REGION = "eu";
+    private static final String APP_ID = "tanks_lorisensori";
+    private static final String ACCESS_KEY = "ttn-account-v2.S4DKj7oir_lt9lLyXg_3yZU-UDdVkzlDgZfnoIFzbec";
 
     private static Client CLIENT;
 
@@ -47,13 +62,12 @@ public class TheThingsNetwork {
 
         CLIENT.onMessage((String _devId, DataMessage _data) ->
                 System.out.println("Message: " + _devId + " " + _data));
-
         CLIENT.onMessage((String devId, DataMessage data) -> System.out.println("Message: " + devId + " " + Arrays.toString(((UplinkMessage) data).getPayloadRaw())));
         CLIENT.onMessage((String _devId, DataMessage _data) -> {
             try {
                 // Toggle the LED
                 DownlinkMessage response = new DownlinkMessage(1, new byte[]{0x00, 0x01});
-
+                System.out.println("hoe ist nou?");
                 /**
                  * If you don't have an encoder payload function:
                  * client.send(_devId, _data.equals("true") ? new byte[]{0x00} : new byte[]{0x01}, 0);
