@@ -42,7 +42,7 @@ const lmic_pinmap lmic_pins = {
 // ---------------------------------------- onEvent ----------------------------------------// 
 void onEvent (ev_t ev) 
 {
-   D.ontvangDownlink(&S,&A);
+   D.ontvangDownlink(&S, &A, U);
    S.GPSmeting();       // moet deze hier op deze manier?
    Alarm.delay(1000); // jee nu werkt timealarms wel
    os_setTimedCallback(&bericht, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);        //Schedule next transmission --> ack?
@@ -105,3 +105,6 @@ void loop()
   os_runloop_once();
 
 }
+
+
+// define liever dan const volgens Jeffrey.

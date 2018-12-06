@@ -1,9 +1,9 @@
 #include "Downlink.h"
 
-  const int dlIdSlotstandDl = 0x00;
-  const int dlIdDieselniveauDl = 0x01;
-  const int dlIdOpeningstijdDl = 0x02;
-  const int dlIdSluitingstijdDl = 0x03;
+  #define dlIdSlotstandDl 0x00
+  #define dlIdDieselniveauDl 0x01
+  #define dlIdOpeningstijdDl 0x02
+  #define dlIdSluitingstijdDl 0x03
 
 //----------------------------------------- Constructor Downlink ------------------------------//
 Downlink::Downlink(void)
@@ -12,7 +12,7 @@ Downlink::Downlink(void)
 }        
 
 //---------------------------------------Ontvang downlink---------------------------------------//
-void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A)
+void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink U)
 {
     Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
    

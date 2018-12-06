@@ -103,22 +103,22 @@ class Uplink
 {
   private:
   // ------------------ private const. int Id's ---------------//
-  const int ulIdTankUl = 0x00;
-  const int ulIdATankenUl = 0x01;
-  const int ulIdADieselniveauUl = 0x02;
-  const int ulIdAAccuniveauUl = 0x03;
-  const int ulIdWSlotstandUl = 0x04;
-  const int ulIdWDieselniveauUl = 0x05;
-  const int ulIdCheck = 0x06;
+  #define ulIdTankUl 0x00
+  #define ulIdATankenUl 0x01
+  #define ulIdADieselniveauUl 0x02
+  #define ulIdAAccuniveauUl 0x03
+  #define ulIdWSlotstandUl 0x04
+  #define ulIdWDieselniveauUl 0x05
+  #define ulIdCheck 0x06
 
     // ------------- private const. berichtlengte ---------------//
-  const int ALIVELENGTE = 13; // lengte van het alive bericht
-  const int ALARMTANKENLENGTE = 2; // lengte van het laag niveau alarm bericht
-  const int ALARMDIEFSTALLENGTE = 11; // lengte van het bericht bij een dieselniveauverlaging na sluitingstijd
-  const int ALARMACCUSPANNING = 2; // lengte van het bericht bij een te lage accuspanning
-  const int WIJZIGINGSLOTSTANDLENGTE = 2; // lengte van het bericht bij een wijziging van de slotstand
-  const int WIJZIGINGALARMNIVEAUDIESEL = 2; //lengte van beericht na wijziging minimum diesel niveau in tank
-  const int CHECKBERICHTLENGTE = 1; // lengte van het ericht (checkbericht) dat elke x minuten wordt verstuurd om te luisteren naar de gateway
+  #define ALIVELENGTE 13 // lengte van het alive bericht
+  #define ALARMTANKENLENGTE 2 // lengte van het laag niveau alarm bericht
+  #define ALARMDIEFSTALLENGTE 11 // lengte van het bericht bij een dieselniveauverlaging na sluitingstijd
+  #define ALARMACCUSPANNING 2 // lengte van het bericht bij een te lage accuspanning
+  #define WIJZIGINGSLOTSTANDLENGTE 2 // lengte van het bericht bij een wijziging van de slotstand
+  #define WIJZIGINGALARMNIVEAUDIESEL 2 //lengte van beericht na wijziging minimum diesel niveau in tank
+  #define CHECKBERICHTLENGTE 1 // lengte van het bericht (checkbericht) dat elke x minuten wordt verstuurd om te luisteren naar de gateway
 
   int VorigeSlotstand;
   int vorigeDieselAlarmniveau;
@@ -149,6 +149,8 @@ class Uplink
   // ------------ Class Uplink publieke methodes -------//
   BerichtPointerLengte maakBericht(Sensoren *s);
   TankUl maakAliveBericht(Sensoren *s);
+  WSlotstandUl getSlotstandWijziging(Sensoren *s);
+  WDieselniveauUl getAlarmNiveauDieselWijziging(Sensoren *s);
   void setVorigeSlotstand(Sensoren *S);
   void setVorigeDieselAlarmniveau(Sensoren *S);
 };

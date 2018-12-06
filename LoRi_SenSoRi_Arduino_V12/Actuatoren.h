@@ -13,9 +13,9 @@
 class Actuatoren
 {
   private:
-  const int SLOTBESTURING = 4;    // outputpin voor de leds die aangeven of het slot open of dicht is
-  const int SECONDENOPEN = 0;     // seconden dat het slot open moet, is niet instelbaar
-  const int SECONDENDICHT = 10;   // seconden dat het slot dicht moet, is niet instelbaar
+  #define SLOTBESTURING 4    // outputpin voor de leds die aangeven of het slot open of dicht is
+  #define SECONDENOPEN 0     // seconden dat het slot open moet, is niet instelbaar
+  #define SECONDENDICHT 10   // seconden dat het slot dicht moet, is niet instelbaar
   
   //int uurOpen = 00;               // uur dat het slot open moet, waarde is in te stellen en komt uit de downlink
  // int minutenOpen = 00;           // minuten dat het slot open moet, waarde is in te stellen en komt uit de downlink
