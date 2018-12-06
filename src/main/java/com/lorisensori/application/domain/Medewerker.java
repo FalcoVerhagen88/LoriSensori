@@ -26,7 +26,7 @@ public class Medewerker implements Serializable {
     private Bedrijf bedrijf;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tankId")
+    @JoinColumn(name = "tank_id")
     private Tank tank;
 
     /////////////////////////////////////////
@@ -43,12 +43,6 @@ public class Medewerker implements Serializable {
     public Medewerker() {
     }
 
-    public Medewerker convertDTOtoMedewerker(MedewerkerDTO medewerkerDTO, Medewerker medewerker) {
-        ModelMapper modelMapper = new ModelMapper();
-
-        modelMapper.map(medewerkerDTO, medewerker);
-        return medewerker;
-    }
 
     ///////////////////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS
