@@ -23,7 +23,7 @@ class Downlink
   
   public:
   Downlink();
-  void ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink U);
+  void ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U);
 
 };
 

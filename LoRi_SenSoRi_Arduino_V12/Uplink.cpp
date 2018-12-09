@@ -1,19 +1,21 @@
 #include "Uplink.h"
 
 // ---------------------------------------- Constructor Uplink -----------------------------------------//
-Uplink::Uplink(void)
+Uplink::Uplink(Sensoren *s)
 {
-  // Constructor body Uplink, void dus niets nodig
+this->VorigeSlotstand = s->slotstandmeting();
+this->vorigeDieselAlarmniveau = s->dieselniveaumeting();
+
 }
 
-void Uplink::setVorigeSlotstand(Sensoren *S)
+void Uplink::setVorigeSlotstand(Sensoren *s)
 {
-  VorigeSlotstand = S->slotstandmeting();
+  VorigeSlotstand = s->slotstandmeting();
 }
 
-void Uplink::setVorigeDieselAlarmniveau(Sensoren *S)
+void Uplink::setVorigeDieselAlarmniveau(Sensoren *s)
 {
-  vorigeDieselAlarmniveau = S->getAlarmniveauDiesel();
+  vorigeDieselAlarmniveau = s->getAlarmniveauDiesel();
 }
 // ---------------------------------------- Opstellen tankbericht ----------------------------------------//
 void Uplink::berichtTankUl(TankUl *p, Sensoren *s) 
@@ -31,14 +33,14 @@ p->lonGraden = s->getGpsFix().longitudeDMS.degrees;
 p->lonMinuten = s->getGpsFix().longitudeDMS.minutes;
 p->lonSeconden = s->getGpsFix().longitudeDMS.seconds_whole;
 p->lonTiendeSeconden = highByte(s->getGpsFix().longitudeDMS.seconds_frac);
-p->berichtLengte = 13;
+p->berichtLengte = ALIVELENGTE;
 }
 // ---------------------------------------- Opstellen alarm bij te laag dieselniveau ----------------------------------------//
 void Uplink::berichtATankUl(ATankUl *p, Sensoren *s) 
 {
 p->ulId = ulIdATankenUl;
 p->dieselniveau = s->dieselniveaumeting();
-p->berichtLengte = 2;
+p->berichtLengte = ALARMTANKENLENGTE;
 }
 
 
@@ -56,7 +58,7 @@ p->lonGraden = s->getGpsFix().longitudeDMS.degrees;
 p->lonMinuten = s->getGpsFix().longitudeDMS.minutes;
 p->lonSeconden = s->getGpsFix().longitudeDMS.seconds_whole;
 p->lonTiendeSeconden = highByte(s->getGpsFix().longitudeDMS.seconds_frac);
-p->berichtLengte = 11;
+p->berichtLengte = ALARMDIEFSTALLENGTE;
 }
 
 
@@ -65,24 +67,23 @@ void Uplink::berichtAAccuniveauUl(AAccuniveauUl *p, Sensoren *s)
 {
 p->ulId = ulIdAAccuniveauUl;
 p->accuspanning = s->accuniveaumeting();
-p->berichtLengte = 2;
+p->berichtLengte = ALARMACCUSPANNINGLENGTE;
 }
 
 // ---------------------------------------- Opstellen alarm bij een wijziging van de slotstand ----------------------------------------//
-void Uplink::berichtWSlotstandUl(WSlotstandUl *p, Sensoren *s) 
+void Uplink::berichtAslotstandW(ASlotstandW *p, Sensoren *s)
 {
-p->ulId = ulIdWSlotstandUl;
-p->slotstand = s->slotstandmeting();
-p->berichtLengte = 2;
+p->ulId = ulIdSlotstandWijziging;
+p->slotStand = s->slotstandmeting();
+p->berichtLengte = WIJZIGINGSLOTSTANDLENGTE;
 }
 
 
-// ---------------------------------------- Opstellen melding bij wijziging van de melding dieselalarmniveau ----------------------------------------//
-void Uplink::berichtWDieselniveauUl(WDieselniveauUl *p, Sensoren *s) 
+// ---------------------------------------- Opstellen ack bij wijziging van het dieselalarmniveau ----------------------------------------//
+void Uplink::ackDieselAlarmniveauW(AckDieselniveauW *p)
 {
-p->ulId = ulIdWDieselniveauUl;
-p->dieselniveau = s->getAlarmniveauDiesel();
-p->berichtLengte = 2;
+p->ulId = ackIdDieselAlarmniveauWijziging;
+p->berichtLengte = ACKWIJZIGINGALARMNIVEAUDIESEL;
 }
 
 
@@ -93,88 +94,118 @@ void Uplink::BerichtCheck(CheckBericht *p)
     p->berichtLengte = 1;                 // lengte van het bericht
 }
 
-
-// ---------------------------------------- Kies bericht n.a.v. tankmetingen ----------------------------------------//
-BerichtPointerLengte Uplink::maakBericht(Sensoren *s)   //bekijkt welk bericht/status tank
-{
-    if (s->accuAlarm(s->accuniveaumeting()) == 01) // als klasse meegeven, parameter
+// ---------------------------------------- Opstellen acknowledge slotstandwijziging ----------------------------------------//
+  void Uplink::ackSlotstandW(AckSlotstandW *p, Sensoren *s)
   {
-    berichtAAccuniveauUl(&accuniveauAlarm, s);
-    berichtPointerLengte.berichtLengte = accuniveauAlarm.berichtLengte;
-    berichtPointerLengte.berichtPointer = (uint8_t*)&accuniveauAlarm;
-    return berichtPointerLengte;
+    p-> ulId = ackIdSlotstandwijziging;
+    p-> slotStand = s->slotstandmeting();
+    p-> berichtLengte = ACKSLOTSTANDWIJZIGING;
+
   }
 
-    else if(s->diefstalAlarm() == 01) // als dieselniveau vorig < dieselniveau huidig en het slot is dicht dan is er iets aan de hand
+
+  // ---------------------------------------- Opstellen acknowledge dieselniveau alarmniveau wijziging ----------------------------------------//
+  void ackDieselAlarmniveauW(AckDieselniveauW *p)
   {
-    berichtADieselniveauUl(&verlagingDieselniveauAlarm, s);
-    berichtPointerLengte.berichtLengte = verlagingDieselniveauAlarm.berichtLengte;
-    berichtPointerLengte.berichtPointer = (uint8_t*)&verlagingDieselniveauAlarm;
-    return berichtPointerLengte;
+   p-> ulId = ackIdDieselAlarmniveauWijziging;
+   p-> berichtLengte = ACKWIJZIGINGALARMNIVEAUDIESEL;
+
+  }
+
+
+  // ---------------------------------------- Opstellen acknowledge sluitingstijd wijziging ----------------------------------------//
+  void ackSluitingstijdW(AckSluitingstijdW *p)
+  {
+	   p-> ulId = ackIdSluitingstijWwijziging;
+	   p-> berichtLengte = ACKWIJZIGINGSLUITINGSTIJD;
   }
   
-  else if (s->dieselalarmNiveau() == 01) // als dieselniveau vorig < alarmniveau diesel dan stuur dit bericht zodat de tankwagen ingepland kan worden
+
+  // ---------------------------------------- Opstellen acknowledge openingstijd wijziging ----------------------------------------//
+  void ackOpeningstijdW(AckOpeningstijdW *p)
   {
-    berichtATankUl(&tankenAlarm, s);
-    berichtPointerLengte.berichtLengte = tankenAlarm.berichtLengte;
-    berichtPointerLengte.berichtPointer = (uint8_t*)&tankenAlarm;
-    return berichtPointerLengte;
+	   p-> ulId = ackIdOpeningstijdWijziging;
+	   p-> berichtLengte = ACKWIJZIGINGOPENINGSTIJD;
   }
 
-  else if (s->slotstandmeting() != VorigeSlotstand)                     // als de slotstand wordt gewijzigd stuurt dan dit bericht
-  {
-    berichtWSlotstandUl(&slotstandWijziging, s);
-    berichtPointerLengte.berichtLengte = slotstandWijziging.berichtLengte;
-    berichtPointerLengte.berichtPointer = (uint8_t*)&slotstandWijziging;
-    VorigeSlotstand = s->slotstandmeting();
-    return berichtPointerLengte;
-  }
 
-    else if (s->getAlarmniveauDiesel() != vorigeDieselAlarmniveau)                 // Als het dieselalarmniveau wordt gewijzigd stuurt dan dit bericht
-  {
-    berichtWDieselniveauUl(&alarmniveauDieselWijziging, s);
-    berichtPointerLengte.berichtLengte = alarmniveauDieselWijziging.berichtLengte;
-    berichtPointerLengte.berichtPointer = (uint8_t*)&alarmniveauDieselWijziging;
-    return berichtPointerLengte;
-  }
 
-    else 
-  {
-    BerichtCheck(&checkBericht);                                    //Alles is ok stuurt dan dit bericht
-    berichtPointerLengte.berichtLengte = checkBericht.berichtLengte;
-    berichtPointerLengte.berichtPointer = (uint8_t*)&checkBericht;
-    return berichtPointerLengte;
-  }
-}
+// ---------------------------------------- Getters voor berichtstsructs ----------------------------------------//
 
-/*
- * 1 accuiveau
- * 2 diefstal
- * 3 tanken
- * 4 slotstand
- * 5 dieselniveau gewijzigd
- */
-
-// ---------------------------------------- Kies bericht n.a.v. tankmetingen ----------------------------------------//
-TankUl Uplink::maakAliveBericht(Sensoren *s)   //bekijkt welk bericht/status tank
+TankUl Uplink::getAliveBericht(Sensoren *s)   //bekijkt welk bericht/status tank
  {
   berichtTankUl(&alive, s); 
   return alive;
  }
 
- //-------------------------------------- Get slotstandwijziging --------------------------------------//
 
-  WSlotstandUl Uplink::getSlotstandWijziging(Sensoren *s)
+  //-------------------------------------- Get Dieselalarmniveau  --------------------------------------//
+  ATankUl Uplink::getDieselniveauAlarm(Sensoren *s)
   {
-    berichtWSlotstandUl(&slotstandWijziging, s);
-    return slotstandWijziging;
+    berichtATankUl(&tankenAlarm, s);
+    return tankenAlarm;
   }
 
+    //-------------------------------------- Get Diefstalalarm  --------------------------------------//
+  ADieselniveauUl Uplink::getDiefstalAlarm(Sensoren *s)
+  {
+    berichtADieselniveauUl(&verlagingDieselniveauAlarm,s);
+    return verlagingDieselniveauAlarm;
+  }
   
-  //-------------------------------------- Get Dieselalarmniveau wijziging --------------------------------------//
+     //-------------------------------------- Get accuniveau alarm --------------------------------------//
+  AAccuniveauUl Uplink::getAccuniveauAlarm(Sensoren *s)
 
- WDieselniveauUl Uplink::getAlarmNiveauDieselWijziging(Sensoren *s)
- {
-   berichtWDieselniveauUl(&alarmniveauDieselWijziging, s);
-   return alarmniveauDieselWijziging;
- }
+  {
+    berichtAAccuniveauUl(&accuniveauAlarm,s);
+    return accuniveauAlarm;
+  }
+  
+
+  //-------------------------------------- Get accuniveau alarm --------------------------------------//
+  ASlotstandW Uplink::getASlotstandW(Sensoren *s)
+  {
+	  berichtAslotstandW(&slotstandWijziging, s);
+	  return slotstandWijziging;
+
+  }
+
+  //-------------------------------------- Getters voor de acknowledgements --------------------------------------//
+
+  //-------------------------------------- Get ack wijziging diesel alarmniveau --------------------------------------/
+  AckDieselniveauW Uplink::getAckDieselAlarmniveauW()
+  {
+	ackDieselAlarmniveauW(&alarmniveauDieselWijziging);
+	return alarmniveauDieselWijziging;
+  }
+
+
+  //-------------------------------------- Get ack wijziging sluitingstijd --------------------------------------/
+  AckSluitingstijdW Uplink::getAckSluitingstijdW()
+  {
+	ackSluitingstijdW(&ackWijzigingSluitingstijd);
+	return ackWijzigingSluitingstijd;
+  }
+
+
+  //-------------------------------------- Get ack wijziging openingstijd --------------------------------------/
+  AckOpeningstijdW Uplink::getAckOpeningstijdW()
+  {
+	  ackOpeningstijdW(&ackWijzigingOpeningstijd);
+	  return ackWijzigingOpeningstijd;
+  }
+
+
+  //-------------------------------------- Get ack wijziging slotstand--------------------------------------/
+  AckSlotstandW Uplink::getAckSlotstandW(Sensoren *s)
+  {
+	  ackSlotstandW(&ackSlotstandWijziging, s);
+	  return ackSlotstandWijziging;
+  }
+
+
+  CheckBericht Uplink::getCheckbericht()
+  {
+	  BerichtCheck(&checkBericht);
+	  return checkBericht;
+  }

@@ -20,6 +20,8 @@ void Sensoren::SETUP()
   pinMode(SLOTDICHTPIN, INPUT);
   setTime(10,10,10,10,10,2018);                         // set time eerste keer
   gpsPort.begin(9600);                                  // initialisatie van de GPS poort (Serial1, gedefinieerd in library)
+  vorigeDieselNiveau = dieselniveaumeting();
+  vorigeSlotstand = slotstandmeting();
 }
 
 
@@ -179,4 +181,17 @@ byte Sensoren::diefstalAlarm()
 int Sensoren::getAlarmniveauDiesel()
 {
   return alarmniveauDiesel;
+}
+
+
+byte Sensoren::slotstandAlarm()
+{
+	if( vorigeSlotstand != slotstandmeting())
+	{
+		return 01;
+	}
+
+	vorigeSlotstand = slotstandmeting();
+	return 00;
+
 }
