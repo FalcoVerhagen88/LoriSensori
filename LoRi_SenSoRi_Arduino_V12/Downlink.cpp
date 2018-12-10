@@ -27,23 +27,24 @@ void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U)
       for (int i = 0; i < LMIC.dataLen; i++)
       {
         memcpy(&downlink[i],&(LMIC.frame+LMIC.dataBeg)[i],LMIC.dataLen);
-        Serial.print(downlink[i]);
+       
       }  
 
-
+     Serial.print(downlink[0]);
     switch (downlink[0])                                                              // byte eerste downlink is de id van het downlinkbericht. Vanuit hier wordt besloten wat er gedaan moet worden.                                                                                                                                                                           
     {
     case dlIdSlotstandDl:
       if(downlink[1] == 00 && (S->slotstandmeting()== 01 || S->slotstandmeting()== 02 ))
       {
         A->sluitSlot();
-
+        S->setVorigeSlotstand(00);
         LMIC_setTxData2(1,(uint8_t*)&U->getAckSlotstandW(S), U->getAckSlotstandW(S).berichtLengte, 0);
         Serial.println("wijzig slotstand via downlink en stuur ack");
       }
       else if (downlink[1] == 01 && (S->slotstandmeting()== 00 || S->slotstandmeting()== 02 ))
       {
         A->openSlot();
+        S->setVorigeSlotstand(01);
          LMIC_setTxData2(1,(uint8_t*)&U->getAckSlotstandW(S), U->getAckSlotstandW(S).berichtLengte, 0);
          Serial.println("wijzig slotstand via downlink en stuur ack");
       }
@@ -64,6 +65,9 @@ void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U)
           Serial.println("wijzig sluitingstijd via downlink en stuur ack");
     break;
 
+    default:
+    //
+    break;
     }
   }
 }
