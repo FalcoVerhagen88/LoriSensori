@@ -1,53 +1,46 @@
 package com.lorisensori.application.rest_controllers;
 
-import com.lorisensori.application.exceptions.ResourceNotFoundException;
-import com.lorisensori.application.interfaces.AdresRepository;
 import com.lorisensori.application.domain.Adres;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lorisensori.application.service.AdresService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
-//this annotation is a combination of Spring’s @Controller and @ResponseBody annotations. The @Controller annotation is used to define a controller and the @ResponseBody annotation is used to indicate that the return value of a method should be used as the response body of the request.
 @RequestMapping("/api")
-//this annotation  declares that the url for all the apis in this controller will start with /api.
 public class AdresController {
 
-    private final AdresRepository adresRepository;
+    private final AdresService adresService;
 
-    @Autowired
-    public AdresController(AdresRepository adresRepository) {
-        this.adresRepository = adresRepository;
+    public AdresController(AdresService adresService) {
+        this.adresService = adresService;
     }
 
     //Get all Adressen
     @GetMapping("/adres/")
-    public List<Adres> getAllAdres() {
-        return adresRepository.findAll();
+    public Iterable<Adres> getAllAdres() {
+        return adresService.findAll();
     }
 
     //Get a single Adres
     @GetMapping("/adres/{adrescode}")
     public Adres getAdresByadrescode(@PathVariable(value = "adrescode") Long adresId) {
-        return adresRepository.findById(adresId)
-                .orElseThrow(() -> new ResourceNotFoundException("Adres", "adrescode", adresId));
+        return adresService.findByAdresId(adresId);
     }
 
     //Create a new Adres
     @PostMapping("/adres/")
     public Adres createAdres(@Valid @RequestBody Adres adres) {
-        return adresRepository.save(adres);
+        return adresService.save(adres);
     }
 
     //Update a Adres
     @PutMapping("adres/{adrescode}")
     public Adres updateAdres(@PathVariable(value = "adrescode") Long adresId,
                              @Valid @RequestBody Adres adresDetails) {
-        Adres adres = adresRepository.findById(adresId)
-                .orElseThrow(() -> new ResourceNotFoundException("Adres", "adrescode", adresId));
+        Adres adres = adresService.findByAdresId(adresId);
+
         adres.setPlaatsnaam(adresDetails.getPlaatsnaam());
         adres.setHuisnummer(adresDetails.getHuisnummer());
         adres.setHuisnummertoevoeging(adresDetails.getHuisnummertoevoeging());
@@ -55,16 +48,15 @@ public class AdresController {
         adres.setPostcode(adresDetails.getPostcode());
         adres.setLand(adresDetails.getLand());
 
-        Adres updatedAdres = adresRepository.save(adres);
+        Adres updatedAdres = adresService.save(adres);
         return updatedAdres;
     }
 
     //Delete a Adres
     @DeleteMapping("adres/{adrescode}")
     public ResponseEntity<?> deleteAdres(@PathVariable(value = "adrescode") Long adresId) {
-        Adres adres = adresRepository.findById(adresId)
-                .orElseThrow(() -> new ResourceNotFoundException("Adres", "adrescode", adresId));
-        adresRepository.delete(adres);
+        Adres adres = adresService.findByAdresId(adresId);
+        adresService.delete(adres);
         return ResponseEntity.ok().build();
 
     }

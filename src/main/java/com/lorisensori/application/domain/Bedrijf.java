@@ -39,7 +39,7 @@ public class Bedrijf implements Serializable {
     @JsonManagedReference(value = "medewerkers")
     private List<Medewerker> medewerkers;
 
-    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "tanks")
     private List<Tank> tanks;
 

@@ -17,7 +17,7 @@ public class Tank implements Serializable {
     private Long tankId;
 
     @NotBlank
-    @Column(name = "tanknaam")
+    @Column
     private String tanknaam;
 
     private String type;
@@ -48,7 +48,7 @@ public class Tank implements Serializable {
 
     //TODO: LoRa informatie toevoegen
 
-    Tank() {
+    public Tank() {
 
     }
 

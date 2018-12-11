@@ -1,45 +1,41 @@
 package com.lorisensori.application.rest_controllers;
 
-import com.lorisensori.application.exceptions.EntityExistsException;
-import com.lorisensori.application.exceptions.ResourceNotFoundException;
-import com.lorisensori.application.interfaces.TankRepository;
 import com.lorisensori.application.domain.Tank;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lorisensori.application.exceptions.EntityExistsException;
+import com.lorisensori.application.service.TankService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class TankController {
-    private final TankRepository tankRepository;
 
-    @Autowired
-    public TankController(TankRepository tankRepository) {
-        this.tankRepository = tankRepository;
+    private final TankService tankService;
+
+    public TankController(TankService tankService) {
+        this.tankService = tankService;
     }
 
     //Get all Tanks
     @GetMapping("/tank/")
-    public List<Tank> getAllTank() {
-        return tankRepository.findAll();
+    public Iterable<Tank> getAllTank() {
+        return tankService.findAll();
     }
 
     //Get one tank
     @GetMapping("/tank/{tankid}")
     public Tank getTankById(@PathVariable(value = "tankid") Long tankId) {
-        return tankRepository.findById(tankId)
-                .orElseThrow(() -> new ResourceNotFoundException("Tank", "tankId", tankId));
+        return tankService.findByTankId(tankId);
     }
 
     //Create a new Tank
     @PostMapping("/tank/")
     public Tank createTank(@Valid @RequestBody Tank tank) {
 
-        if (!tankRepository.existsByTanknaam(tank.getTanknaam())) {
+        if (!tankService.existsByTanknaam(tank.getTanknaam())) {
 
-            return tankRepository.save(tank);
+            return tankService.save(tank);
         } else {
             throw new EntityExistsException("Tank", "Tanknaam", tank.getTanknaam());
         }

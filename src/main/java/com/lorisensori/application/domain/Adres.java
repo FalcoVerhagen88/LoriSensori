@@ -106,5 +106,15 @@ public class Adres implements Serializable {
     }
 
 
+    @OneToOne(mappedBy = "adres", optional = false)
+    private Bedrijf bedrijf;
+
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
+    }
 }
 
