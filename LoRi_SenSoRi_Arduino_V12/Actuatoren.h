@@ -13,7 +13,7 @@
 class Actuatoren
 {
   private:
-  #define SLOTBESTURING 4    // outputpin voor de leds die aangeven of het slot open of dicht is
+  int SLOTBESTURING = 4;    // outputpin voor de leds die aangeven of het slot open of dicht is
   #define SECONDENOPEN 0     // seconden dat het slot open moet, is niet instelbaar
   #define SECONDENDICHT 10   // seconden dat het slot dicht moet, is niet instelbaar
   
