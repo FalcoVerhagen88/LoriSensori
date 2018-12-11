@@ -58,7 +58,11 @@ public class Bedrijf implements Serializable {
     }
 
     public void addTank(Tank tank) {
-        tanks.add(tank);
+        if (!tanks.contains(tank)) {
+            tanks.add(tank);
+        } else {
+            throw new EntityExistsException();
+        }
     }
 
     public Bedrijf() {

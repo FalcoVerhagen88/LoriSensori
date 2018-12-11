@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface MedewerkerService {
 
-    Medewerker save (Medewerker medewerker);
+    Medewerker save(Medewerker medewerker);
 
     boolean existsByVoornaam(String voornaam);
 
@@ -16,5 +16,7 @@ public interface MedewerkerService {
 
     Medewerker findByVoornaam(String voornaam);
 
-    Medewerker delete(Medewerker medewerker);
+    Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam);
+
+    void delete(Medewerker medewerker);
 }

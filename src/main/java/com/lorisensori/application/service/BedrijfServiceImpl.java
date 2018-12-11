@@ -24,17 +24,19 @@ public class BedrijfServiceImpl implements BedrijfService {
 
     @Override
     public boolean existsByBedrijfsnaam(String bedrijfsnaam) {
-        return false;
+
+        return bedrijfRepository.findByBedrijfsnaam(bedrijfsnaam) != null;
     }
 
     @Override
     public Iterable<Bedrijf> findAll() {
-        return null;
+        return bedrijfRepository.findAll();
     }
 
     @Override
     public Bedrijf findByBedrijfsnaam(String bedrijfsnaam) {
-        return null;
+
+        return bedrijfRepository.findByBedrijfsnaam(bedrijfsnaam);
     }
 
     @Override

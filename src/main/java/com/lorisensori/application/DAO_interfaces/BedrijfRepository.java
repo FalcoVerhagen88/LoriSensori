@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BedrijfRepository extends JpaRepository<Bedrijf, String> {
 
+    Bedrijf findByBedrijfsnaam(String bedrijfsnaam);
 }

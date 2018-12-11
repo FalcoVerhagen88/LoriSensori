@@ -44,7 +44,6 @@ public class BedrijfController {
 
         if (!bedrijfService.existsByBedrijfsnaam(bedrijf.getBedrijfsnaam())) {
 
-
             return bedrijfService.save(bedrijf);
         } else {
             throw new EntityExistsException("Bedrijf", "Bedrijfsnaam", bedrijf.getBedrijfsnaam());
@@ -70,16 +69,8 @@ public class BedrijfController {
     @PutMapping("/bedrijf/addtank/{bedrijfsnaam}")
     public Bedrijf addTank(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Tank tankDetails) {
         Bedrijf bedrijf = bedrijfService.findByBedrijfsnaam(bedrijfsnaam);
-        if (tankService.existsByTanknaam(tankDetails.getTanknaam())) {
-            Tank existingTank = tankService.findByTanknaam(tankDetails.getTanknaam());
-            bedrijf.addTank(existingTank);
-            existingTank.setBedrijf(bedrijf);
-            return bedrijfService.save(bedrijf);
-        } else {
-            bedrijf.addTank(tankDetails);
-            tankDetails.setBedrijf(bedrijf);
-            return bedrijfService.save(bedrijf);
-        }
+        bedrijf.addTank(tankDetails);
+        return bedrijfService.save(bedrijf);
     }
 
     //Add contactpersoon van bedrijf

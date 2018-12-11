@@ -14,10 +14,9 @@ public class Adres implements Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    @Id//this annotation is used to define the primary key.
+    @Id
     @Column(name = "adrescode")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//this annotation is used to define the primary key generation strategy. In the above case, we have declared the primary key to be an Auto Increment field.
     private long adrescode;
 
     @NotBlank
@@ -31,11 +30,14 @@ public class Adres implements Serializable {
     @Enumerated(EnumType.STRING)
     private LandEnums land;
 
+    @OneToOne(mappedBy = "adres", optional = false)
+    private Bedrijf bedrijf;
+
     public Adres() {
 
     }
 
-    Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
+    public Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
         this.straatnaam = straatnaam;
         this.huisnummer = huisnummer;
         this.huisnummertoevoeging = huisnummertoevoeging;
@@ -44,6 +46,8 @@ public class Adres implements Serializable {
         this.land = land;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //GETTERS & SETTERS
     public String getHuisnummertoevoeging() {
         return huisnummertoevoeging;
     }
@@ -104,10 +108,6 @@ public class Adres implements Serializable {
     public String toString() {
         return "Straatnaam: " + straatnaam + ", Huisnummer: " + huisnummer + " " + huisnummertoevoeging + ", Postcode: " + postcode + ", Plaatsnaam: " + plaatsnaam + ", Land: " + land;
     }
-
-
-    @OneToOne(mappedBy = "adres", optional = false)
-    private Bedrijf bedrijf;
 
     public Bedrijf getBedrijf() {
         return bedrijf;

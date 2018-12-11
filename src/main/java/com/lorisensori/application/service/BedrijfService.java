@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 public interface BedrijfService {
 
-    Bedrijf save (Bedrijf bedrijf);
+    Bedrijf save(Bedrijf bedrijf);
 
     boolean existsByBedrijfsnaam(String bedrijfsnaam);
 
@@ -14,5 +14,5 @@ public interface BedrijfService {
 
     Bedrijf findByBedrijfsnaam(String bedrijfsnaam);
 
-    void delete (Bedrijf bedrijf);
+    void delete(Bedrijf bedrijf);
 }

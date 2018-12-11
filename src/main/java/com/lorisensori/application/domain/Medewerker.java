@@ -1,8 +1,6 @@
 package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.lorisensori.application.DTO.MedewerkerDTO;
-import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,9 +41,8 @@ public class Medewerker implements Serializable {
     public Medewerker() {
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //GETTERS AND SETTERS
+///////////////////////////////////////////////////////////////////
+    //GETTERS & SETTERS
 
 
     @Override

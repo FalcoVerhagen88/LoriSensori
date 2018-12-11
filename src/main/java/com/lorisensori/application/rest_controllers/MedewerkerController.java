@@ -1,7 +1,6 @@
 package com.lorisensori.application.rest_controllers;
 
 import com.lorisensori.application.domain.Medewerker;
-import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.service.MedewerkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +21,7 @@ public class MedewerkerController {
     }
 
     //Get all Medewerkers
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/medewerker/")
     public Iterable<Medewerker> getAllMedewerkers() {
         return medewerkerService.findAll();
@@ -29,17 +29,13 @@ public class MedewerkerController {
 
 
     //Create a new Medewerker
-    @PostMapping("/medewerker/")
+    @PostMapping("/medewerker/create")
     public Medewerker createMedewerker(@Valid @RequestBody Medewerker medewerker) {
-        if (!medewerkerService.existsByVoornaam(medewerker.getVoornaam())) {
-            return medewerkerService.save(medewerker);
-        } else {
-            throw new EntityExistsException("Medewerker", "Voornaam", medewerker.getVoornaam());
-        }
+        return medewerkerService.save(medewerker);
     }
 
     //Get a single Medewerker
-    @GetMapping("/medewerker/{gebruikersnaam}")
+    @GetMapping("/medewerker/{medewerkerId}")
     public Optional<Medewerker> getMedewerkerByid(@PathVariable(value = "medewerkerId") Long medewerkerId) {
         return medewerkerService.findById(medewerkerId);
     }

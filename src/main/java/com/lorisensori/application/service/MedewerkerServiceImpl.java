@@ -1,10 +1,10 @@
 package com.lorisensori.application.service;
 
-import com.lorisensori.application.DTO.MedewerkerDTO;
-import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.DAO_interfaces.MedewerkerRepository;
-import org.modelmapper.ModelMapper;
+import com.lorisensori.application.domain.Medewerker;
+import com.lorisensori.application.exceptions.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -22,16 +22,24 @@ public class MedewerkerServiceImpl implements MedewerkerService {
 
     @Override
     public Medewerker save(Medewerker medewerker) {
-        return medewerkerRepository.save(medewerker);
+        if (!existsByVoornaam(medewerker.getVoornaam())) {
+            return medewerkerRepository.save(medewerker);
+        } else {
+            throw new EntityExistsException("Medewerker", "Voornaam", medewerker.getVoornaam());
+        }
     }
 
     @Override
     public boolean existsByVoornaam(String voornaam) {
-        return false;
+
+        return medewerkerRepository.findByVoornaam(voornaam) != null;
     }
 
     @Override
     public Iterable<Medewerker> findAll() {
+        if (medewerkerRepository.findAll() == null) {
+            return null;
+        }
         return medewerkerRepository.findAll();
     }
 
@@ -41,19 +49,18 @@ public class MedewerkerServiceImpl implements MedewerkerService {
     }
 
     @Override
-    public Medewerker findByVoornaam(String voornaam){return medewerkerRepository.findByVoornaam(voornaam);}
+    public Medewerker findByVoornaam(String voornaam) {
+        return medewerkerRepository.findByVoornaam(voornaam);
+    }
 
     @Override
-    public Medewerker delete(Medewerker medewerker) {
-        return null;
+    public Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam) {
+        return medewerkerRepository.findByGebruikersnaam(gebruikersnaam);
     }
 
-
-
-    public Medewerker convertDTOtoMedewerker(MedewerkerDTO medewerkerDTO, Medewerker medewerker) {
-        ModelMapper modelMapper = new ModelMapper();
-
-        modelMapper.map(medewerkerDTO, medewerker);
-        return medewerker;
+    @Override
+    public void delete(Medewerker medewerker) {
+        medewerkerRepository.delete(medewerker);
     }
+
 }

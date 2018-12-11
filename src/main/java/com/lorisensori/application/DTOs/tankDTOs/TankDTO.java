@@ -1,4 +1,4 @@
-package com.lorisensori.application.DTO;
+package com.lorisensori.application.DTOs.tankDTOs;
 
 import com.lorisensori.application.enums.StatusEnums;
 

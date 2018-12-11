@@ -20,7 +20,7 @@ public class Sensorgegevens implements Serializable {
     private static final long serialVersionUID = 10L;
 
     @Id
-    @Column(name = "sensorId")
+    @Column(name = "sensor_id")
     private Long sensorId;
 
     private boolean slotStatus;
@@ -35,8 +35,14 @@ public class Sensorgegevens implements Serializable {
     private Date timestamp;
 
     @OneToOne()
-    @JoinColumn(name = "slotGeopendDoor")
+    @JoinColumn(name = "slot_geopend_door")
     private Medewerker medewerkerSlot;
+
+    public Sensorgegevens() {
+    }
+
+///////////////////////////////////////////////////////////////////
+    //GETTERS & SETTERS
 
     public Long getSensorId() {
         return sensorId;
@@ -112,8 +118,4 @@ public class Sensorgegevens implements Serializable {
         return timestamp;
     }
 
-
-    Sensorgegevens() {
-
-    }
 }

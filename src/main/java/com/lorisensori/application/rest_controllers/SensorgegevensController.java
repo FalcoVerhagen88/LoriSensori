@@ -19,7 +19,5 @@ public class SensorgegevensController {
     @GetMapping("/sensorgegevens")
     public Iterable<Sensorgegevens> getAllSensorgegevens() {
         return sensorgegevensRepository.findAll();
-
-
     }
 }

@@ -7,7 +7,4 @@ public interface SensorgegevensService {
     Sensorgegevens save(Sensorgegevens sensorgegevens);
 
     Iterable<Sensorgegevens> findAll();
-
-
-
 }

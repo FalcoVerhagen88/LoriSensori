@@ -17,7 +17,9 @@ public class AdresServiceImpl implements AdresService {
     }
 
     @Override
-    public Iterable<Adres> findAll(){return null;}
+    public Iterable<Adres> findAll() {
+        return null;
+    }
 
     @Override
     public void delete(Adres adres) {

@@ -2,9 +2,9 @@ package com.lorisensori.application.service;
 
 import com.lorisensori.application.domain.Tank;
 
-public interface TankService  {
+public interface TankService {
 
-    Tank save (Tank tank);
+    Tank save(Tank tank);
 
     boolean existsByTanknaam(String tanknaam);
 
@@ -14,5 +14,5 @@ public interface TankService  {
 
     Tank findByTankId(Long id);
 
-    Tank delete(Tank tank);
+    void delete(Tank tank);
 }
