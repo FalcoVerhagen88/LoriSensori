@@ -20,6 +20,7 @@ void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U)
     {
       Serial.println(F("Acknowledge ontvangen"));
     }
+        
     if (LMIC.dataLen) 
     {
        Serial.print("als ik een downlink stuur kom ik hier uit");
@@ -27,7 +28,8 @@ void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U)
       for (int i = 0; i < LMIC.dataLen; i++)
       {
         memcpy(&downlink[i],&(LMIC.frame+LMIC.dataBeg)[i],LMIC.dataLen);
-       
+        Serial.print(downlink[i]);
+        Serial.println("");
       }  
 
      Serial.print(downlink[0]);
@@ -56,12 +58,12 @@ void Downlink::ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U)
     break;
     case dlIdOpeningstijdDl:
           A->setOpeningstijd((uint8_t)downlink[1], (uint8_t)downlink[2]); // stuur een ack dat de openingstijd is gewijzigd
-        //  LMIC_setTxData2(1,(uint8_t*)&U->getAckOpeningstijdW(), U->getAckOpeningstijdW().berichtLengte, 0);
+          //LMIC_setTxData2(1,(uint8_t*)&U->getAckOpeningstijdW(), U->getAckOpeningstijdW().berichtLengte, 0);
           Serial.println("wijzig openingstijd via downlink en stuur ack");
     break;
     case dlIdSluitingstijdDl:
           A->setSluitingstijd((uint8_t)downlink[1], (uint8_t)downlink[2]); // stuur een ack dat de sluitingstijd is gewijzigd
-         // LMIC_setTxData2(1,(uint8_t*)U->getAckSluitingstijdW(), U->getAckSluitingstijdW().berichtLengte, 0);
+          //LMIC_setTxData2(1,(uint8_t*)&U->getAckSluitingstijdW(), U->getAckSluitingstijdW().berichtLengte, 0);
           Serial.println("wijzig sluitingstijd via downlink en stuur ack");
     break;
 

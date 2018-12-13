@@ -57,11 +57,13 @@ const lmic_pinmap lmic_pins = {
 // ---------------------------------------- onEvent ----------------------------------------// 
 void onEvent (ev_t ev) 
 {
-   D.ontvangDownlink(&S, &A, &U);
-   S.GPSmeting();       // moet deze hier op deze manier?
-   Serial.println("hoe vaak gebeurt dit?");
-   Alarm.delay(1000); // jee nu werkt timealarms wel
-
+     Alarm.delay(1000); // jee nu werkt timealarms welAlarm.delay(1000); // jee nu werkt timealarms wel
+     S.GPSmeting();       // moet deze hier op deze manier?
+      D.ontvangDownlink(&S, &A, &U);
+      
+      //Serial.println("hoe vaak gebeurt dit?");
+      
+  
 }
 
 // ---------------------------------------- Stuur bericht een keer in de 3 minuten en alive een keer in de 3 uur---------------------------------------- //
@@ -75,7 +77,7 @@ void berichtfunctie (osjob_t* j)
       Serial.println(F("Er wordt al een ander bericht verstuurd = 4 uur"));
     } 
     
-    if (S.dieselalarmNiveau() == TANKENALARMTRIGGER && alarmBerichtDiesel != TANKENALARMALGEGEVEN && counterbericht % CHECKBERICHTTRIGGER != 0 && counterbericht != ALIVEBERICHTTRIGGER) //check diesel niveau
+    if (S.dieselalarmNiveau() == TANKENALARMTRIGGER && alarmBerichtDiesel != TANKENALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check diesel niveau
     {
 		LMIC_setTxData2(1,(uint8_t*)&U.getDieselniveauAlarm(&S), U.getDieselniveauAlarm(&S).berichtLengte, 0);
     	alarmBerichtDiesel = 1;
@@ -85,7 +87,7 @@ void berichtfunctie (osjob_t* j)
     }
     
     
-    if (S.accuAlarm(S.accuniveaumeting()) == ACCUALARMTRIGGER && alarmBerichtAccu != ACCUALARMALGEGEVEN && counterbericht % CHECKBERICHTTRIGGER != 0 && counterbericht != ALIVEBERICHTTRIGGER) //check accu niveau
+    if (S.accuAlarm(S.accuniveaumeting()) == ACCUALARMTRIGGER && alarmBerichtAccu != ACCUALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check accu niveau
     {
 		LMIC_setTxData2(1,(uint8_t*)&U.getAccuniveauAlarm(&S), U.getAccuniveauAlarm(&S).berichtLengte, 0);
      	alarmBerichtAccu = 1;
@@ -95,51 +97,53 @@ void berichtfunctie (osjob_t* j)
     }
     
     
-    if (S.diefstalAlarm() == DIEFSTALALARMTRIGGER && alarmBerichtDiefstal != DIEFSTALALARMALGEGEVEN && counterbericht % CHECKBERICHTTRIGGER != 0 && counterbericht != ALIVEBERICHTTRIGGER) //check diefstal
+    if (S.diefstalAlarm() == DIEFSTALALARMTRIGGER && alarmBerichtDiefstal != DIEFSTALALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check diefstal
     {
     	LMIC_setTxData2(1,(uint8_t*)&U.getDiefstalAlarm(&S), U.getDiefstalAlarm(&S).berichtLengte, 0);
      	alarmBerichtDiefstal = 1;
      	Serial.println("verstuurt diefstal alarm");
         os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);        //set tijdsinterval uitvoering bericht
+        return;
     }
     
-    if (S.slotstandAlarm() == SLOTSTANDALARMTRIGGER && alarmBerichtSlotstand != SLOTSTANDALARMALGEGEVEN && counterbericht % CHECKBERICHTTRIGGER != 0 && counterbericht != ALIVEBERICHTTRIGGER) //check slotstand
+    if (S.slotstandAlarm() == SLOTSTANDALARMTRIGGER && alarmBerichtSlotstand != SLOTSTANDALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check slotstand
     {
     	LMIC_setTxData2(1,(uint8_t*)&U.getASlotstandW(&S), U.getASlotstandW(&S).berichtLengte, 0);
      	alarmBerichtSlotstand = 1;
      	Serial.println("verstuurt slotstand alarm");
          os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);       //set tijdsinterval uitvoering bericht
+         return;
     }
     
     if(counterbericht == ALIVEBERICHTTRIGGER)
     {       
       LMIC_setTxData2(1,(uint8_t*)&U.getAliveBericht(&S), U.getAliveBericht(&S).berichtLengte, 0);                                                         // (port 1, bericht, grootte van bericht, unconfirmed)
       Serial.println("Verstuurt alive bericht");
-      alarmBerichtDiesel = 0;
-      alarmBerichtAccu = 0;
-      alarmBerichtDiefstal = 0;
-      alarmBerichtSlotstand = 0;
+      //alarmBerichtDiesel = 0;
+      //alarmBerichtAccu = 0;
+      //alarmBerichtDiefstal = 0;
+      //alarmBerichtSlotstand = 0;
       counterbericht = 0;                                                                                            // reset counter
     }
     
-    if (counterbericht % CHECKBERICHTTRIGGER == 0) // modulo berekening
+    if (counterbericht % CHECKBERICHTTRIGGER == 0 && counterbericht != 0 ) // modulo berekening
     {
       LMIC_setTxData2(1,(uint8_t*)&U.getCheckbericht(), U.getCheckbericht().berichtLengte, 0);       // (port 1, 2 bytes, unconfirmed) // bepalen hoe groot hetgeen is waar de pointer(uplink.kiesBericht() naar wijst
       Serial.println("verstuurt checkbericht");
-      alarmBerichtDiesel = 0;
-      alarmBerichtAccu = 0;
-      alarmBerichtDiefstal = 0;
-      alarmBerichtSlotstand = 0;
+      //alarmBerichtDiesel = 0;
+      //alarmBerichtAccu = 0;
+     // alarmBerichtDiefstal = 0;
+     // alarmBerichtSlotstand = 0;
     }
 
-      Serial.print("alarmberichtdiesel : ");
-      Serial.println(alarmBerichtDiesel);
-      Serial.print("alarmBerichtAccu : ");
-      Serial.println(alarmBerichtAccu);
-      Serial.print("alarmBerichtDiefstal : ");
-      Serial.println(alarmBerichtDiefstal);
-      Serial.print("alarmBerichtSlotstand : ");
-      Serial.println(alarmBerichtSlotstand);
+      //Serial.print("alarmberichtdiesel : ");
+      //Serial.println(alarmBerichtDiesel);
+      //Serial.print("alarmBerichtAccu : ");
+      //Serial.println(alarmBerichtAccu);
+      //Serial.print("alarmBerichtDiefstal : ");
+      //Serial.println(alarmBerichtDiefstal);
+      //Serial.print("alarmBerichtSlotstand : ");
+      //Serial.println(alarmBerichtSlotstand);
 
      os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);        //set tijdsinterval uitvoering bericht
      
