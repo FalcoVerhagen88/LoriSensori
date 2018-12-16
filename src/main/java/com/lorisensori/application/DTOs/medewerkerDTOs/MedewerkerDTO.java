@@ -5,57 +5,57 @@ import java.io.Serializable;
 public class MedewerkerDTO implements Serializable {
 
     private static final long serialVersionUID = -583528961313526216L;
-    private String medewerkerVoornaam, medewerkerAchternaam, medewerkerGebruikersnaam, medewerkerWachtwoord, medewerkerEmail, medewerkerTelefoonnummer;
+    private String medewerkerDTOVoornaam, medewerkerDTOAchternaam, medewerkerDTOGebruikersnaam, medewerkerDTOWachtwoord, medewerkerDTOEmail, medewerkerDTOTelefoonnummer;
 
     ////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS
 
 
-    public String getMedewerkerVoornaam() {
-        return medewerkerVoornaam;
+    public String getmedewerkerDTOVoornaam() {
+        return medewerkerDTOVoornaam;
     }
 
-    public void setMedewerkerVoornaam(String medewerkerVoornaam) {
-        medewerkerVoornaam = medewerkerVoornaam;
+    public void setMedewerkerDTOVoornaam(String medewerkerDTOVoornaam) {
+        this.medewerkerDTOVoornaam = medewerkerDTOVoornaam;
     }
 
-    public String getMedewerkerAchternaam() {
-        return medewerkerAchternaam;
+    public String getMedewerkerDTOAchternaam() {
+        return medewerkerDTOAchternaam;
     }
 
-    public void setMedewerkerAchternaam(String medewerkerAchternaam) {
-        this.medewerkerAchternaam = medewerkerAchternaam;
+    public void setMedewerkerDTOAchternaam(String medewerkerDTOAchternaam) {
+        this.medewerkerDTOAchternaam = medewerkerDTOAchternaam;
     }
 
-    public String getMedewerkerGebruikersnaam() {
-        return medewerkerGebruikersnaam;
+    public String getMedewerkerDTOGebruikersnaam() {
+        return medewerkerDTOGebruikersnaam;
     }
 
-    public void setMedewerkerGebruikersnaam(String medewerkerGebruikersnaam) {
-        this.medewerkerGebruikersnaam = medewerkerGebruikersnaam;
+    public void setMedewerkerDTOGebruikersnaam(String medewerkerDTOGebruikersnaam) {
+        this.medewerkerDTOGebruikersnaam = medewerkerDTOGebruikersnaam;
     }
 
-    public String getMedewerkerWachtwoord() {
-        return medewerkerWachtwoord;
+    public String getMedewerkerDTOWachtwoord() {
+        return medewerkerDTOWachtwoord;
     }
 
-    public void setMedewerkerWachtwoord(String medewerkerWachtwoord) {
-        this.medewerkerWachtwoord = medewerkerWachtwoord;
+    public void setMedewerkerDTOWachtwoord(String medewerkerDTOWachtwoord) {
+        this.medewerkerDTOWachtwoord = medewerkerDTOWachtwoord;
     }
 
-    public String getMedewerkerEmail() {
-        return medewerkerEmail;
+    public String getMedewerkerDTOEmail() {
+        return medewerkerDTOEmail;
     }
 
-    public void setMedewerkerEmail(String medewerkerEmail) {
-        this.medewerkerEmail = medewerkerEmail;
+    public void setMedewerkerDTOEmail(String medewerkerDTOEmail) {
+        this.medewerkerDTOEmail = medewerkerDTOEmail;
     }
 
-    public String getMedewerkerTelefoonnummer() {
-        return medewerkerTelefoonnummer;
+    public String getMedewerkerDTOTelefoonnummer() {
+        return medewerkerDTOTelefoonnummer;
     }
 
-    public void setMedewerkerTelefoonnummer(String medewerkerTelefoonnummer) {
-        medewerkerTelefoonnummer = medewerkerTelefoonnummer;
+    public void setMedewerkerDTOTelefoonnummer(String medewerkerDTOTelefoonnummer) {
+        this.medewerkerDTOTelefoonnummer = medewerkerDTOTelefoonnummer;
     }
 }

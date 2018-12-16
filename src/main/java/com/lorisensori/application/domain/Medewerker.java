@@ -1,22 +1,24 @@
 package com.lorisensori.application.domain;
 
+
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.lorisensori.application.enums.RechtEnums;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.EnumSet;
 
 @Entity
 @Table(name = "medewerker")
-public class Medewerker implements Serializable {
+public class Medewerker {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long medewerkerId;
 
-    @Column(name = "gebruikersnaam", nullable = false)
-    private String gebruikersnaam;
-
-    @Column(nullable = false)
-    private String voornaam, achternaam, wachtwoord, email, telefoonnummer;
+    @Column
+    private String voornaam, achternaam, gebruikersnaam, wachtwoord, email, telefoonnummer;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "bedrijfsnaam")

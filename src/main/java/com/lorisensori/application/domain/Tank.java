@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "tank")
 public class Tank implements Serializable {
 
     @Id

@@ -6,16 +6,16 @@ import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Table(name = "bedrijf")
-public class Bedrijf implements Serializable {
+public class Bedrijf {
     /**
      *
      */
-    private static final long serialVersionUID = 3L;
 
     @Id
     @Column
@@ -33,6 +33,7 @@ public class Bedrijf implements Serializable {
     private Medewerker contactpersoon;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private StatusEnums status;
 
     @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -54,15 +55,26 @@ public class Bedrijf implements Serializable {
 
     public void addMedewerker(Medewerker medewerker) {
 
-        medewerkers.add(medewerker);
+        if (medewerkers == null){
+            medewerkers = new ArrayList<>();
+        }
+        if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
+        else {
+            throw new EntityExistsException();
+        }
     }
 
     public void addTank(Tank tank) {
+
+        if (tanks == null){
+            tanks = new ArrayList<>();
+        }
         if (!tanks.contains(tank)) {
             tanks.add(tank);
         } else {
             throw new EntityExistsException();
         }
+
     }
 
     public Bedrijf() {

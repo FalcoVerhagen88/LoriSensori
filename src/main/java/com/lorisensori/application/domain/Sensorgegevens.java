@@ -12,15 +12,10 @@ import java.util.Date;
 @Table(name = "sensorgegevens")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
-public class Sensorgegevens implements Serializable {
-
-    /**
-     *
-     */
-    private static final long serialVersionUID = 10L;
+public class Sensorgegevens {
 
     @Id
-    @Column(name = "sensor_id")
+    @Column
     private Long sensorId;
 
     private boolean slotStatus;
@@ -29,7 +24,7 @@ public class Sensorgegevens implements Serializable {
     private double vermogenZonnepaneel;
     private int gpsBreedtegraad;
     private int gpsLengtegraad;
-    @Column(nullable = false, updatable = false)
+    @Column
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date timestamp;

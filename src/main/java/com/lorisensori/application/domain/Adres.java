@@ -3,31 +3,27 @@ package com.lorisensori.application.domain;
 import com.lorisensori.application.enums.LandEnums;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "adres")
-public class Adres implements Serializable {
+public class Adres {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "adrescode")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long adrescode;
+    @Column
+    private long adresCode;
 
-    @NotBlank
-    private String straatnaam, postcode, plaatsnaam;
+    @Column
+    private String straatnaam, postcode, plaatsnaam, huisnummertoevoeging;
 
-
-    private String huisnummertoevoeging;
-
+    @Column(nullable = false)
     private int huisnummer;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private LandEnums land;
 
     @OneToOne(mappedBy = "adres", optional = false)
@@ -57,12 +53,12 @@ public class Adres implements Serializable {
     }
 
 
-    public long getAdrescode() {
-        return adrescode;
+    public long getAdresCode() {
+        return adresCode;
     }
 
-    public void setAdrescode(long adrescode) {
-        this.adrescode = adrescode;
+    public void setAdresCode(long adrescode) {
+        this.adresCode = adrescode;
     }
 
     public String getStraatnaam() {

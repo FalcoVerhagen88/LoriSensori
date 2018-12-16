@@ -2,6 +2,7 @@ package com.lorisensori.application.rest_controllers;
 
 import com.lorisensori.application.DAO_interfaces.SensorgegevensRepository;
 import com.lorisensori.application.domain.Sensorgegevens;
+import com.lorisensori.application.service.SensorgegevensService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,14 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class SensorgegevensController {
 
-    private final SensorgegevensRepository sensorgegevensRepository;
+    private final SensorgegevensService sensorgegevensService;
 
-    public SensorgegevensController(SensorgegevensRepository sensorgegevensRepository) {
-        this.sensorgegevensRepository = sensorgegevensRepository;
+    public SensorgegevensController(SensorgegevensService sensorgegevensService) {
+        this.sensorgegevensService = sensorgegevensService;
     }
 
-    @GetMapping("/sensorgegevens")
-    public Iterable<Sensorgegevens> getAllSensorgegevens() {
-        return sensorgegevensRepository.findAll();
-    }
 }

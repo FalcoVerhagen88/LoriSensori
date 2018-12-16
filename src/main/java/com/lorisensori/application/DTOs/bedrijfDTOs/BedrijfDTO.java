@@ -5,9 +5,10 @@ import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Adres;
 import com.lorisensori.application.enums.StatusEnums;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BedrijfDTO {
+public class BedrijfDTO implements Serializable {
 
     private String bedrijfsnaam;
     private String telefoonnummer;

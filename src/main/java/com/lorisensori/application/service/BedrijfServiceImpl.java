@@ -43,4 +43,6 @@ public class BedrijfServiceImpl implements BedrijfService {
     public void delete(Bedrijf bedrijf) {
         bedrijfRepository.delete(bedrijf);
     }
+
+
 }
