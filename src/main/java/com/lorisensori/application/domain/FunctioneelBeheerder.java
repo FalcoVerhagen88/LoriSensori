@@ -5,11 +5,9 @@ import com.lorisensori.application.enums.RechtEnums;
 public class FunctioneelBeheerder extends Medewerker {
 
     //Constructors
-    public FunctioneelBeheerder(String voornaam, String achternaam, String gebruikersnaam, String wachtwoord, String email, String telefoonnummer) {
-        super(voornaam, achternaam, gebruikersnaam, wachtwoord, email, telefoonnummer);
-    }
 
     public FunctioneelBeheerder() {
+    	super();
     }
 
     public void afmeldenMedewerker(Medewerker testMedewerker) {

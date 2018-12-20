@@ -60,9 +60,9 @@ public class BedrijfController {
     public Bedrijf addMedewerker(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Medewerker medewerkerDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())) {
-            Medewerker existingMedewerker = medewerkerRepository.findByVoornaam(medewerkerDetails.getVoornaam())
-                    .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "Voornaam", medewerkerDetails.getVoornaam()));
+        if (medewerkerRepository.existsById(medewerkerDetails.getId())) {
+            Medewerker existingMedewerker = medewerkerRepository.findById(medewerkerDetails.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Medewerker", "MedewerkerId", medewerkerDetails.getVoornaam()));
             bedrijf.addMedewerker(existingMedewerker);
             existingMedewerker.setBedrijf(bedrijf);
             return bedrijfRepository.save(bedrijf);
@@ -95,9 +95,9 @@ public class BedrijfController {
     public Bedrijf setContactpersoon(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @Valid @RequestBody Medewerker medewerkerDetails) {
         Bedrijf bedrijf = bedrijfRepository.findById(bedrijfsnaam)
                 .orElseThrow(() -> new ResourceNotFoundException("Bedrijf", "bedrijfsnaam", bedrijfsnaam));
-        if (medewerkerRepository.existsByVoornaam(medewerkerDetails.getVoornaam())) {
-            Medewerker existingMedewerker = medewerkerRepository.findByVoornaam(medewerkerDetails.getVoornaam())
-                    .orElseThrow(() -> new ResourceNotFoundException("Contactpersoon", "Voornaam", medewerkerDetails.getVoornaam()));
+        if (medewerkerRepository.existsById(medewerkerDetails.getId())) {
+            Medewerker existingMedewerker = medewerkerRepository.findById(medewerkerDetails.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Contactpersoon", "MedewerkerId", medewerkerDetails.getVoornaam()));
             bedrijf.setContactpersoon(existingMedewerker);
             return bedrijfRepository.save(bedrijf);
         } else {

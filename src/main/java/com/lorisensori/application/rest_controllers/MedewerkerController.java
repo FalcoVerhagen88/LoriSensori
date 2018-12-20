@@ -1,4 +1,7 @@
+/*
+ *
 package com.lorisensori.application.rest_controllers;
+
 
 import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.exceptions.ResourceNotFoundException;
@@ -72,3 +75,4 @@ public class MedewerkerController {
         return ResponseEntity.ok().build();
     }
 }
+*/

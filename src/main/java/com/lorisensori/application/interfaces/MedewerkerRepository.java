@@ -8,8 +8,12 @@ import java.util.Optional;
 
 @Repository
 public interface MedewerkerRepository extends JpaRepository<Medewerker, Long> {
+    
+    boolean existsByGebruikersnaam(String gebruikersnaam);
 
-    boolean existsByVoornaam(String voornaam);
+    Optional<Medewerker> findByGebruikersnaam (String gebruikersnaam);
 
-    Optional<Medewerker> findByVoornaam (String voornaam);
+	boolean existsByEmail(String email);
+    
+    Optional<Medewerker> findByEmail(String email);
 }
