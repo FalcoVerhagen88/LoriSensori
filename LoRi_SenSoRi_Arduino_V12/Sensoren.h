@@ -51,6 +51,7 @@ class Sensoren
   byte slotstandAlarm();
   void GPSmeting();
   int getAlarmniveauDiesel();
+  void setVorigeSlotstand(int slotstand);
   gps_fix getGpsFix();
   
 };

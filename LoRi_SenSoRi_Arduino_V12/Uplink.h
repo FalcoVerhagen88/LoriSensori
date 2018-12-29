@@ -124,7 +124,7 @@ class Uplink
   #define ulIdSlotstandWijziging 0x04 // ack slotstand wijziging
   #define ackIdDieselAlarmniveauWijziging 0x05 // ack dieselalarmniveau wijziging
   #define ackIdOpeningstijdWijziging 0x06 
-  #define ackIdSluitingstijWwijziging 0x07
+  #define ackIdSluitingstijdWijziging 0x07
   #define ackIdSlotstandwijziging 0x08
   #define ulIdCheck 0x09
 
@@ -152,8 +152,8 @@ class Uplink
   AAccuniveauUl accuniveauAlarm;
   ASlotstandW slotstandWijziging;
   AckDieselniveauW alarmniveauDieselWijziging;
-  AckSluitingstijdW ackWijzigingSluitingstijd;
-  AckOpeningstijdW ackWijzigingOpeningstijd;
+  AckSluitingstijdW ackWSluitingstijd;
+  AckOpeningstijdW ackWOpeningstijd;
   AckSlotstandW ackSlotstandWijziging;
   CheckBericht checkBericht;
 
@@ -164,8 +164,8 @@ class Uplink
   void berichtAAccuniveauUl(AAccuniveauUl *p, Sensoren *s);
   void berichtAslotstandW(ASlotstandW *p, Sensoren *s);
   void ackDieselAlarmniveauW(AckDieselniveauW *p);
-  void ackSluitingstijdW(AckSluitingstijdW *p);
-  void ackOpeningstijdW(AckOpeningstijdW *p);
+  void ackSluitingstijdWijziging(AckSluitingstijdW *p);
+  void ackOpeningstijdWijziging(AckOpeningstijdW *p);
   void ackSlotstandW(AckSlotstandW *p, Sensoren *s);
   void BerichtCheck(CheckBericht *p);
 

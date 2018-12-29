@@ -114,15 +114,15 @@ void Uplink::BerichtCheck(CheckBericht *p)
 
 
   // ---------------------------------------- Opstellen acknowledge sluitingstijd wijziging ----------------------------------------//
-  void ackSluitingstijdW(AckSluitingstijdW *p)
+  void ackSluitingstijdWijziging(AckSluitingstijdW *p)
   {
-	   p-> ulId = ackIdSluitingstijWwijziging;
+	   p-> ulId = ackIdSluitingstijdWijziging;
 	   p-> berichtLengte = ACKWIJZIGINGSLUITINGSTIJD;
   }
   
 
   // ---------------------------------------- Opstellen acknowledge openingstijd wijziging ----------------------------------------//
-  void ackOpeningstijdW(AckOpeningstijdW *p)
+  void ackOpeningstijdWijziging(AckOpeningstijdW *p)
   {
 	   p-> ulId = ackIdOpeningstijdWijziging;
 	   p-> berichtLengte = ACKWIJZIGINGOPENINGSTIJD;
@@ -183,16 +183,16 @@ TankUl Uplink::getAliveBericht(Sensoren *s)   //bekijkt welk bericht/status tank
   //-------------------------------------- Get ack wijziging sluitingstijd --------------------------------------/
   AckSluitingstijdW Uplink::getAckSluitingstijdW()
   {
-	ackSluitingstijdW(&ackWijzigingSluitingstijd);
-	return ackWijzigingSluitingstijd;
+	ackSluitingstijdWijziging(&ackWSluitingstijd);
+	return ackWSluitingstijd;
   }
 
 
   //-------------------------------------- Get ack wijziging openingstijd --------------------------------------/
   AckOpeningstijdW Uplink::getAckOpeningstijdW()
   {
-	  ackOpeningstijdW(&ackWijzigingOpeningstijd);
-	  return ackWijzigingOpeningstijd;
+	  ackOpeningstijdWijziging(&ackWOpeningstijd);
+	  return ackWOpeningstijd;
   }
 
 

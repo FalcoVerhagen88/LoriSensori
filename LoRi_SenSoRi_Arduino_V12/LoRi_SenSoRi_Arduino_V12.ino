@@ -12,8 +12,8 @@
 #define ACCUALARMTRIGGER 1
 #define DIEFSTALALARMTRIGGER 1
 #define SLOTSTANDALARMTRIGGER 1
-#define CHECKBERICHTTRIGGER 6				// elke 10 x CHECKBERICHTTRIGGER  seconden wordt dit bericht gestuurd, dus bij 6 is het eke 60 seconden
-#define ALIVEBERICHTTRIGGER 12			// elke 10 x ALIVEBERICHTTRIGGER  seconden wordt dit bericht gestuurd, dus bij 6 is het eke 60 seconden, standaard 2 uur 7200 sec
+#define CHECKBERICHTTRIGGER 3			// elke 10 x CHECKBERICHTTRIGGER  seconden wordt dit bericht gestuurd, dus bij 6 is het eke 60 seconden
+#define ALIVEBERICHTTRIGGER 6			// elke 10 x ALIVEBERICHTTRIGGER  seconden wordt dit bericht gestuurd, dus bij 6 is het eke 60 seconden, standaard 2 uur 7200 sec
 #define TANKENALARMALGEGEVEN 1
 #define ACCUALARMALGEGEVEN 1
 #define DIEFSTALALARMALGEGEVEN 1
@@ -42,7 +42,7 @@ int alarmBerichtDiefstal = 0;
 int alarmBerichtSlotstand = 0;
 
 // ---------------------------------------- Plan TX elke 180 seconden ---------------------------------------- //
-const unsigned BERICHT_INTERVAL = 10;
+const unsigned BERICHT_INTERVAL = 60;
 
    
 // ---------------------------------------- Pin mapping Dragino LORA GPS Shield ----------------------------------------//
@@ -57,10 +57,12 @@ const lmic_pinmap lmic_pins = {
 // ---------------------------------------- onEvent ----------------------------------------// 
 void onEvent (ev_t ev) 
 {
-   D.ontvangDownlink(&S, &A, &U);
-   S.GPSmeting();       // moet deze hier op deze manier?
-   Serial.println("hoe vaak gebeurt dit?");
-   Alarm.delay(1000); // jee nu werkt timealarms wel
+     Alarm.delay(1000); // jee nu werkt timealarms welAlarm.delay(1000); // jee nu werkt timealarms wel
+     S.GPSmeting();       // moet deze hier op deze manier?
+      D.ontvangDownlink(&S, &A, &U);
+
+      //Serial.println("hoe vaak gebeurt dit?");
+
 
 }
 
@@ -75,54 +77,76 @@ void berichtfunctie (osjob_t* j)
       Serial.println(F("Er wordt al een ander bericht verstuurd = 4 uur"));
     } 
     
-    if (S.dieselalarmNiveau() == TANKENALARMTRIGGER && alarmBerichtDiesel != TANKENALARMALGEGEVEN ) //check diesel niveau
+    if (S.dieselalarmNiveau() == TANKENALARMTRIGGER && alarmBerichtDiesel != TANKENALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check diesel niveau
     {
 		LMIC_setTxData2(1,(uint8_t*)&U.getDieselniveauAlarm(&S), U.getDieselniveauAlarm(&S).berichtLengte, 0);
     	alarmBerichtDiesel = 1;
     	Serial.println("verstuurt tanken alarm");
+       os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);       //set tijdsinterval uitvoering bericht
+     return ;
     }
     
     
-    if (S.accuAlarm(S.accuniveaumeting()) == ACCUALARMTRIGGER && alarmBerichtAccu != ACCUALARMALGEGEVEN) //check accu niveau
+    if (S.accuAlarm(S.accuniveaumeting()) == ACCUALARMTRIGGER && alarmBerichtAccu != ACCUALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check accu niveau
     {
 		LMIC_setTxData2(1,(uint8_t*)&U.getAccuniveauAlarm(&S), U.getAccuniveauAlarm(&S).berichtLengte, 0);
      	alarmBerichtAccu = 1;
      	Serial.println("verstuurt accu alarm");
+        os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);        //set tijdsinterval uitvoering bericht
+        return;
     }
     
     
-    if (S.diefstalAlarm() == DIEFSTALALARMTRIGGER && alarmBerichtDiefstal != DIEFSTALALARMALGEGEVEN) //check diefstal
+    if (S.diefstalAlarm() == DIEFSTALALARMTRIGGER && alarmBerichtDiefstal != DIEFSTALALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check diefstal
     {
     	LMIC_setTxData2(1,(uint8_t*)&U.getDiefstalAlarm(&S), U.getDiefstalAlarm(&S).berichtLengte, 0);
      	alarmBerichtDiefstal = 1;
      	Serial.println("verstuurt diefstal alarm");
+        os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);        //set tijdsinterval uitvoering bericht
+        return;
     }
     
-    if (S.slotstandAlarm() == SLOTSTANDALARMTRIGGER && alarmBerichtSlotstand != SLOTSTANDALARMALGEGEVEN) //check slotstand
+    if (S.slotstandAlarm() == SLOTSTANDALARMTRIGGER && alarmBerichtSlotstand != SLOTSTANDALARMALGEGEVEN && counterbericht != ALIVEBERICHTTRIGGER) //check slotstand
     {
     	LMIC_setTxData2(1,(uint8_t*)&U.getASlotstandW(&S), U.getASlotstandW(&S).berichtLengte, 0);
      	alarmBerichtSlotstand = 1;
      	Serial.println("verstuurt slotstand alarm");
+         os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);       //set tijdsinterval uitvoering bericht
+         return;
     }
     
-    if(counterbericht > ALIVEBERICHTTRIGGER)
+    if(counterbericht == ALIVEBERICHTTRIGGER)
     {       
       LMIC_setTxData2(1,(uint8_t*)&U.getAliveBericht(&S), U.getAliveBericht(&S).berichtLengte, 0);                                                         // (port 1, bericht, grootte van bericht, unconfirmed)
       Serial.println("Verstuurt alive bericht");
+      //alarmBerichtDiesel = 0;
+      //alarmBerichtAccu = 0;
+      //alarmBerichtDiefstal = 0;
+      //alarmBerichtSlotstand = 0;
       counterbericht = 0;                                                                                            // reset counter
     }
     
-    if (counterbericht == CHECKBERICHTTRIGGER)
+    if (counterbericht % CHECKBERICHTTRIGGER == 0 && counterbericht != 0 ) // modulo berekening
     {
       LMIC_setTxData2(1,(uint8_t*)&U.getCheckbericht(), U.getCheckbericht().berichtLengte, 0);       // (port 1, 2 bytes, unconfirmed) // bepalen hoe groot hetgeen is waar de pointer(uplink.kiesBericht() naar wijst
       Serial.println("verstuurt checkbericht");
-      alarmBerichtDiesel = 0;
-      alarmBerichtAccu = 0;
-      alarmBerichtDiefstal = 0;
-      alarmBerichtSlotstand = 0;
+      //alarmBerichtDiesel = 0;
+      //alarmBerichtAccu = 0;
+     // alarmBerichtDiefstal = 0;
+     // alarmBerichtSlotstand = 0;
     }
-    
-    os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);				//set tijdsinterval uitvoering bericht
+
+      //Serial.print("alarmberichtdiesel : ");
+      //Serial.println(alarmBerichtDiesel);
+      //Serial.print("alarmBerichtAccu : ");
+      //Serial.println(alarmBerichtAccu);
+      //Serial.print("alarmBerichtDiefstal : ");
+      //Serial.println(alarmBerichtDiefstal);
+      //Serial.print("alarmBerichtSlotstand : ");
+      //Serial.println(alarmBerichtSlotstand);
+
+     os_setTimedCallback(j, os_getTime()+sec2osticks(BERICHT_INTERVAL), berichtfunctie);        //set tijdsinterval uitvoering bericht
+
    // Next TX is scheduled after TX_COMPLETE event.
 }
 

@@ -195,3 +195,9 @@ byte Sensoren::slotstandAlarm()
 	return 00;
 
 }
+
+//-------------------------get vorige slotstand-------------------------------//
+void Sensoren::setVorigeSlotstand(int slotstand)
+{
+  vorigeSlotstand = slotstand;
+}
