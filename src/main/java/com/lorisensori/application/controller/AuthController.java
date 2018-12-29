@@ -1,53 +1,34 @@
 package com.lorisensori.application.controller;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
-
 import com.lorisensori.application.domain.CustomUserDetails;
 import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.domain.PasswordResetToken;
-import com.lorisensori.application.domain.payload.ApiResponse;
-import com.lorisensori.application.domain.payload.JwtAuthenticationResponse;
-import com.lorisensori.application.domain.payload.LoginRequest;
-import com.lorisensori.application.domain.payload.PasswordResetLinkRequest;
-import com.lorisensori.application.domain.payload.PasswordResetRequest;
-import com.lorisensori.application.domain.payload.RegistrationRequest;
-import com.lorisensori.application.domain.payload.TokenRefreshRequest;
+import com.lorisensori.application.domain.payload.*;
 import com.lorisensori.application.domain.token.EmailVerificationToken;
 import com.lorisensori.application.domain.token.RefreshToken;
 import com.lorisensori.application.event.OnGenerateResetLinkEvent;
 import com.lorisensori.application.event.OnRegenerateEmailVerificationEvent;
 import com.lorisensori.application.event.OnUserAccountChangeEvent;
 import com.lorisensori.application.event.OnUserRegistrationCompleteEvent;
-import com.lorisensori.application.exceptions.InvalidTokenRequestException;
-import com.lorisensori.application.exceptions.PasswordResetException;
-import com.lorisensori.application.exceptions.PasswordResetLinkException;
-import com.lorisensori.application.exceptions.TokenRefreshException;
-import com.lorisensori.application.exceptions.UserLoginException;
-import com.lorisensori.application.exceptions.UserRegistrationException;
+import com.lorisensori.application.exceptions.*;
 import com.lorisensori.application.security.JwtTokenProvider;
 import com.lorisensori.application.service.AuthService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -56,16 +37,20 @@ import io.swagger.annotations.ApiParam;
 
 public class AuthController {
 
-	@Autowired
-	private AuthService authService;
+	private final AuthService authService;
 
-	@Autowired
-	private JwtTokenProvider tokenProvider;
+	private final JwtTokenProvider tokenProvider;
 
-	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	private static final Logger logger = Logger.getLogger(AuthController.class);
+
+	@Autowired
+	public AuthController(AuthService authService, JwtTokenProvider tokenProvider, ApplicationEventPublisher applicationEventPublisher) {
+		this.authService = authService;
+		this.tokenProvider = tokenProvider;
+		this.applicationEventPublisher = applicationEventPublisher;
+	}
 
 	/**
 	 * Checks is a given email is in use or not.

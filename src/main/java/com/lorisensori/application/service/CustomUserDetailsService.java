@@ -1,25 +1,30 @@
 package com.lorisensori.application.service;
 
-import java.util.Optional;
-
+import com.lorisensori.application.DAO_interfaces.MedewerkerRepository;
+import com.lorisensori.application.domain.CustomUserDetails;
+import com.lorisensori.application.domain.Medewerker;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.lorisensori.application.domain.CustomUserDetails;
-import com.lorisensori.application.domain.Medewerker;
-import com.lorisensori.application.interfaces.MedewerkerRepository;
+import java.util.Optional;
 
+@Component
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	@Autowired
-	private MedewerkerRepository medewerkerRepository;
+	private final MedewerkerRepository medewerkerRepository;
 
 	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class);
+
+	@Autowired
+	public CustomUserDetailsService(MedewerkerRepository medewerkerRepository) {
+		this.medewerkerRepository = medewerkerRepository;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String gebruikersnaam) throws UsernameNotFoundException {

@@ -1,10 +1,11 @@
-package com.lorisensori.application.DTO;
+package com.lorisensori.application.DTOs.tankDTOs;
 
 import com.lorisensori.application.enums.StatusEnums;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class TankDTO {
+public class TankDTO implements Serializable {
 
     private Long tankId;
 

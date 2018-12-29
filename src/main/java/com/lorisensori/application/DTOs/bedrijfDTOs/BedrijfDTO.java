@@ -1,12 +1,14 @@
-package com.lorisensori.application.DTO;
+package com.lorisensori.application.DTOs.bedrijfDTOs;
 
-import com.lorisensori.application.enums.LandEnums;
-import com.lorisensori.application.enums.StatusEnums;
+import com.lorisensori.application.DTOs.medewerkerDTOs.MedewerkerDTO;
+import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Adres;
+import com.lorisensori.application.enums.StatusEnums;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class BedrijfDTO {
+public class BedrijfDTO implements Serializable {
 
     private String bedrijfsnaam;
     private String telefoonnummer;
@@ -109,15 +111,6 @@ public class BedrijfDTO {
         tanks.add(tank);
     }
 
-    public void setAdres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
-//		this.adres = adres;
-        adres.setStraatnaam(straatnaam);
-        adres.setHuisnummer(huisnummer);
-        adres.setHuisnummertoevoeging(huisnummertoevoeging);
-        adres.setPostcode(postcode);
-        adres.setPlaatsnaam(plaatsnaam);
-        adres.setLand(land);
-    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

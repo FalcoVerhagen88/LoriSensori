@@ -1,12 +1,10 @@
 package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.lorisensori.application.DTO.MedewerkerDTO;
 import com.lorisensori.application.domain.audit.DateAudit;
 import com.lorisensori.application.validator.NullOrNotBlank;
 
 import org.hibernate.annotations.NaturalId;
-import org.modelmapper.ModelMapper;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -31,20 +29,20 @@ public class Medewerker extends DateAudit {
     @Column(name = "VOORNAAM")
     @NullOrNotBlank(message = "Voornaam kan niet leeg zijn")
     private String voornaam;
-    
+
     @Column(name = "ACHTERNAAM")
     @NullOrNotBlank(message = "Achternaam kan niet leeg zijn")
     private String achternaam;
-    
+
     @Column(name = "PASSWORD")
     @NotNull(message = "wachtwoord kan niet leeg zijn")
     private String password;
-    
+
     @NaturalId
     @Column(name = "EMAIL", unique = true)
-    @NotBlank(message = "Gebruikers email kan niet leeg zijn")       
+    @NotBlank(message = "Gebruikers email kan niet leeg zijn")
     private String email;
-    
+
     @Column(name = "TELEFOONNUMMER")
     @NullOrNotBlank(message = "telefoonnummer kan niet leeg zijn")
     private String telefoonnummer;
@@ -55,21 +53,21 @@ public class Medewerker extends DateAudit {
     private Bedrijf bedrijf;
 
     @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "tankId")
+    @JoinColumn(name = "tank_id")
     private Tank tank;
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean active;
-    
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "MEDEWERKER_RECHTEN", joinColumns = {
 			@JoinColumn(name = "MEDEWERKERID", referencedColumnName = "MEDEWERKERID") }, inverseJoinColumns = {
 					@JoinColumn(name = "RECHT_ID", referencedColumnName = "RECHT_ID") })
 	private Set<Recht> rechten = new HashSet<>();
-	
+
 	@Column(name = "IS_EMAIL_VERIFIED", nullable = false)
 	private Boolean isEmailVerified;
-	
+
 
     /////////////////////////////////////////
     //CONSTRUCTORS
@@ -77,7 +75,7 @@ public class Medewerker extends DateAudit {
     public Medewerker() {
     	super();
     }
-    
+
     public Medewerker(Medewerker medewerker) {
     	id = medewerker.getId();
     	gebruikersnaam = medewerker.getGebruikersnaam();
@@ -91,20 +89,13 @@ public class Medewerker extends DateAudit {
     	active = medewerker.getActive();
     	rechten = medewerker.getRechten();
     	isEmailVerified = medewerker.getEmailVerified();
-    	
-    	
-    	
+
+
+
     }
 
-    public Medewerker convertDTOtoMedewerker(MedewerkerDTO medewerkerDTO, Medewerker medewerker) {
-        ModelMapper modelMapper = new ModelMapper();
-
-        modelMapper.map(medewerkerDTO, medewerker);
-        return medewerker;
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    //GETTERS AND SETTERS
+///////////////////////////////////////////////////////////////////
+    //GETTERS & SETTERS
 
 
     @Override
@@ -123,22 +114,22 @@ public class Medewerker extends DateAudit {
     public void confirmVerificiation() {
     	setEmailVerified(true);
     }
-    
-    
+
+
     public void addRecht(Recht recht) {
     	rechten.add(recht);
-    	recht.getUserList().add(this);    	
+    	recht.getUserList().add(this);
     }
-    
+
     public void addRechten(Set<Recht> rechten) {
     	rechten.forEach(this::addRecht);
     }
-    
+
     public void removeRecht(Recht recht) {
     	rechten.remove(recht);
     	recht.getUserList().remove(this);
     }
-    
+
     public Long getId() {
         return id;
     }

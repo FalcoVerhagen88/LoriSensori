@@ -1,23 +1,26 @@
 package com.lorisensori.application.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.lorisensori.application.DAO_interfaces.UserDeviceRepository;
 import com.lorisensori.application.domain.UserDevice;
 import com.lorisensori.application.domain.payload.DeviceInfo;
 import com.lorisensori.application.domain.token.RefreshToken;
 import com.lorisensori.application.exceptions.TokenRefreshException;
-import com.lorisensori.application.interfaces.UserDeviceRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 
 
 @Service
 public class UserDeviceService {
 
+	private final UserDeviceRepository userDeviceRepository;
+
 	@Autowired
-	private UserDeviceRepository userDeviceRepository;
+	public UserDeviceService(UserDeviceRepository userDeviceRepository) {
+		this.userDeviceRepository = userDeviceRepository;
+	}
 
 
 	/**

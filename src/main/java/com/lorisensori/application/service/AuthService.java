@@ -1,7 +1,15 @@
 package com.lorisensori.application.service;
 
-import java.util.Optional;
-
+import com.lorisensori.application.domain.CustomUserDetails;
+import com.lorisensori.application.domain.Medewerker;
+import com.lorisensori.application.domain.PasswordResetToken;
+import com.lorisensori.application.domain.UserDevice;
+import com.lorisensori.application.domain.payload.*;
+import com.lorisensori.application.domain.token.EmailVerificationToken;
+import com.lorisensori.application.domain.token.RefreshToken;
+import com.lorisensori.application.exceptions.*;
+import com.lorisensori.application.security.JwtTokenProvider;
+import com.lorisensori.application.util.Util;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,59 +18,45 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.lorisensori.application.domain.CustomUserDetails;
-import com.lorisensori.application.domain.Medewerker;
-import com.lorisensori.application.domain.PasswordResetToken;
-import com.lorisensori.application.domain.UserDevice;
-import com.lorisensori.application.domain.payload.LoginRequest;
-import com.lorisensori.application.domain.payload.PasswordResetLinkRequest;
-import com.lorisensori.application.domain.payload.PasswordResetRequest;
-import com.lorisensori.application.domain.payload.RegistrationRequest;
-import com.lorisensori.application.domain.payload.TokenRefreshRequest;
-import com.lorisensori.application.domain.payload.UpdatePasswordRequest;
-import com.lorisensori.application.domain.token.EmailVerificationToken;
-import com.lorisensori.application.domain.token.RefreshToken;
-import com.lorisensori.application.exceptions.PasswordResetLinkException;
-import com.lorisensori.application.exceptions.ResourceAlreadyInUseException;
-import com.lorisensori.application.exceptions.ResourceNotFoundException;
-import com.lorisensori.application.exceptions.TokenRefreshException;
-import com.lorisensori.application.exceptions.UpdatePasswordException;
-import com.lorisensori.application.security.JwtTokenProvider;
-import com.lorisensori.application.util.Util;
+import java.util.Optional;
 
 
 
 @Service
 public class AuthService {
 
-	@Autowired
-	private MedewerkerService medewerkerService;
+	private final MedewerkerServiceClass medewerkerService;
 
-	@Autowired
-	private RechtService rechtService;
+	private final RechtService rechtService;
 
-	@Autowired
-	private JwtTokenProvider tokenProvider;
+	private final JwtTokenProvider tokenProvider;
 
-	@Autowired
-	private RefreshTokenService refreshTokenService;
+	private final RefreshTokenService refreshTokenService;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManager;
 
-	@Autowired
-	private EmailVerificationTokenService emailVerificationTokenService;
+	private final EmailVerificationTokenService emailVerificationTokenService;
 
-	@Autowired
-	private UserDeviceService userDeviceService;
+	private final UserDeviceService userDeviceService;
 
-	@Autowired
-	private PasswordResetTokenService passwordResetTokenService;
+	private final PasswordResetTokenService passwordResetTokenService;
 
 	private static final Logger logger = Logger.getLogger(AuthService.class);
+
+	@Autowired
+	public AuthService(MedewerkerServiceClass medewerkerService, RechtService rechtService, JwtTokenProvider tokenProvider, RefreshTokenService refreshTokenService, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, EmailVerificationTokenService emailVerificationTokenService, UserDeviceService userDeviceService, PasswordResetTokenService passwordResetTokenService) {
+		this.medewerkerService = medewerkerService;
+		this.rechtService = rechtService;
+		this.tokenProvider = tokenProvider;
+		this.refreshTokenService = refreshTokenService;
+		this.passwordEncoder = passwordEncoder;
+		this.authenticationManager = authenticationManager;
+		this.emailVerificationTokenService = emailVerificationTokenService;
+		this.userDeviceService = userDeviceService;
+		this.passwordResetTokenService = passwordResetTokenService;
+	}
 
 	/**
 	 * Registers a new user in the database by performing a series of quick checks.
@@ -129,7 +123,7 @@ public class AuthService {
 		emailVerificationTokenOpt.ifPresent(emailVerificationTokenService::verifyExpiration);
 		emailVerificationTokenOpt.ifPresent(EmailVerificationToken::confirmStatus);
 		emailVerificationTokenOpt.ifPresent(emailVerificationTokenService::save);
-		registeredUserOpt.ifPresent(Medewerker::confirmVerification); 
+		registeredUserOpt.ifPresent(Medewerker::confirmVerificiation);
 		registeredUserOpt.ifPresent(medewerkerService::save);
 		return registeredUserOpt;
 	}

@@ -1,4 +1,4 @@
-package com.lorisensori.application.interfaces;
+package com.lorisensori.application.DAO_interfaces;
 
 import com.lorisensori.application.domain.Sensorgegevens;
 import org.springframework.data.jpa.repository.JpaRepository;

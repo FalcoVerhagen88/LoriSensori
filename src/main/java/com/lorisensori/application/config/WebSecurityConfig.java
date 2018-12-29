@@ -1,6 +1,9 @@
 package com.lorisensori.application.config;
 
 
+import com.lorisensori.application.security.JwtAuthenticationEntryPoint;
+import com.lorisensori.application.security.JwtAuthenticationFilter;
+import com.lorisensori.application.service.CustomUserDetailsService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,36 +18,43 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.lorisensori.application.security.JwtAuthenticationEntryPoint;
-import com.lorisensori.application.security.JwtAuthenticationFilter;
-import com.lorisensori.application.service.CustomUserDetailsService;
-
 @Profile("!dev")
 @Configuration
 @EnableWebSecurity(debug = true)
-@EnableJpaRepositories(basePackages = "com.lorisensori.application.interfaces")
+@EnableJpaRepositories(basePackages = "com.lorisensori.application")
 @EnableGlobalMethodSecurity(
 		securedEnabled = true,
 		jsr250Enabled = true,
 		prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	private CustomUserDetailsService userDetailsService;
+	private final CustomUserDetailsService userDetailsService;
 
 	private static final Logger logger = Logger.getLogger(WebSecurityConfig.class);
 
+	private final JwtAuthenticationEntryPoint jwtEntryPoint;
+
 	@Autowired
-	private JwtAuthenticationEntryPoint jwtEntryPoint;
+	public WebSecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthenticationEntryPoint jwtEntryPoint) {
+		this.userDetailsService = userDetailsService;
+		this.jwtEntryPoint = jwtEntryPoint;
+	}
 
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
+	}
+
+	@Bean
+	@Override
+	protected UserDetailsService userDetailsService() {
+		return super.userDetailsService();
 	}
 
 	@Bean

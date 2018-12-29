@@ -1,32 +1,35 @@
 package com.lorisensori.application.service;
 
-import java.time.Instant;
-import java.util.Optional;
-import java.util.UUID;
-
+import com.lorisensori.application.DAO_interfaces.EmailVerificationTokenRepository;
+import com.lorisensori.application.domain.Medewerker;
+import com.lorisensori.application.domain.token.EmailVerificationToken;
+import com.lorisensori.application.enums.TokenStatus;
+import com.lorisensori.application.exceptions.InvalidTokenRequestException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.lorisensori.application.domain.Medewerker;
-import com.lorisensori.application.domain.token.EmailVerificationToken;
-import com.lorisensori.application.enums.TokenStatus;
-import com.lorisensori.application.exceptions.InvalidTokenRequestException;
-import com.lorisensori.application.interfaces.EmailVerificationTokenRepository;
+import java.time.Instant;
+import java.util.Optional;
+import java.util.UUID;
 
 
 
 @Service
 public class EmailVerificationTokenService {
 
-	@Autowired
-	private EmailVerificationTokenRepository emailVerificationTokenRepository;
+	private final EmailVerificationTokenRepository emailVerificationTokenRepository;
 
 	@Value("${app.token.email.verification.duration}")
 	private Long emailVerificationTokenExpiryDuration;
 
 	private static final Logger logger = Logger.getLogger(EmailVerificationTokenService.class);
+
+	@Autowired
+	public EmailVerificationTokenService(EmailVerificationTokenRepository emailVerificationTokenRepository) {
+		this.emailVerificationTokenRepository = emailVerificationTokenRepository;
+	}
 
 	/**
 	 * Create an email verification token and persist it in the database which will be

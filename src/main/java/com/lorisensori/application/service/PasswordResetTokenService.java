@@ -1,24 +1,23 @@
 package com.lorisensori.application.service;
 
-import java.time.Instant;
-import java.util.Optional;
-
+import com.lorisensori.application.DAO_interfaces.PasswordResetTokenRepository;
+import com.lorisensori.application.domain.PasswordResetToken;
+import com.lorisensori.application.exceptions.InvalidTokenRequestException;
+import com.lorisensori.application.util.Util;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.lorisensori.application.domain.PasswordResetToken;
-import com.lorisensori.application.exceptions.InvalidTokenRequestException;
-import com.lorisensori.application.interfaces.PasswordResetTokenRepository;
-import com.lorisensori.application.util.Util;
+import java.time.Instant;
+import java.util.Optional;
 
 
 
 @Service
 public class PasswordResetTokenService {
 
-	@Autowired
+	final
 	PasswordResetTokenRepository passwordResetTokenRepository;
 
 	private static final Logger logger = Logger.getLogger(PasswordResetTokenService.class);
@@ -26,8 +25,14 @@ public class PasswordResetTokenService {
 	@Value("${app.token.password.reset.duration}")
 	private Long expiration;
 
+	final
+	MedewerkerServiceClass userService;
+
 	@Autowired
-	MedewerkerService userService;
+	public PasswordResetTokenService(PasswordResetTokenRepository passwordResetTokenRepository, MedewerkerServiceClass userService) {
+		this.passwordResetTokenRepository = passwordResetTokenRepository;
+		this.userService = userService;
+	}
 
 	/**
 	 * Saves the given password reset token

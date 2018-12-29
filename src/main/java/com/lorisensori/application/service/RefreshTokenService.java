@@ -1,28 +1,31 @@
 package com.lorisensori.application.service;
 
-import java.time.Instant;
-import java.util.Optional;
-
+import com.lorisensori.application.DAO_interfaces.RefreshTokenRepository;
+import com.lorisensori.application.domain.UserDevice;
+import com.lorisensori.application.domain.token.RefreshToken;
+import com.lorisensori.application.exceptions.TokenRefreshException;
+import com.lorisensori.application.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.lorisensori.application.domain.UserDevice;
-import com.lorisensori.application.domain.token.RefreshToken;
-import com.lorisensori.application.exceptions.TokenRefreshException;
-import com.lorisensori.application.interfaces.RefreshTokenRepository;
-import com.lorisensori.application.util.Util;
+import java.time.Instant;
+import java.util.Optional;
 
 
 
 @Service
 public class RefreshTokenService {
 
-	@Autowired
-	private RefreshTokenRepository refreshTokenRepository;
+	private final RefreshTokenRepository refreshTokenRepository;
 
 	@Value("${app.token.refresh.duration}")
 	private Long refreshTokenDurationMs;
+
+	@Autowired
+	public RefreshTokenService(RefreshTokenRepository refreshTokenRepository) {
+		this.refreshTokenRepository = refreshTokenRepository;
+	}
 
 	/**
 	 * Find a refresh token based on the id
