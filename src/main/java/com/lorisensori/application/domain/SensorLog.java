@@ -23,17 +23,10 @@ public class SensorLog {
 
 	    @Id
 	    @Column(name = "sensor_id")
-	    //private Long sensorId; // dan zou dit een String moeten worden is gelijk aan devId van TTN
+
 	    private String sensor_Id; // zo dus
 	    @Column(updatable = false)
-	    /*
-	    private boolean slotStatus;
-	    private double dieselniveau;
-	    private double accuniveau;
-	    private double vermogenZonnepaneel;
-	    private int gpsBreedtegraad;
-	    private int gpsLengtegraad;
-	    */
+
 	    private String uplinkId; // int gemaakt
 	    private String slotStatus; // int gemaakt
 	    private String dieselniveau; // int gemaakt
@@ -45,12 +38,23 @@ public class SensorLog {
 	    @Temporal(TemporalType.TIMESTAMP)
 	    @CreatedDate
 	    private Date timestamp;
+	    
+	    
+	    @ManyToOne()
+	    @JoinColumn(name = "sensorlog")
+	    private Sensorgegevens sensorgegevens;
+	    
+	    
+	    //@OneToOne()
+	    //@JoinColumn(name = "slot_geopend_door")
+	    //private Medewerker medewerkerSlot;
+	    
+	    
 
-	    @OneToOne()
-	    @JoinColumn(name = "slot_geopend_door")
-	    private Medewerker medewerkerSlot;
+	    
 
-	    public Sensorgegevens( String uplinkId, String sensor_Id, String slotStatus, String dieselniveau, String accuniveau, String vermogenZonnepaneel, String gpsBreedtegraad, String gpsLengtegraad) 
+	    
+	    public SensorLog( String uplinkId, String sensor_Id, String slotStatus, String dieselniveau, String accuniveau, String vermogenZonnepaneel, String gpsBreedtegraad, String gpsLengtegraad) 
 	    {
 	    		
 	    		this.uplinkId = uplinkId;
@@ -62,6 +66,10 @@ public class SensorLog {
 	    		this.gpsBreedtegraad = gpsBreedtegraad;
 	    		this.gpsLengtegraad = gpsLengtegraad;
 	    }
+	    
+	    
+	    // empty constructor for spring boot
+	    public SensorLog() {};
 
 	///////////////////////////////////////////////////////////////////
 	    //GETTERS & SETTERS
@@ -69,78 +77,77 @@ public class SensorLog {
 	    public String getSensorId() {
 	        return sensor_Id;
 	    }
+	    
+	    public void setSensorId(String sensorId)
+	    {
+	    	this.sensor_Id = sensorId;
+	    }
 
 
-	   /* public void setSensorId(String sensorId) {
-	        this.sensor_Id = sensorId;
-	    }*/  // is niet updateable dus hoeft niet
-
-
-	    public int isSlotStatus() {
+	    public String getSlotStatus() {
 	    	
 	        return slotStatus;
 	    }
-
-
-	   /* public void setSlotStatus(int slotStatus) {
-	        this.slotStatus = slotStatus;
-	    }*/ //is niet updateable dus niet nodig
-
-
-	    public double getDieselniveau() {
+	    
+	    public void setSlotstatus(String slotstatus)
+	    {
+	    	this.slotStatus = slotstatus;
+	    }
+	    
+	    
+	    public String getDieselniveau() {
 	        return dieselniveau;
 	    }
 
+	    
+	    public void setDieselniveau(String dieselniveau)
+	    {
+	    	this.dieselniveau = dieselniveau;
+	    }
 
-	   /* public void setDieselniveau(int dieselniveau) {
-	        this.dieselniveau = dieselniveau;
-	    }*/ // is niet updateable dus niet nodig
-
-
-
-	    public double getAccuniveau() {
+	    public String getAccuniveau() {
 	        return accuniveau;
 	    }
 
+	    public void setAccuniveau(String accuniveau) 
+	    {
+	    	this.accuniveau = accuniveau;
+	    }
 
-	    /*public void setAccuniveau(int accuniveau) {
-	        this.accuniveau = accuniveau;
-	    }*/ //is niet updateable dus niet nodig
 
 
-
-	    public double getVermogenZonnepaneel() {
+	    public String getVermogenZonnepaneel() {
 	        return vermogenZonnepaneel;
 	    }
 
 
-	    /*public void setVermogenZonnepaneel(int vermogenZonnepaneel) {
-	        this.vermogenZonnepaneel = vermogenZonnepaneel;
-	    }*/ //is niet updateable dus niet nodig
+	    public void setVermogenZonnepanel(String vermogen)
+	    {
+	    	this.vermogenZonnepaneel = vermogen;
+	    }
 
 
 
-	    public int getGpsBreedtegraad() {
+	    public String getGpsBreedtegraad() {
 	        return gpsBreedtegraad;
 	    }
 
 
-	    /*public void setGpsBreedtegraad(int gpsBreedtegraad) {
-	        this.gpsBreedtegraad = gpsBreedtegraad;
-	    }*/ //is niet updateable dus niet nodig
+	    public void setGpsBreedtegraad(String breedtegraad)
+	    {
+	    	this.gpsBreedtegraad = breedtegraad;
+	    }
 
 
-
-	    public int getGpsLengtegraad() {
+	    public String getGpsLengtegraad() {
 	        return gpsLengtegraad;
 	    }
 
 
-	    /*public void setGpsLengtegraad(int gpsLengtegraad) {
-	        this.gpsLengtegraad = gpsLengtegraad;
-	    }*/ //is niet updateable dus niet nodig
-
-
+	    public void setGpsLengtegraad(String lengtegraad)
+	    {
+	    	this.gpsLengtegraad = lengtegraad;
+	    }
 
 	    public Date getTimestamp() {
 	        return timestamp;
@@ -148,5 +155,3 @@ public class SensorLog {
 
 	}
 
-	
-}

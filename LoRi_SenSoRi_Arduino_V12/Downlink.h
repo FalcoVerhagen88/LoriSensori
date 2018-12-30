@@ -6,6 +6,7 @@
 #include <arduino.h>
 #include "Actuatoren.h"
 #include "Sensoren.h"
+#include "Uplink.h"
 
   
 
@@ -22,7 +23,7 @@ class Downlink
   
   public:
   Downlink();
-  void ontvangDownlink(Sensoren *S, Actuatoren *A);
+  void ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U);
 
 };
 

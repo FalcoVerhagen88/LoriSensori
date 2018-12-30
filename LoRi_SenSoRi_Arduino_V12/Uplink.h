@@ -64,61 +64,83 @@ typedef struct aAccuniveauUl
 }AAccuniveauUl;
 
 
-// --------------- Bericht slotstand gewijzigd ----------------------//
-typedef struct wSlotstandUl
+// --------------- Bericht ack slotstand gewijzigd ----------------------//
+typedef struct ASlotstandWijziging
 {
-    byte ulId;                // Identificatienummer bericht = 0x04
-    byte slotstand;           // 0 = dicht, 1 = open
-    uint8_t berichtLengte;        // lengte van bericht in bytes
-}WSlotstandUl; 
+    byte ulId;                     // Identificatienummer bericht = 0x04
+    byte slotStand;					// Slotstand 00 = dicht, 1 = open, 2 = geen feedback
+    uint8_t berichtLengte;         // lengte van bericht in bytes
+}ASlotstandW;
 
 
-// -------------- Bericht dieselniveau gewijzigd -------------------//
-typedef struct wDieselniveauUl
+// -------------- Bericht ack dieselniveau gewijzigd -------------------//
+typedef struct ackDieselniveauWijziging
 {
-    byte ulId;                // Identificatienummer bericht = 0x005
-    byte dieselniveau;        // 0…1023 == 0%...100%
+    byte ulId;                    // Identificatienummer bericht = 0x05
     uint8_t berichtLengte;        // lengte van bericht in bytes
-}WDieselniveauUl;
+}AckDieselniveauW;
+
+// -------------- Bericht ack Sluitingstijd gewijzigd -------------------//
+typedef struct ackSluitingstijdWijziging
+{
+    byte ulId;                // Identificatienummer bericht = 0x06
+    uint8_t berichtLengte;        // lengte van bericht in bytes
+}AckSluitingstijdW;
+
+// -------------- Bericht ack Openingstijd gewijzigd -------------------//
+typedef struct ackOpeningstijdWijziging
+{
+    byte ulId;                // Identificatienummer bericht = 0x07
+    uint8_t berichtLengte;        // lengte van bericht in bytes
+}AckOpeningstijdW;
 
 
-// ------------- Bericht dieselniveau gewijzigd ----------------//
+// -------------- Bericht ack Openingstijd gewijzigd -------------------//
+typedef struct ackSlotstandWijziging
+{
+    byte ulId;                // Identificatienummer bericht = 0x08
+    byte slotStand;				// Slotstand 00 = dicht, 1 = open, 2 = geen feedback
+    uint8_t berichtLengte;        // lengte van bericht in bytes
+}AckSlotstandW;
+
+
+
+// ------------- Checkbericht gewijzigd ----------------//
 typedef struct checkBericht
 {
-    byte ulId;                // Identificatienummer bericht = 0x006
+    byte ulId;                // Identificatienummer bericht = 0x09
     uint8_t berichtLengte;        // lengte van bericht in bytes
 }CheckBericht;
-
-
-// --------------- lengte en pointer in struct ---------------//
-typedef struct berichtPointerLengte
-{
-    uint8_t *berichtPointer;                // pointer naar bericht
-    uint8_t berichtLengte;                 // lengte van het bericht
-}BerichtPointerLengte;
-
 
     // ---------------------------------------- class uplink ----------------------------------------//
 class Uplink
 {
   private:
   // ------------------ private const. int Id's ---------------//
-  const int ulIdTankUl = 0x00;
-  const int ulIdATankenUl = 0x01;
-  const int ulIdADieselniveauUl = 0x02;
-  const int ulIdAAccuniveauUl = 0x03;
-  const int ulIdWSlotstandUl = 0x04;
-  const int ulIdWDieselniveauUl = 0x05;
-  const int ulIdCheck = 0x06;
+  #define ulIdTankUl 0x00
+  #define ulIdATankenUl 0x01
+  #define ulIdADieselniveauUl 0x02
+  #define ulIdAAccuniveauUl 0x03
+  #define ulIdSlotstandWijziging 0x04 // ack slotstand wijziging
+  #define ackIdDieselAlarmniveauWijziging 0x05 // ack dieselalarmniveau wijziging
+  #define ackIdOpeningstijdWijziging 0x06 
+  #define ackIdSluitingstijdWijziging 0x07
+  #define ackIdSlotstandwijziging 0x08
+  #define ulIdCheck 0x09
+
+  // slotstandwijziging is alarm dat slot niet wordt opeggebroken
 
     // ------------- private const. berichtlengte ---------------//
-  const int ALIVELENGTE = 13; // lengte van het alive bericht
-  const int ALARMTANKENLENGTE = 2; // lengte van het laag niveau alarm bericht
-  const int ALARMDIEFSTALLENGTE = 11; // lengte van het bericht bij een dieselniveauverlaging na sluitingstijd
-  const int ALARMACCUSPANNING = 2; // lengte van het bericht bij een te lage accuspanning
-  const int WIJZIGINGSLOTSTANDLENGTE = 2; // lengte van het bericht bij een wijziging van de slotstand
-  const int WIJZIGINGALARMNIVEAUDIESEL = 2; //lengte van beericht na wijziging minimum diesel niveau in tank
-  const int CHECKBERICHTLENGTE = 1; // lengte van het ericht (checkbericht) dat elke x minuten wordt verstuurd om te luisteren naar de gateway
+  #define ALIVELENGTE 13 // lengte van het alive bericht
+  #define ALARMTANKENLENGTE 2 // lengte van het laag niveau alarm bericht
+  #define ALARMDIEFSTALLENGTE 11 // lengte van het bericht bij een dieselniveauverlaging na sluitingstijd
+  #define ALARMACCUSPANNINGLENGTE 2 // lengte van het bericht bij een te lage accuspanning
+  #define WIJZIGINGSLOTSTANDLENGTE 1 // lengte van het bericht bij een wijziging van de slotstand
+  #define ACKWIJZIGINGALARMNIVEAUDIESEL 1 //lengte van beericht na wijziging minimum diesel niveau in tank
+  #define ACKWIJZIGINGSLUITINGSTIJD 1 // lengte van het bericht na wijziging sluitingstijd
+  #define ACKWIJZIGINGOPENINGSTIJD 1 // lengte van het bericht na wijziging sluitingstijd
+  #define ACKSLOTSTANDWIJZIGING 2 // lengte van het bericht na wijziging sluitingstijd
+  #define CHECKBERICHTLENGTE 1 // lengte van het bericht (checkbericht) dat elke x minuten wordt verstuurd om te luisteren naar de gateway
 
   int VorigeSlotstand;
   int vorigeDieselAlarmniveau;
@@ -128,9 +150,11 @@ class Uplink
   ATankUl tankenAlarm;
   ADieselniveauUl verlagingDieselniveauAlarm;
   AAccuniveauUl accuniveauAlarm;
-  WSlotstandUl slotstandWijziging;
-  WDieselniveauUl alarmniveauDieselWijziging;
-  BerichtPointerLengte berichtPointerLengte;
+  ASlotstandW slotstandWijziging;
+  AckDieselniveauW alarmniveauDieselWijziging;
+  AckSluitingstijdW ackWSluitingstijd;
+  AckOpeningstijdW ackWOpeningstijd;
+  AckSlotstandW ackSlotstandWijziging;
   CheckBericht checkBericht;
 
     // ------------ Class Uplink prive methodes -------------//
@@ -138,19 +162,31 @@ class Uplink
   void berichtATankUl(ATankUl *p, Sensoren *s);
   void berichtADieselniveauUl(ADieselniveauUl *p, Sensoren *s);
   void berichtAAccuniveauUl(AAccuniveauUl *p, Sensoren *s);
-  void berichtWSlotstandUl(WSlotstandUl *p, Sensoren *s);
-  void berichtWDieselniveauUl(WDieselniveauUl *p,Sensoren *s);
+  void berichtAslotstandW(ASlotstandW *p, Sensoren *s);
+  void ackDieselAlarmniveauW(AckDieselniveauW *p);
+  void ackSluitingstijdWijziging(AckSluitingstijdW *p);
+  void ackOpeningstijdWijziging(AckOpeningstijdW *p);
+  void ackSlotstandW(AckSlotstandW *p, Sensoren *s);
   void BerichtCheck(CheckBericht *p);
 
   
   public:
   // ------------ Class Uplink constructor --------------//
-  Uplink();
+  Uplink(Sensoren *s);
   // ------------ Class Uplink publieke methodes -------//
-  BerichtPointerLengte maakBericht(Sensoren *s);
-  TankUl maakAliveBericht(Sensoren *s);
-  void setVorigeSlotstand(Sensoren *S);
-  void setVorigeDieselAlarmniveau(Sensoren *S);
+  TankUl getAliveBericht(Sensoren *s);
+  ATankUl getDieselniveauAlarm(Sensoren *s);
+  ADieselniveauUl getDiefstalAlarm(Sensoren *s);
+  AAccuniveauUl getAccuniveauAlarm(Sensoren *s);
+  ASlotstandW getASlotstandW(Sensoren *s);
+  AckDieselniveauW getAckDieselAlarmniveauW();
+  AckSluitingstijdW getAckSluitingstijdW();
+  AckOpeningstijdW getAckOpeningstijdW();
+  AckSlotstandW getAckSlotstandW(Sensoren *s);
+  CheckBericht getCheckbericht();
+  void setVorigeSlotstand(Sensoren *s);
+  void setVorigeDieselAlarmniveau(Sensoren *s);
+
 };
 // *************************************** einde Class uplink definitie ***************************************//
 #endif //Uplink.h

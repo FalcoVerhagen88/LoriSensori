@@ -5,17 +5,16 @@ import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Table(name = "bedrijf")
-public class Bedrijf implements Serializable {
+public class Bedrijf {
     /**
      *
      */
-    private static final long serialVersionUID = 3L;
 
     @Id
     @Column
@@ -33,13 +32,14 @@ public class Bedrijf implements Serializable {
     private Medewerker contactpersoon;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private StatusEnums status;
 
     @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "medewerkers")
     private List<Medewerker> medewerkers;
 
-    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "tanks")
     private List<Tank> tanks;
 
@@ -54,12 +54,15 @@ public class Bedrijf implements Serializable {
 
     public void addMedewerker(Medewerker medewerker) {
 
-        medewerkers.add(medewerker);
+        if (medewerkers == null){
+            medewerkers = new ArrayList<>();
+        }
+        if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
+        else {
+            throw new EntityExistsException();
+        }
     }
 
-    public void addTank(Tank tank) {
-        tanks.add(tank);
-    }
 
     public Bedrijf() {
 

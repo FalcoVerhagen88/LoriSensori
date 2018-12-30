@@ -3,39 +3,37 @@ package com.lorisensori.application.domain;
 import com.lorisensori.application.enums.LandEnums;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "adres")
-public class Adres implements Serializable {
+public class Adres {
     /**
      *
      */
-    private static final long serialVersionUID = 1L;
 
-    @Id//this annotation is used to define the primary key.
-    @Column(name = "adrescode")
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//this annotation is used to define the primary key generation strategy. In the above case, we have declared the primary key to be an Auto Increment field.
-    private long adrescode;
+    @Column
+    private long adresCode;
 
-    @NotBlank
-    private String straatnaam, postcode, plaatsnaam;
+    @Column
+    private String straatnaam, postcode, plaatsnaam, huisnummertoevoeging;
 
-
-    private String huisnummertoevoeging;
-
+    @Column(nullable = false)
     private int huisnummer;
 
     @Enumerated(EnumType.STRING)
+    @Column
     private LandEnums land;
+
+    @OneToOne(mappedBy = "adres", optional = false)
+    private Bedrijf bedrijf;
 
     public Adres() {
 
     }
 
-    Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
+    public Adres(String straatnaam, int huisnummer, String huisnummertoevoeging, String postcode, String plaatsnaam, LandEnums land) {
         this.straatnaam = straatnaam;
         this.huisnummer = huisnummer;
         this.huisnummertoevoeging = huisnummertoevoeging;
@@ -44,6 +42,8 @@ public class Adres implements Serializable {
         this.land = land;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //GETTERS & SETTERS
     public String getHuisnummertoevoeging() {
         return huisnummertoevoeging;
     }
@@ -53,12 +53,12 @@ public class Adres implements Serializable {
     }
 
 
-    public long getAdrescode() {
-        return adrescode;
+    public long getAdresCode() {
+        return adresCode;
     }
 
-    public void setAdrescode(long adrescode) {
-        this.adrescode = adrescode;
+    public void setAdresCode(long adrescode) {
+        this.adresCode = adrescode;
     }
 
     public String getStraatnaam() {
@@ -105,6 +105,12 @@ public class Adres implements Serializable {
         return "Straatnaam: " + straatnaam + ", Huisnummer: " + huisnummer + " " + huisnummertoevoeging + ", Postcode: " + postcode + ", Plaatsnaam: " + plaatsnaam + ", Land: " + land;
     }
 
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
 
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
+    }
 }
 
