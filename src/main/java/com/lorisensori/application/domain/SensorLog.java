@@ -41,8 +41,8 @@ public class SensorLog {
 	    
 	    
 	    @ManyToOne()
-	    @JoinColumn(name = "sensorlog")
-	    private Sensorgegevens sensorgegevens;
+	    @JoinColumn(name = "tankId")
+	    private Tank tank;
 	    
 	    
 	    //@OneToOne()

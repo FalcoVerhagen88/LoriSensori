@@ -3,9 +3,11 @@ package com.lorisensori.application.TTN;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.thethingsnetwork.data.common.Connection;
+import org.thethingsnetwork.data.common.events.UplinkHandler;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
 import org.thethingsnetwork.data.common.messages.DataMessage;
 import org.thethingsnetwork.data.common.messages.DownlinkMessage;
+import org.thethingsnetwork.data.common.messages.RawMessage;
 import org.thethingsnetwork.data.common.messages.UplinkMessage;
 import org.thethingsnetwork.data.mqtt.Client;
 
@@ -27,28 +29,50 @@ import javax.persistence.TemporalType;
 
 
 
-public class UplinkHandler implements Runnable{
+public class UplinkHandlerLori extends RawMessage implements Runnable{
 	
 	//private TtnClient client = new TtnClient();
 	private SensorgegevensService sensorservice;
 	private TtnClient client;
-	private UplinkMessage uplink;
+	private byte[] payload;
 
-    public UplinkHandler(TtnClient client, UplinkMessage uplink) {
+
+    public UplinkHandlerLori(TtnClient client, UplinkMessage uplink) {
     	
     	this.client = client;
-    	this.uplink = uplink;
+
     	
     }
 
+    public void setpayload(byte[] payload)
+    {
+    	this.payload = payload;
+    }
+    
    public void ontvangBericht()
    {
-	 
+	   	
 		  client.getClient().onMessage((String devId, DataMessage data) -> System.out.println("Message: " + devId + " " + Arrays.toString(((UplinkMessage) data).getPayloadRaw())));
-		  client.getClient().onMessage((String _devId, DataMessage _data) -> {
-	           
-			 
-	        });
+		  client.getClient().onMessage((String devId, DataMessage data) -> {
+			  
+			  try
+			  {
+				  	payload = new byte[((UplinkMessage) data).getPayloadRaw().length];
+					for(int i = 0; i < ((UplinkMessage) data).getPayloadRaw().length; i++)
+					{
+						payload[i] = ((UplinkMessage) data).getPayloadRaw()[i];
+					}
+					
+					setpayload(payload);
+					
+			  }
+			  catch(Exception ex)
+			  {
+				  System.out.println("Response failed: " + ex.getMessage());  
+			  }
+			  });
+	
+	        
 	  
    }
 
@@ -355,8 +379,17 @@ public void run() {
 		System.out.println("ik ga proberen een berichtje te vangen");
 		ontvangBericht();
 		saveBericht(uplink.getPayloadRaw(), uplink.getDevId());
+		UplinkMessage.
 		System.out.println("gelukt?");
 	
+}
+
+
+
+@Override
+public String asString() {
+	// TODO Auto-generated method stub
+	return null;
 }
 }
 
