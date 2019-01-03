@@ -1,5 +1,6 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.service.TankService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -21,7 +23,7 @@ public class TankController {
 
     //Get all Tanks
     @GetMapping("/tank/")
-    public Iterable<Tank> getAllTank() {
+    public List<TankDTO> getAllTank() {
         return tankService.findAll();
     }
 

@@ -1,5 +1,6 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.lorisensori.application.DTOs.bedrijfDTOs.BedrijfDTO;
 import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.domain.Tank;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -28,7 +30,7 @@ public class BedrijfController {
 
     //Get all
     @GetMapping("/bedrijf/")
-    public Iterable<Bedrijf> getAllBedrijf() {
+    public List<BedrijfDTO> getAllBedrijf() {
         return bedrijfService.findAll();
     }
 

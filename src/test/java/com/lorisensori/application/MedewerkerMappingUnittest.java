@@ -9,38 +9,38 @@ import org.modelmapper.ModelMapper;
 
 public class MedewerkerMappingUnittest {
 
-    private static final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper = new ModelMapper();
 
     @Test
     public void checkMedewerkerMapping (){
 
-        MedewerkerDTO creation = new MedewerkerDTO();
-        creation.setId(1L);
-        creation.setGebruikersnaam("TestGebruikersnaam");
-        creation.setVoornaam("TestVoornaam");
-        creation.setAchternaam("TestAchternaam");
-        creation.setPassword("TestPassword");
-        creation.setEmail("TestEmail");
-        creation.setTelefoonnummer("TestTelefoonnummer");
-        creation.setActive(true);
-        creation.setEmailVerified(true);
-        creation.setRechten(null);
-        creation.setBedrijf(null);
-        creation.setTank(null);
+        MedewerkerDTO medewerkerDTO = new MedewerkerDTO();
+        medewerkerDTO.setId(1L);
+        medewerkerDTO.setGebruikersnaam("TestGebruikersnaam");
+        medewerkerDTO.setVoornaam("TestVoornaam");
+        medewerkerDTO.setAchternaam("TestAchternaam");
+        medewerkerDTO.setPassword("TestPassword");
+        medewerkerDTO.setEmail("TestEmail");
+        medewerkerDTO.setTelefoonnummer("TestTelefoonnummer");
+        medewerkerDTO.setActive(true);
+        medewerkerDTO.setEmailVerified(true);
+        medewerkerDTO.setRechten(null);
+        medewerkerDTO.setBedrijf(null);
+        medewerkerDTO.setTank(null);
 
-        Medewerker medewerker = modelMapper.map(creation, Medewerker.class);
+        Medewerker medewerker = modelMapper.map(medewerkerDTO, Medewerker.class);
 
-        Assert.assertEquals(creation.getVoornaam(), medewerker.getVoornaam());
-        Assert.assertEquals(creation.getAchternaam(), medewerker.getAchternaam());
-        Assert.assertEquals(creation.getGebruikersnaam(), medewerker.getGebruikersnaam());
-        Assert.assertEquals(creation.getPassword(), medewerker.getPassword());
-        Assert.assertEquals(creation.getEmail(), medewerker.getEmail());
-        Assert.assertEquals(creation.getTelefoonnummer(), medewerker.getTelefoonnummer());
+        Assert.assertEquals(medewerkerDTO.getVoornaam(), medewerker.getVoornaam());
+        Assert.assertEquals(medewerkerDTO.getAchternaam(), medewerker.getAchternaam());
+        Assert.assertEquals(medewerkerDTO.getGebruikersnaam(), medewerker.getGebruikersnaam());
+        Assert.assertEquals(medewerkerDTO.getPassword(), medewerker.getPassword());
+        Assert.assertEquals(medewerkerDTO.getEmail(), medewerker.getEmail());
+        Assert.assertEquals(medewerkerDTO.getTelefoonnummer(), medewerker.getTelefoonnummer());
 
         UpdateMedewerkerDTO updateMedewerker = new UpdateMedewerkerDTO();
         updateMedewerker.setGebruikersnaam("Nieuwe TestGebruikersnaam");
-        updateMedewerker.setEmail("Nieuw TestEmail");
-        updateMedewerker.setTelefoonnummer("Nieuw TestTelefoonnummer");
+        updateMedewerker.setEmail("Nieuwe TestEmail");
+        updateMedewerker.setTelefoonnummer("Nieuwe TestTelefoonnummer");
 
         modelMapper.map(updateMedewerker, medewerker);
         Assert.assertEquals(updateMedewerker.getGebruikersnaam(), medewerker.getGebruikersnaam());

@@ -1,24 +1,12 @@
 package com.lorisensori.application.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import org.hibernate.annotations.NaturalId;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lorisensori.application.enums.RechtEnums;
+import org.hibernate.annotations.NaturalId;
 
-
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The type Role. Defines the role and the list of users who are associated with that role

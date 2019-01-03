@@ -47,12 +47,12 @@ public class Medewerker extends DateAudit {
     @NullOrNotBlank(message = "telefoonnummer kan niet leeg zijn")
     private String telefoonnummer;
 
-    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "bedrijfsnaam")
     @JsonBackReference(value = "medewerkers")
     private Bedrijf bedrijf;
 
-    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tank_id")
     private Tank tank;
 
@@ -91,12 +91,9 @@ public class Medewerker extends DateAudit {
     	isEmailVerified = medewerker.getEmailVerified();
 
 
-
     }
-
-///////////////////////////////////////////////////////////////////
-    //GETTERS & SETTERS
-
+    ///////////////////////////////////////////////////////////////////
+    // GETTERS & SETTERS
 
     @Override
     public String toString() {

@@ -1,13 +1,16 @@
 package com.lorisensori.application.DTOs.medewerkerDTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lorisensori.application.domain.Bedrijf;
+import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.domain.Recht;
 import com.lorisensori.application.domain.Tank;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 
-public class MedewerkerDTO implements Serializable {
+public class MedewerkerDTO extends Medewerker implements Serializable {
 
     private static final long serialVersionUID = -583528961313526216L;
 
@@ -25,12 +28,25 @@ public class MedewerkerDTO implements Serializable {
 
     private Boolean isEmailVerified;
 
-    public MedewerkerDTO(Long id, String gebruikersnaam, String voornaam, String achternaam, String password, String email, String telefoonnummer, Bedrijf bedrijf, Tank tank, Boolean active, Set<Recht> rechten, Boolean emailVerified) {
+    @JsonIgnore
+    private final LocalDateTime createdAt = LocalDateTime.now();
+
+    public MedewerkerDTO(Long id, String gebruikersnaam, String voornaam, String achternaam, String password, String email, String telefoonnummer, Bedrijf bedrijf, Tank tank, Boolean active, Set<Recht> rechten, Boolean isEmailVerified) {
+        this.id = id;
+        this.gebruikersnaam = gebruikersnaam;
+        this.voornaam = voornaam;
+        this.achternaam = achternaam;
+        this.password = password;
+        this.email = email;
+        this.telefoonnummer = telefoonnummer;
+        this.bedrijf = bedrijf;
+        this.tank = tank;
+        this.active = active;
+        this.rechten = rechten;
+        this.isEmailVerified = isEmailVerified;
     }
 
     public MedewerkerDTO(){}
-
-
 
     ////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS

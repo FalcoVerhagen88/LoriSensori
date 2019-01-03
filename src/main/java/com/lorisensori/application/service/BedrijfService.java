@@ -1,7 +1,9 @@
 package com.lorisensori.application.service;
 
+import com.lorisensori.application.DTOs.bedrijfDTOs.BedrijfDTO;
 import com.lorisensori.application.domain.Bedrijf;
-import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 public interface BedrijfService {
@@ -10,7 +12,7 @@ public interface BedrijfService {
 
     boolean existsByBedrijfsnaam(String bedrijfsnaam);
 
-    Iterable<Bedrijf> findAll();
+    List<BedrijfDTO> findAll();
 
     Bedrijf findByBedrijfsnaam(String bedrijfsnaam);
 

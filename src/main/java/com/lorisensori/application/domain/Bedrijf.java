@@ -18,6 +18,9 @@ public class Bedrijf {
 
     @Id
     @Column
+    private Long bedrijfId;
+
+    @Column
     private String bedrijfsnaam;
 
     @Column
@@ -76,7 +79,10 @@ public class Bedrijf {
         this.status = status;
     }
 
-    public Bedrijf(String bedrijfsnaam, Adres adres, String telefoonnummer, Medewerker contactpersoon, String rekeningnummer, String btwNummer, String vatNummer, String kvkNummer, StatusEnums status) {
+    public Bedrijf(Long bedrijfId, String bedrijfsnaam, Adres adres, String telefoonnummer, Medewerker contactpersoon, String rekeningnummer,
+                   String btwNummer, String vatNummer, String kvkNummer, StatusEnums status) {
+
+        this.bedrijfId = bedrijfId;
         this.bedrijfsnaam = bedrijfsnaam;
         this.adres = adres;
         this.telefoonnummer = telefoonnummer;
@@ -98,7 +104,18 @@ public class Bedrijf {
         adres.setLand(land);
     }
 
-    // getters en setters
+    /////////////////////////////////////////////////////////
+    // GETTERS & SETTERS
+
+
+    public Long getBedrijfId() {
+        return bedrijfId;
+    }
+
+    public void setBedrijfId(Long bedrijfId) {
+        this.bedrijfId = bedrijfId;
+    }
+
     public String getBedrijfsnaam() {
         return bedrijfsnaam;
     }
@@ -162,6 +179,8 @@ public class Bedrijf {
     public void setKvkNummer(String kvkNummer) {
         this.kvkNummer = kvkNummer;
     }
+
+
 
     public List<Tank> getTanks() {
         return tanks;

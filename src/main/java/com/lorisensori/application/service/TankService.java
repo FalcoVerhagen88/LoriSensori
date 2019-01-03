@@ -1,6 +1,9 @@
 package com.lorisensori.application.service;
 
+import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Tank;
+
+import java.util.List;
 
 public interface TankService {
 
@@ -8,7 +11,7 @@ public interface TankService {
 
     boolean existsByTanknaam(String tanknaam);
 
-    Iterable<Tank> findAll();
+    List<TankDTO> findAll();
 
     Tank findByTanknaam(String tanknaam);
 

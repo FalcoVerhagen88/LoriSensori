@@ -1,12 +1,24 @@
 package com.lorisensori.application.DTOs.medewerkerDTOs;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.Id;
+import java.time.LocalDateTime;
+
 public class UpdateMedewerkerDTO {
+
+    @Id
+    private Long id;
 
     private String gebruikersnaam, voornaam, achternaam, email, telefoonnummer;
 
     private Boolean active, isEmailVerified;
 
-    public UpdateMedewerkerDTO(String gebruikersnaam, String voornaam, String achternaam, String email, String telefoonnummer, Boolean active, Boolean isEmailVerified) {
+    @JsonIgnore
+    private final LocalDateTime editedAt = LocalDateTime.now();
+
+    public UpdateMedewerkerDTO(Long id, String gebruikersnaam, String voornaam, String achternaam, String email, String telefoonnummer, Boolean active, Boolean isEmailVerified) {
+        this.id = id;
         this.gebruikersnaam = gebruikersnaam;
         this.voornaam = voornaam;
         this.achternaam = achternaam;
@@ -21,6 +33,14 @@ public class UpdateMedewerkerDTO {
     ////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getGebruikersnaam() {
         return gebruikersnaam;

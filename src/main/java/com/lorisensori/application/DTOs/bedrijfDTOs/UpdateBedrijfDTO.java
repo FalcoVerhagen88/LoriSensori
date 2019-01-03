@@ -5,10 +5,9 @@ import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.enums.StatusEnums;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class BedrijfDTO implements Serializable {
+public class UpdateBedrijfDTO {
 
     private String bedrijfsnaam;
     private String telefoonnummer;
@@ -21,7 +20,8 @@ public class BedrijfDTO implements Serializable {
     private List<Medewerker> medewerkers;
     private List<Tank> tanks;
 
-    public BedrijfDTO(String bedrijfsnaam, String telefoonnummer, String rekeningnummer, String btwNummer, String kvkNummer, Adres adres, Medewerker contactpersoon, StatusEnums status, List<Medewerker> medewerkers, List<Tank> tanks) {
+
+    public UpdateBedrijfDTO(String bedrijfsnaam, String telefoonnummer, String rekeningnummer, String btwNummer, String kvkNummer, Adres adres, Medewerker contactpersoon, StatusEnums status, List<Medewerker> medewerkers, List<Tank> tanks) {
         this.bedrijfsnaam = bedrijfsnaam;
         this.telefoonnummer = telefoonnummer;
         this.rekeningnummer = rekeningnummer;
@@ -34,10 +34,13 @@ public class BedrijfDTO implements Serializable {
         this.tanks = tanks;
     }
 
-    public BedrijfDTO(){}
+    public UpdateBedrijfDTO() {
+    }
 
-    //////////////////////////////////////////////
+    /////////////////////////////////////////////////
     //GETTERS & SETTERS
+
+
     public String getBedrijfsnaam() {
         return bedrijfsnaam;
     }
@@ -102,14 +105,6 @@ public class BedrijfDTO implements Serializable {
         this.status = status;
     }
 
-    public List<Tank> getTanks() {
-        return tanks;
-    }
-
-    public void setTanks(List<Tank> tanks) {
-        this.tanks = tanks;
-    }
-
     public List<Medewerker> getMedewerkers() {
         return medewerkers;
     }
@@ -118,12 +113,11 @@ public class BedrijfDTO implements Serializable {
         this.medewerkers = medewerkers;
     }
 
-    public void addMedewerker(Medewerker medewerker) {
-        medewerkers.add(medewerker);
+    public List<Tank> getTanks() {
+        return tanks;
     }
 
-    public void addTank(Tank tank) {
-        tanks.add(tank);
+    public void setTanks(List<Tank> tanks) {
+        this.tanks = tanks;
     }
-
 }

@@ -1,17 +1,20 @@
 package com.lorisensori.application.DTOs.tankDTOs;
 
+import com.lorisensori.application.domain.Bedrijf;
+import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.enums.StatusEnums;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class TankDTO implements Serializable {
 
     private Long tankId;
 
-    private int tanknummer, diameter, lengte, inhoudLiters, bouwjaar;
-
     private String tanknaam, type;
+
+    private int  diameter, lengte, inhoudLiters, bouwjaar;
 
     private double gewicht;
 
@@ -21,24 +24,41 @@ public class TankDTO implements Serializable {
 
     private int meldingTanken;
 
-    //TODO: LoRa informatie toevoegen
+    private Bedrijf bedrijf;
+
+    private List<Sensorgegevens> sensorgegevens;
+
+    public TankDTO(Long tankId, String tanknaam, String type, int inhoudLiters, int bouwjaar,
+                   int diameter, int lengte, double gewicht, StatusEnums status, Date openingstijd, Date sluitingstijd,
+                   int meldingTanken, Bedrijf bedrijf, List<Sensorgegevens> sensorgegevens) {
+
+        this.tankId = tankId;
+        this.tanknaam = tanknaam;
+        this.type = type;
+        this.diameter = diameter;
+        this.lengte = lengte;
+        this.inhoudLiters = inhoudLiters;
+        this.bouwjaar = bouwjaar;
+        this.gewicht = gewicht;
+        this.status = status;
+        this.openingstijd = openingstijd;
+        this.sluitingstijd = sluitingstijd;
+        this.meldingTanken = meldingTanken;
+        this.bedrijf = bedrijf;
+        this.sensorgegevens = sensorgegevens;
+    }
+
+    public TankDTO(){}
 
     //////////////////////////////////////
     //GETTERS AND SETTERS
+
     public Long getTankId() {
         return tankId;
     }
 
     public void setTankId(Long tankId) {
         this.tankId = tankId;
-    }
-
-    public int getTanknummer() {
-        return tanknummer;
-    }
-
-    public void setTanknummer(int tanknummer) {
-        this.tanknummer = tanknummer;
     }
 
     public String getTanknaam() {
@@ -127,5 +147,21 @@ public class TankDTO implements Serializable {
 
     public void setMeldingTanken(int meldingTanken) {
         this.meldingTanken = meldingTanken;
+    }
+
+    public Bedrijf getBedrijf() {
+        return bedrijf;
+    }
+
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
+    }
+
+    public List<Sensorgegevens> getSensorgegevens() {
+        return sensorgegevens;
+    }
+
+    public void setSensorgegevens(List<Sensorgegevens> sensorgegevens) {
+        this.sensorgegevens = sensorgegevens;
     }
 }
