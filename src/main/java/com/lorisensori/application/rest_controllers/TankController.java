@@ -32,7 +32,7 @@ public class TankController {
     }
 
     //Create a new Tank
-    @PostMapping("/tank/")
+    @PostMapping("/tank/create")
     public Tank createTank(@Valid @RequestBody Tank tank) {
 
         if (!tankService.existsByTanknaam(tank.getTanknaam())) {

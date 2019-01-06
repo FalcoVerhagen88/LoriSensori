@@ -1,6 +1,7 @@
 package com.lorisensori.application.service;
 
 import com.lorisensori.application.DAO_interfaces.TankRepository;
+import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.service.TankService;
 import org.springframework.stereotype.Service;
@@ -44,4 +45,17 @@ public class TankServiceImpl implements TankService {
     public void delete(Tank tank) {
         tankRepository.delete(tank);
     }
+
+	@Override
+	public Tank findByDevId(String devId) {
+		
+		return tankRepository.findByDevId(devId);
+	}
+
+	@Override
+	public void saveSensorgegevens(Sensorgegevens sensorgegevens) {
+		
+		
+		
+	}
 }

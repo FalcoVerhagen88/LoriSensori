@@ -22,6 +22,9 @@ public class Tank implements Serializable {
     private String tanknaam;
 
     private String type;
+    
+    @Column(unique=true)
+    private String devId; // TTN device ID
 
     private int inhoudLiters;
 
@@ -46,6 +49,9 @@ public class Tank implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Sensorgegevens> sensorgegevens;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<SensorLog> sensorLog;
 
     //TODO: LoRa informatie toevoegen
 
@@ -84,7 +90,25 @@ public class Tank implements Serializable {
     public void setSensorgegevens(List<Sensorgegevens> sensorgegevens) {
         this.sensorgegevens = sensorgegevens;
     }
+    
+    public void addSensorGegevens(Sensorgegevens sensorgegevens) // kunnen we sensorgegevens mee opslaan bij een tank
+    {
+    	getSensorgegevens().add(sensorgegevens);
+    }
+    
+    public List<SensorLog> getSensorLog() {
+        return sensorLog;
+    }
 
+    public void setSensorLog(List<SensorLog> sensorLog) {
+        this.sensorLog = sensorLog;
+    }
+
+    public void addSensorLog(SensorLog sensorlog)  // gebruiken we om de sensorlog bij te houden
+    {
+    	getSensorLog().add(sensorlog);
+    }
+    
     public String getTanknaam() {
         return tanknaam;
     }
@@ -172,6 +196,15 @@ public class Tank implements Serializable {
     public void setMeldingTanken(int meldingTanken) {
         this.meldingTanken = meldingTanken;
     }
+    
+    public void setdevId(String devId)
+    {
+    	this.devId = devId;
+    }
 
+    public String getdevId()
+    {
+    	return devId;
+    }
 }
 

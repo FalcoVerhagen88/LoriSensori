@@ -1,5 +1,6 @@
 package com.lorisensori.application.service;
 
+import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 
 public interface TankService {
@@ -13,6 +14,10 @@ public interface TankService {
     Tank findByTanknaam(String tanknaam);
 
     Tank findByTankId(Long id);
+    
+    Tank findByDevId(String devId);
+    
+    void saveSensorgegevens(Sensorgegevens sensorgegevens);
 
     void delete(Tank tank);
 }
