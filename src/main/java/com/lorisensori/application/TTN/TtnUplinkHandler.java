@@ -78,7 +78,7 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
     
    public void ontvangBericht(String devId, DataMessage data)
    {
-	   	  
+	   	  // test print om te kijken of er wel iets in de array staat
 			  try
 			  {	
 				  switch (((UplinkMessage) data).getPayloadRaw()[0])
@@ -408,7 +408,7 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
 	   
  		try {
  		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
- 																	Byte.toString(alarmAndAckBericht[1]),//String slotStatus 
+ 																	null,								//String slotStatus 
  																	null,								//String dieselniveau
  																	null,								//String accuniveau
  																	null,								//String vermogenZonnepaneel
