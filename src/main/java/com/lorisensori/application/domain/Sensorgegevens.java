@@ -1,11 +1,14 @@
 package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.lorisensori.application.DAO_interfaces.TankRepository;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "sensorgegevens")
@@ -31,6 +34,11 @@ public class Sensorgegevens {
     @OneToOne()
     @JoinColumn(name = "slot_geopend_door")
     private Medewerker medewerkerSlot;
+    
+    @ManyToOne
+    @JoinColumn(name = "tankId")
+    private Tank tank;
+    
 
     public Sensorgegevens() {
     }
@@ -111,5 +119,5 @@ public class Sensorgegevens {
     public Date getTimestamp() {
         return timestamp;
     }
-
+    
 }

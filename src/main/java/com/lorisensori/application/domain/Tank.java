@@ -8,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "tank")
@@ -20,6 +21,8 @@ public class Tank implements Serializable {
     @NotBlank
     @Column
     private String tanknaam;
+    
+    private int tanknummer;
 
     private String type;
 
@@ -45,7 +48,7 @@ public class Tank implements Serializable {
     private Bedrijf bedrijf;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Sensorgegevens> sensorgegevens;
+    private Set<Sensorgegevens> sensorgegevens;
 
     //TODO: LoRa informatie toevoegen
 
@@ -77,11 +80,11 @@ public class Tank implements Serializable {
         this.tankId = tankId;
     }
 
-    public List<Sensorgegevens> getSensorgegevens() {
+    public Set<Sensorgegevens> getSensorgegevens() {
         return sensorgegevens;
     }
 
-    public void setSensorgegevens(List<Sensorgegevens> sensorgegevens) {
+    public void setSensorgegevens(Set<Sensorgegevens> sensorgegevens) {
         this.sensorgegevens = sensorgegevens;
     }
 
@@ -173,5 +176,15 @@ public class Tank implements Serializable {
         this.meldingTanken = meldingTanken;
     }
 
+	public int getTanknummer() {
+		return tanknummer;
+	}
+
+	public void setTanknummer(int tanknummer) {
+		this.tanknummer = tanknummer;
+	}
+
+    
+    
 }
 

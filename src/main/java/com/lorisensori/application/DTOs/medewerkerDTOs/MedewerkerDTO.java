@@ -9,11 +9,9 @@ import java.util.Set;
 
 public class MedewerkerDTO implements Serializable {
 
-    private static final long serialVersionUID = -583528961313526216L;
-
     private Long id;
 
-    private String gebruikersnaam, voornaam, achternaam, password, email, telefoonnummer;
+    private String gebruikersnaam, voornaam, achternaam, email, telefoonnummer;
 
     private Bedrijf bedrijf;
 
@@ -24,9 +22,6 @@ public class MedewerkerDTO implements Serializable {
     private Set<Recht> rechten;
 
     private Boolean isEmailVerified;
-
-    public MedewerkerDTO(Long id, String gebruikersnaam, String voornaam, String achternaam, String password, String email, String telefoonnummer, Bedrijf bedrijf, Tank tank, Boolean active, Set<Recht> rechten, Boolean emailVerified) {
-    }
 
     public MedewerkerDTO(){}
 
@@ -66,14 +61,6 @@ public class MedewerkerDTO implements Serializable {
 
     public void setAchternaam(String achternaam) {
         this.achternaam = achternaam;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
