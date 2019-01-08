@@ -1,10 +1,12 @@
 package com.lorisensori.application.DAO_interfaces;
 
+import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.Medewerker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface MedewerkerRepository extends JpaRepository<Medewerker, Long> {
@@ -21,4 +23,6 @@ public interface MedewerkerRepository extends JpaRepository<Medewerker, Long> {
 
     @Override
     Medewerker getOne(Long id);
+
+	Set<Medewerker> findByBedrijf(Bedrijf bedrijf);
 }

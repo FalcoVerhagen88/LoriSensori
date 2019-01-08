@@ -11,5 +11,10 @@ public enum RechtEnums {
     /**
      * Rechten Administrator
      */
-    ROLE_ADMIN
+    ROLE_ADMIN,
+    
+    /**
+     * Rechten Technisch Beheerder
+     */
+    ROLE_TECH
 }

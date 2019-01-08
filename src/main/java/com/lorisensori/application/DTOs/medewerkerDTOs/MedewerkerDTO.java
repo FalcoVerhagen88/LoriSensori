@@ -9,24 +9,19 @@ import java.util.Set;
 
 public class MedewerkerDTO implements Serializable {
 
-    private static final long serialVersionUID = -583528961313526216L;
-
     private Long id;
 
-    private String gebruikersnaam, voornaam, achternaam, password, email, telefoonnummer;
+    private String gebruikersnaam, voornaam, achternaam, email, telefoonnummer;
 
-    private Bedrijf bedrijf;
+    private String bedrijfsnaam;
 
-    private Tank tank;
+    private Long tankId;
 
     private Boolean active;
 
     private Set<Recht> rechten;
 
     private Boolean isEmailVerified;
-
-    public MedewerkerDTO(Long id, String gebruikersnaam, String voornaam, String achternaam, String password, String email, String telefoonnummer, Bedrijf bedrijf, Tank tank, Boolean active, Set<Recht> rechten, Boolean emailVerified) {
-    }
 
     public MedewerkerDTO(){}
 
@@ -68,14 +63,6 @@ public class MedewerkerDTO implements Serializable {
         this.achternaam = achternaam;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -92,21 +79,6 @@ public class MedewerkerDTO implements Serializable {
         this.telefoonnummer = telefoonnummer;
     }
 
-    public Bedrijf getBedrijf() {
-        return bedrijf;
-    }
-
-    public void setBedrijf(Bedrijf bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public Tank getTank() {
-        return tank;
-    }
-
-    public void setTank(Tank tank) {
-        this.tank = tank;
-    }
 
     public Boolean getActive() {
         return active;
@@ -131,4 +103,30 @@ public class MedewerkerDTO implements Serializable {
     public void setEmailVerified(Boolean emailVerified) {
         isEmailVerified = emailVerified;
     }
+
+
+
+	public String getBedrijfsnaam() {
+		return bedrijfsnaam;
+	}
+
+
+
+	public void setBedrijfsnaam(String bedrijfsnaam) {
+		this.bedrijfsnaam = bedrijfsnaam;
+	}
+
+
+
+	public Long getTankId() {
+		return tankId;
+	}
+
+
+
+	public void setTankId(Long tankId) {
+		this.tankId = tankId;
+	}
+
+
 }

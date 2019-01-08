@@ -7,6 +7,7 @@ import com.lorisensori.application.enums.StatusEnums;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -37,27 +38,27 @@ public class Bedrijf {
 
     @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "medewerkers")
-    private List<Medewerker> medewerkers;
+    private Set<Medewerker> medewerkers;
 
-    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bedrijf", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonManagedReference(value = "tanks")
-    private List<Tank> tanks;
+    private Set<Tank> tanks;
 
 
-    public List<Medewerker> getMedewerkers() {
+    public Set<Medewerker> getMedewerkers() {
         return medewerkers;
     }
 
-    public void setMedewerkers(List<Medewerker> medewerkers) {
+    public void setMedewerkers(Set<Medewerker> medewerkers) {
         this.medewerkers = medewerkers;
     }
 
     public void addMedewerker(Medewerker medewerker) {
-
+/*
         if (medewerkers == null){
             medewerkers = new ArrayList<>();
         }
-        if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
+*/        if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
         else {
             throw new EntityExistsException();
         }
@@ -163,11 +164,11 @@ public class Bedrijf {
         this.kvkNummer = kvkNummer;
     }
 
-    public List<Tank> getTanks() {
+    public Set<Tank> getTanks() {
         return tanks;
     }
 
-    public void setTanks(List<Tank> tanks) {
+    public void setTanks(Set<Tank> tanks) {
         this.tanks = tanks;
     }
 

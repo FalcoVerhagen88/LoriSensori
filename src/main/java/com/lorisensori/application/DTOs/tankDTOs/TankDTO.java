@@ -1,9 +1,13 @@
 package com.lorisensori.application.DTOs.tankDTOs;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.enums.StatusEnums;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class TankDTO implements Serializable {
 
@@ -17,14 +21,37 @@ public class TankDTO implements Serializable {
 
     private StatusEnums status;
 
+    @JsonFormat(pattern = "HH:mm")
+    @DateTimeFormat(pattern = "HH:mm")
     private Date openingstijd, sluitingstijd;
 
     private int meldingTanken;
-
+    
     //TODO: LoRa informatie toevoegen
 
     //////////////////////////////////////
     //GETTERS AND SETTERS
+    public TankDTO(Long tankId, int tanknummer, int diameter, int lengte, int inhoudLiters, int bouwjaar, String tanknaam, String type, double gewicht, StatusEnums status, Date openingstijd, Date sluitingstijd, int meldingTanken) {
+    	this.tankId = tankId;
+    	this.tanknummer = tanknummer;
+    	this.diameter = diameter;
+    	this.lengte = lengte;
+    	this.inhoudLiters = inhoudLiters;
+    	this.bouwjaar = bouwjaar;
+    	this.tanknaam = tanknaam;
+    	this.type = type;
+    	this.gewicht = gewicht;
+    	this.status = status;
+    	this.openingstijd = openingstijd;
+    	this.sluitingstijd = sluitingstijd;
+    	this.meldingTanken = meldingTanken;
+    	
+    }
+    
+    public TankDTO() {
+    	
+    }
+    
     public Long getTankId() {
         return tankId;
     }
