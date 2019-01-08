@@ -1,9 +1,10 @@
 package com.lorisensori.application.service;
 
-import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
-import com.lorisensori.application.domain.Tank;
-
 import java.util.List;
+import java.util.Set;
+
+import com.lorisensori.application.domain.Bedrijf;
+import com.lorisensori.application.domain.Tank;
 
 public interface TankService {
 
@@ -11,11 +12,14 @@ public interface TankService {
 
     boolean existsByTanknaam(String tanknaam);
 
-    List<TankDTO> findAll();
+    List<Tank> findAll();
+    
+    Set<Tank> findByBedrijf(Bedrijf bedrijf);
 
     Tank findByTanknaam(String tanknaam);
 
     Tank findByTankId(Long id);
 
     void delete(Tank tank);
+    
 }

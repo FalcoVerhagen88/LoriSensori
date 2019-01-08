@@ -1,57 +1,56 @@
 package com.lorisensori.application.DTOs.tankDTOs;
 
-import com.lorisensori.application.domain.Bedrijf;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.enums.StatusEnums;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 public class TankDTO implements Serializable {
 
     private Long tankId;
 
-    private String tanknaam, type;
+    private int tanknummer, diameter, lengte, inhoudLiters, bouwjaar;
 
-    private int  diameter, lengte, inhoudLiters, bouwjaar;
+    private String tanknaam, type;
 
     private double gewicht;
 
     private StatusEnums status;
 
+    @JsonFormat(pattern = "HH:mm")
+    @DateTimeFormat(pattern = "HH:mm")
     private Date openingstijd, sluitingstijd;
 
     private int meldingTanken;
 
-    private Bedrijf bedrijf;
-
-    private List<Sensorgegevens> sensorgegevens;
-
-    public TankDTO(Long tankId, String tanknaam, String type, int inhoudLiters, int bouwjaar,
-                   int diameter, int lengte, double gewicht, StatusEnums status, Date openingstijd, Date sluitingstijd,
-                   int meldingTanken, Bedrijf bedrijf, List<Sensorgegevens> sensorgegevens) {
-
-        this.tankId = tankId;
-        this.tanknaam = tanknaam;
-        this.type = type;
-        this.diameter = diameter;
-        this.lengte = lengte;
-        this.inhoudLiters = inhoudLiters;
-        this.bouwjaar = bouwjaar;
-        this.gewicht = gewicht;
-        this.status = status;
-        this.openingstijd = openingstijd;
-        this.sluitingstijd = sluitingstijd;
-        this.meldingTanken = meldingTanken;
-        this.bedrijf = bedrijf;
-        this.sensorgegevens = sensorgegevens;
-    }
-
-    public TankDTO(){}
+    //TODO: LoRa informatie toevoegen
 
     //////////////////////////////////////
     //GETTERS AND SETTERS
+    public TankDTO(Long tankId, int tanknummer, int diameter, int lengte, int inhoudLiters, int bouwjaar, String tanknaam, String type, double gewicht, StatusEnums status, Date openingstijd, Date sluitingstijd, int meldingTanken) {
+    	this.tankId = tankId;
+    	this.tanknummer = tanknummer;
+    	this.diameter = diameter;
+    	this.lengte = lengte;
+    	this.inhoudLiters = inhoudLiters;
+    	this.bouwjaar = bouwjaar;
+    	this.tanknaam = tanknaam;
+    	this.type = type;
+    	this.gewicht = gewicht;
+    	this.status = status;
+    	this.openingstijd = openingstijd;
+    	this.sluitingstijd = sluitingstijd;
+    	this.meldingTanken = meldingTanken;
+
+    }
+
+    public TankDTO() {
+
+    }
 
     public Long getTankId() {
         return tankId;
@@ -59,6 +58,14 @@ public class TankDTO implements Serializable {
 
     public void setTankId(Long tankId) {
         this.tankId = tankId;
+    }
+
+    public int getTanknummer() {
+        return tanknummer;
+    }
+
+    public void setTanknummer(int tanknummer) {
+        this.tanknummer = tanknummer;
     }
 
     public String getTanknaam() {
@@ -147,21 +154,5 @@ public class TankDTO implements Serializable {
 
     public void setMeldingTanken(int meldingTanken) {
         this.meldingTanken = meldingTanken;
-    }
-
-    public Bedrijf getBedrijf() {
-        return bedrijf;
-    }
-
-    public void setBedrijf(Bedrijf bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public List<Sensorgegevens> getSensorgegevens() {
-        return sensorgegevens;
-    }
-
-    public void setSensorgegevens(List<Sensorgegevens> sensorgegevens) {
-        this.sensorgegevens = sensorgegevens;
     }
 }

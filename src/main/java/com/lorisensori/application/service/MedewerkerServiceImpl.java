@@ -3,15 +3,16 @@ package com.lorisensori.application.service;
 import com.lorisensori.application.DAO_interfaces.MedewerkerRepository;
 import com.lorisensori.application.DTOs.medewerkerDTOs.MedewerkerDTO;
 import com.lorisensori.application.DTOs.medewerkerDTOs.UpdateMedewerkerDTO;
+import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.exceptions.EntityExistsException;
-import com.lorisensori.application.exceptions.ResourceNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 //Business logic goes here NOT in the repository
@@ -19,7 +20,6 @@ import java.util.stream.Collectors;
 public class MedewerkerServiceImpl implements MedewerkerService {
 
     private final MedewerkerRepository medewerkerRepository;
-    private ModelMapper modelMapper;
 
     @Autowired
     public MedewerkerServiceImpl(MedewerkerRepository medewerkerRepository) {
@@ -42,46 +42,20 @@ public class MedewerkerServiceImpl implements MedewerkerService {
     }
 
     @Override
-    public List<MedewerkerDTO> findAll() {
-        return medewerkerRepository.findAll().stream()
-                .map(entity -> new MedewerkerDTO(entity.getId(), entity.getGebruikersnaam(), entity.getVoornaam(), entity.getAchternaam(),
-                        entity.getPassword(), entity.getEmail(), entity.getTelefoonnummer(), entity.getBedrijf(), entity.getTank(),
-                        entity.getActive(), entity.getRechten(), entity.getEmailVerified())).collect(Collectors.toList());
+    public List<Medewerker> findAll() {
+    	return medewerkerRepository.findAll();
     }
 
-    @Transactional
-    public MedewerkerDTO create(MedewerkerDTO medewerkerDTO) {
-
-        Medewerker nieuweMedewerker = new Medewerker();
-
-        nieuweMedewerker.setId(medewerkerDTO.getId());
-        nieuweMedewerker.setGebruikersnaam(medewerkerDTO.getGebruikersnaam());
-        nieuweMedewerker.setVoornaam(medewerkerDTO.getVoornaam());
-        nieuweMedewerker.setAchternaam(medewerkerDTO.getAchternaam());
-        nieuweMedewerker.setPassword(medewerkerDTO.getPassword());
-        nieuweMedewerker.setEmail(medewerkerDTO.getEmail());
-        nieuweMedewerker.setTelefoonnummer(medewerkerDTO.getTelefoonnummer());
-        nieuweMedewerker.setBedrijf(medewerkerDTO.getBedrijf());
-        nieuweMedewerker.setTank(medewerkerDTO.getTank());
-        nieuweMedewerker.setActive(medewerkerDTO.getActive());
-        nieuweMedewerker.setRechten(medewerkerDTO.getRechten());
-        nieuweMedewerker.setEmailVerified(medewerkerDTO.getEmailVerified());
-
-        Medewerker opgeslagenMedewerker = medewerkerRepository.saveAndFlush(nieuweMedewerker);
-
-        return new MedewerkerDTO(opgeslagenMedewerker.getId(), opgeslagenMedewerker.getGebruikersnaam(), opgeslagenMedewerker.getVoornaam(),
-                opgeslagenMedewerker.getAchternaam(), opgeslagenMedewerker.getPassword(), opgeslagenMedewerker.getEmail(), opgeslagenMedewerker.getTelefoonnummer(),
-                opgeslagenMedewerker.getBedrijf(), opgeslagenMedewerker.getTank(), opgeslagenMedewerker.getActive(), opgeslagenMedewerker.getRechten(),
-                opgeslagenMedewerker.getEmailVerified());
-
+    @Override
+    public Set<Medewerker> findByBedrijf(Bedrijf bedrijf) {
+    	return medewerkerRepository.findByBedrijf(bedrijf);
     }
 
     @Transactional
     public UpdateMedewerkerDTO update(Long id, UpdateMedewerkerDTO updateMedewerkerDTO){
 
-        Medewerker entity = findOneSafe(id);
+        Medewerker entity = findById(id);
 
-        entity.setId(updateMedewerkerDTO.getId());
         entity.setGebruikersnaam(updateMedewerkerDTO.getGebruikersnaam());
         entity.setVoornaam(updateMedewerkerDTO.getVoornaam());
         entity.setAchternaam(updateMedewerkerDTO.getAchternaam());
@@ -90,25 +64,8 @@ public class MedewerkerServiceImpl implements MedewerkerService {
         entity.setActive(updateMedewerkerDTO.getActive());
         entity.setEmailVerified(updateMedewerkerDTO.getEmailVerified());
 
-        return new UpdateMedewerkerDTO(entity.getId(), entity.getGebruikersnaam(), entity.getVoornaam(), entity.getAchternaam(),
-                entity.getEmail(), entity.getTelefoonnummer(), entity.getActive(), entity.getEmailVerified());
-    }
-
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        Medewerker medewerker = findOneSafe(id);
-        medewerkerRepository.delete(medewerker);
-    }
-
-    private Medewerker findOneSafe(Long id) {
-        Medewerker medewerker = medewerkerRepository.getOne(id);
-        if (medewerker == null) {
-            throw new ResourceNotFoundException("Medewerker", "Id", id);
-        } else {
-            return medewerker;
-        }
+        return new UpdateMedewerkerDTO(entity.getGebruikersnaam(), entity.getVoornaam(), entity.getAchternaam(), entity.getEmail(),
+                entity.getTelefoonnummer(), entity.getActive(), entity.getEmailVerified());
     }
 
     @Override
@@ -121,5 +78,14 @@ public class MedewerkerServiceImpl implements MedewerkerService {
         return medewerkerRepository.findByVoornaam(voornaam);
     }
 
+    @Override
+    public Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam) {
+        return medewerkerRepository.findByGebruikersnaam(gebruikersnaam);
+    }
+
+    @Override
+    public void delete(Medewerker medewerker) {
+        medewerkerRepository.delete(medewerker);
+    }
 
 }
