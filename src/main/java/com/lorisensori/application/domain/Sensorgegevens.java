@@ -20,12 +20,21 @@ public class Sensorgegevens {
     @Column
     private Long sensorId;
 
-    private boolean slotStatus;
-    private double dieselniveau;
-    private double accuniveau;
-    private double vermogenZonnepaneel;
+    private int uplinkId;
+    private int slotStatus;
+    private int dieselniveau;
+    private int accuniveau;
+    private int vermogenZonnepaneel;
     private int gpsBreedtegraad;
+    private int gpsBreedteMinuut;
+    private int gpsBreedteSeconde;
+    private int gpsBreedteTiendeSec;
     private int gpsLengtegraad;
+    private int gpsLengteMinuut;
+    private int gpsLengteSeconde;
+    private int gpsLengteTiendeSec;
+    
+    
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -40,6 +49,37 @@ public class Sensorgegevens {
     private Tank tank;
     
 
+    public Sensorgegevens( 	int uplinkId,
+    						int slotStatus,
+    						int dieselniveau,
+    						int accuniveau,
+    						int vermogenZonnepaneel,
+    						int gpsBreedtegraad,
+    						int gpsBreedteMinuut,
+    						int gpsBreedteSeconde,
+    						int gpsBreedteTiendeSec,
+    						int gpsLengtegraad,
+    						int gpsLengteMinuut,
+    						int gpsLengteSeconde,
+    						int gpsLengteTiendeSec
+    						) 
+    
+    {
+    	this. uplinkId = uplinkId;
+    	this. slotStatus = slotStatus;
+    	this. dieselniveau = dieselniveau;
+    	this. accuniveau = accuniveau;
+    	this. vermogenZonnepaneel = vermogenZonnepaneel;
+    	this. gpsBreedtegraad = gpsBreedtegraad;
+    	this. gpsBreedteMinuut = gpsBreedteMinuut;
+    	this. gpsBreedteSeconde = gpsBreedteSeconde;
+    	this. gpsBreedteTiendeSec = gpsBreedteTiendeSec;
+    	this. gpsLengtegraad = gpsLengtegraad;
+    	this. gpsLengteMinuut = gpsLengteMinuut;
+    	this. gpsLengteSeconde = gpsLengteSeconde;
+    	this. gpsLengteTiendeSec = gpsLengteTiendeSec;
+    }
+    
     public Sensorgegevens() {
     }
 
@@ -56,12 +96,12 @@ public class Sensorgegevens {
     }
 
 
-    public boolean isSlotStatus() {
+    public int isSlotStatus() {
         return slotStatus;
     }
 
 
-    public void setSlotStatus(boolean slotStatus) {
+    public void setSlotStatus(int slotStatus) {
         this.slotStatus = slotStatus;
     }
 
@@ -71,7 +111,7 @@ public class Sensorgegevens {
     }
 
 
-    public void setDieselniveau(double dieselniveau) {
+    public void setDieselniveau(int dieselniveau) {
         this.dieselniveau = dieselniveau;
     }
 
@@ -81,7 +121,7 @@ public class Sensorgegevens {
     }
 
 
-    public void setAccuniveau(double accuniveau) {
+    public void setAccuniveau(int accuniveau) {
         this.accuniveau = accuniveau;
     }
 
@@ -91,7 +131,7 @@ public class Sensorgegevens {
     }
 
 
-    public void setVermogenZonnepaneel(double vermogenZonnepaneel) {
+    public void setVermogenZonnepaneel(int vermogenZonnepaneel) {
         this.vermogenZonnepaneel = vermogenZonnepaneel;
     }
 
@@ -119,5 +159,62 @@ public class Sensorgegevens {
     public Date getTimestamp() {
         return timestamp;
     }
-    
+
+
+	public int getGpsBreedteSeconde() {
+		return gpsBreedteSeconde;
+	}
+
+	public void setGpsBreedteSeconde(int gpsBreedteSeconde) {
+		this.gpsBreedteSeconde = gpsBreedteSeconde;
+	}
+
+	public int getGpsBreedteMinuut() {
+		return gpsBreedteMinuut;
+	}
+
+	public void setGpsBreedteMinuut(int gpsBreedteMinuut) {
+		this.gpsBreedteMinuut = gpsBreedteMinuut;
+	}
+
+	public int getGpsBreedteTiendeSec() {
+		return gpsBreedteTiendeSec;
+	}
+
+	public void setGpsBreedteTiendeSec(int gpsBreedteTiendeSec) {
+		this.gpsBreedteTiendeSec = gpsBreedteTiendeSec;
+	}
+
+	public int getGpsLengteMinuut() {
+		return gpsLengteMinuut;
+	}
+
+	public void setGpsLengteMinuut(int gpsLengteMinuut) {
+		this.gpsLengteMinuut = gpsLengteMinuut;
+	}
+
+	public int getGpsLengteSeconde() {
+		return gpsLengteSeconde;
+	}
+
+	public void setGpsLengteSeconde(int gpsLengteSeconde) {
+		this.gpsLengteSeconde = gpsLengteSeconde;
+	}
+
+	public int getGpsLengteTiendeSec() {
+		return gpsLengteTiendeSec;
+	}
+
+	public void setGpsLengteTiendeSec(int gpsLengteTiendeSec) {
+		this.gpsLengteTiendeSec = gpsLengteTiendeSec;
+	}
+
+	public int getUplinkId() {
+		return uplinkId;
+	}
+
+	public void setUplinkId(int uplinkId) {
+		this.uplinkId = uplinkId;
+	}
+
 }

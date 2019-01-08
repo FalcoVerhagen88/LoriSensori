@@ -1,7 +1,9 @@
 package com.lorisensori.application.service;
 
 import com.lorisensori.application.DAO_interfaces.TankRepository;
+import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Bedrijf;
+
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.service.TankService;
 
@@ -52,8 +54,19 @@ public class TankServiceImpl implements TankService {
     }
 
 	@Override
+	public Tank findByDevId(String devId) {
+		
+		return tankRepository.findByDevId(devId);
+	}
+
+	@Override
+	public void saveSensorgegevens(Sensorgegevens sensorgegevens) {
+		
+		
+		
+	}
+
 	public Set<Tank> findByBedrijf(Bedrijf bedrijf) {
 		return bedrijf.getTanks();
 	}
-
 }

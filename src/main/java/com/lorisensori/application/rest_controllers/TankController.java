@@ -73,8 +73,9 @@ public class TankController {
 	}
 
     //Create a new Tank
+  @PostMapping("/tank/create")
 	@PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/tank/")
+
     public Tank createTank(@Valid @RequestBody Tank tank) {
 
         if (!tankService.existsByTanknaam(tank.getTanknaam())) {

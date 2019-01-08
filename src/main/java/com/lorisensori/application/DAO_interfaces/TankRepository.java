@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TankRepository extends JpaRepository<Tank, Long> {
 
+	Tank findByDevId(String devId);
 }
