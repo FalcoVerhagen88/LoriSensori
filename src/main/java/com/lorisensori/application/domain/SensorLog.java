@@ -10,8 +10,8 @@
 
 	@Entity
 	@Table(name = "sensorlog")
-	@EntityListeners(AuditingEntityListener.class)
-	@JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
+	//@EntityListeners(AuditingEntityListener.class)
+	//@JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
 
 public class SensorLog {
 
@@ -22,18 +22,26 @@ public class SensorLog {
 	    private static final long serialVersionUID = 10L;
 
 	    @Id
-	    @Column(name = "sensor_id")
-
+	    //@Column(name = "sensor_id")
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private String sensor_Id; // zo dus
+	   
+	      
 	    @Column(updatable = false)
-
 	    private String uplinkId; // int gemaakt
-	    private String slotStatus; // int gemaakt
-	    private String dieselniveau; // int gemaakt
-	    private String accuniveau; // int gemaakt
-	    private String vermogenZonnepaneel; // int gemaakt
-	    private String gpsBreedtegraad;
-	    private String gpsLengtegraad;
+	    private String slotStatus; // s;otstatus open = 1 dicht = 0
+	    private String dieselniveau; // niveau van 0 - 100 %
+	    private String accuniveau; // niveau van 0 tot 100%
+	    private String vermogenZonnepaneel; // geleverde vermogen in w
+		private String gpsBreedtegraad;
+		private String gpsBreedteMinuut;
+		private String gpsBreedteSeconde;
+		private String gpsBreedteTiendeSec;
+		private String gpsLengtegraad;
+		private String gpsLengteMinuut;
+		private String gpsLengteSeconde;
+		private String gpsLengteTiendeSec;
+		private String weekendSetting;
 	    @Column(nullable = false)
 	    @Temporal(TemporalType.TIMESTAMP)
 	    @CreatedDate
@@ -41,7 +49,7 @@ public class SensorLog {
 	    
 	    
 	    @ManyToOne()
-	    @JoinColumn(name = "tankId")
+	    @JoinColumn(name = "devId")
 	    private Tank tank;
 	    
 	    
@@ -54,17 +62,25 @@ public class SensorLog {
 	    
 
 	    
-	    public SensorLog( String uplinkId, String sensor_Id, String slotStatus, String dieselniveau, String accuniveau, String vermogenZonnepaneel, String gpsBreedtegraad, String gpsLengtegraad) 
+	    public SensorLog( String uplinkId,String slotStatus, String dieselniveau, String accuniveau, String vermogenZonnepaneel, String gpsBreedtegraad, String gpsBreedteMinuut, 
+	    				String gpsBreedteSeconde, String gpsBreedteTiendeSec, String gpsLengtegraad, String gpsLengteMinuut, String gpsLengteSeconde, String gpsLengteTiendeSec, String weekendSetting) 
 	    {
 	    		
-	    		this.uplinkId = uplinkId;
-	    		this.sensor_Id = sensor_Id;   
+	    		this.uplinkId = uplinkId;   
 	    		this.slotStatus = slotStatus;
 	    		this.dieselniveau = dieselniveau;
 	    		this.accuniveau = accuniveau;
 	    		this.vermogenZonnepaneel = vermogenZonnepaneel;
 	    		this.gpsBreedtegraad = gpsBreedtegraad;
+	    		this.gpsBreedteMinuut = gpsBreedteMinuut;
+	    		this.gpsBreedteSeconde = gpsBreedteSeconde;
+	    		this.gpsBreedteTiendeSec = gpsBreedteTiendeSec;
 	    		this.gpsLengtegraad = gpsLengtegraad;
+	    		this.gpsLengteMinuut = gpsLengteMinuut;
+	    		this.gpsLengteSeconde = gpsLengteSeconde;
+	    		this.gpsLengteTiendeSec = gpsLengteTiendeSec;
+	    		this.weekendSetting = weekendSetting;
+	    		
 	    }
 	    
 	    
@@ -152,6 +168,77 @@ public class SensorLog {
 	    public Date getTimestamp() {
 	        return timestamp;
 	    }
+
+
+		public String getGpsBreedteMinuut() {
+			return gpsBreedteMinuut;
+		}
+
+
+		public void setGpsBreedteMinuut(String gpsBreedteMinuut) {
+			this.gpsBreedteMinuut = gpsBreedteMinuut;
+		}
+
+
+		public String getGpsBreedteSeconde() {
+			return gpsBreedteSeconde;
+		}
+
+
+		public void setGpsBreedteSeconde(String gpsBreedteSeconde) {
+			this.gpsBreedteSeconde = gpsBreedteSeconde;
+		}
+
+
+		public String getGpsBreedteTiendeSec() {
+			return gpsBreedteTiendeSec;
+		}
+
+
+		public void setGpsBreedteTiendeSec(String gpsBreedteTiendeSec) {
+			this.gpsBreedteTiendeSec = gpsBreedteTiendeSec;
+		}
+
+
+		public String getGpsLengteMinuut() {
+			return gpsLengteMinuut;
+		}
+
+
+		public void setGpsLengteMinuut(String gpsLengteMinuut) {
+			this.gpsLengteMinuut = gpsLengteMinuut;
+		}
+
+
+		public String getGpsLengteSeconde() {
+			return gpsLengteSeconde;
+		}
+
+
+		public void setGpsLengteSeconde(String gpsLengteSeconde) {
+			this.gpsLengteSeconde = gpsLengteSeconde;
+		}
+
+
+		public String getGpsLengteTiendeSec() {
+			return gpsLengteTiendeSec;
+		}
+
+
+		public void setGpsLengteTiendeSec(String gpsLengteTiendeSec) {
+			this.gpsLengteTiendeSec = gpsLengteTiendeSec;
+		}
+
+
+		public String getWeekendSetting() {
+			return weekendSetting;
+		}
+
+
+		public void setWeekendSetting(String weekendSetting) {
+			this.weekendSetting = weekendSetting;
+		}
+	    
 
 	}
 
