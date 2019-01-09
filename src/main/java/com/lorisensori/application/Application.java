@@ -10,6 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.thethingsnetwork.data.common.messages.DataMessage;
 import org.thethingsnetwork.data.mqtt.Client;
 
@@ -95,4 +97,5 @@ public class Application {
 	public ModelMapper modelMapper() {
 	    return new ModelMapper();
 	}
+	
 }
