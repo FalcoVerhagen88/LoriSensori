@@ -15,8 +15,6 @@ public class MedewerkerDTO implements Serializable {
 
     private String bedrijfsnaam;
 
-    private Long tankId;
-
     private Boolean active;
 
     private Set<Recht> rechten;
@@ -114,18 +112,6 @@ public class MedewerkerDTO implements Serializable {
 
 	public void setBedrijfsnaam(String bedrijfsnaam) {
 		this.bedrijfsnaam = bedrijfsnaam;
-	}
-
-
-
-	public Long getTankId() {
-		return tankId;
-	}
-
-
-
-	public void setTankId(Long tankId) {
-		this.tankId = tankId;
 	}
 
 

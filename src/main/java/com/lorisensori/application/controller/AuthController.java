@@ -77,6 +77,7 @@ public class AuthController {
 	/**
 	 * Entry point for the user log in. Return the jwt auth token and the refresh token
 	 */
+	@CrossOrigin(origins = "localhost:3000")
 	@PostMapping("/login")
 	@ApiOperation(value = "Logs the user in to the system and return the auth tokens")
 	public ResponseEntity<?> authenticateUser(@ApiParam(value = "The LoginRequest payload") @Valid @RequestBody LoginRequest loginRequest) {

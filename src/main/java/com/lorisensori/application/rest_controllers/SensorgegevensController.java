@@ -28,8 +28,6 @@ public class SensorgegevensController {
     
     @Autowired
     private ModelMapper modelMapper;
-
-
     
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/tank/sensorgegevens/{tankid}")
