@@ -24,6 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin("http://localhost:3000")
 @Api(value = "User Rest API", description = "Defines endpoints for the logged in user. It's " +
 		"secured by default ")
 

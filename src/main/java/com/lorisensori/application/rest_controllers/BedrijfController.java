@@ -14,6 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin("http://localhost:3000")
 public class BedrijfController {
 
     private final BedrijfService bedrijfService;
@@ -28,6 +29,7 @@ public class BedrijfController {
 
     //Get all
     @GetMapping("/bedrijf/")
+    @CrossOrigin("http://localhost:3000")
     public Iterable<Bedrijf> getAllBedrijf() {
         return bedrijfService.findAll();
     }
