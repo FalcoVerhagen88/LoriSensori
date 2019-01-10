@@ -29,6 +29,7 @@ public class BedrijfController {
 
     //Get all
     @GetMapping("/bedrijf/")
+    @CrossOrigin("http://localhost:3000")
     public Iterable<Bedrijf> getAllBedrijf() {
         return bedrijfService.findAll();
     }

@@ -34,7 +34,7 @@ public class TankController {
     private ModelMapper modelMapper;
 
     //Get all Tanks of current user from his Bedrijf
-	@PreAuthorize("hasRole('USER')")
+	//@PreAuthorize("hasRole('USER')")
     @GetMapping("/tank/")
     public Set<TankDTO> getAllTank(@CurrentUser CustomUserDetails currentUser) {
         Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
