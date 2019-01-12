@@ -43,6 +43,13 @@ public class TankController {
         return tankService.convertToDto(tank);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/tank")
+    public TankDTO getTankByDevId(@RequestParam(value = "dev_id") String devId){
+        Tank tank = tankService.findByDevId(devId);
+        return tankService.convertToDto(tank);
+    }
+
     //Update tank
     //TODO: niet zeker of dit de juiste manier is.
     @PreAuthorize("hasRole('ADMIN')")
