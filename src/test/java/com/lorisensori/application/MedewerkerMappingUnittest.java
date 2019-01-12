@@ -19,21 +19,17 @@ public class MedewerkerMappingUnittest {
         creation.setGebruikersnaam("TestGebruikersnaam");
         creation.setVoornaam("TestVoornaam");
         creation.setAchternaam("TestAchternaam");
-        creation.setPassword("TestPassword");
         creation.setEmail("TestEmail");
         creation.setTelefoonnummer("TestTelefoonnummer");
         creation.setActive(true);
         creation.setEmailVerified(true);
         creation.setRechten(null);
-        creation.setBedrijf(null);
-        creation.setTank(null);
 
         Medewerker medewerker = modelMapper.map(creation, Medewerker.class);
 
         Assert.assertEquals(creation.getVoornaam(), medewerker.getVoornaam());
         Assert.assertEquals(creation.getAchternaam(), medewerker.getAchternaam());
         Assert.assertEquals(creation.getGebruikersnaam(), medewerker.getGebruikersnaam());
-        Assert.assertEquals(creation.getPassword(), medewerker.getPassword());
         Assert.assertEquals(creation.getEmail(), medewerker.getEmail());
         Assert.assertEquals(creation.getTelefoonnummer(), medewerker.getTelefoonnummer());
 

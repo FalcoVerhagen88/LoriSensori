@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,35 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin("http://localhost:3000")
 public class SensorgegevensController {
 
-    @Autowired
-	private SensorgegevensService sensorgegevensService;
+    private final SensorgegevensService sensorgegevensService;
     
-    @Autowired
-    private TankService tankService;
-    
-    @Autowired
-    private ModelMapper modelMapper;
+    private final TankService tankService;
 
+	@Autowired
+	public SensorgegevensController(SensorgegevensService sensorgegevensService, TankService tankService) {
+		this.sensorgegevensService = sensorgegevensService;
+		this.tankService = tankService;
+	}
 
-    
 	@PreAuthorize("hasRole('USER')")
 	@GetMapping("/tank/sensorgegevens/{tankid}")
 	public Set<SensorgegevensDTO> getAllSensorgegeven(@PathVariable(value = "tankId") Long tankId) {
 		Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
-		return sensorgegevens.stream().map(sensorgegeven -> convertToDto(sensorgegeven)).collect(Collectors.toSet());
+		return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
 	}
-		
-		
-	
-	
-	private SensorgegevensDTO convertToDto(Sensorgegevens sensorgegevens) {
-		SensorgegevensDTO sensorgegevensDTO = modelMapper.map(sensorgegevens, SensorgegevensDTO.class);
-		return sensorgegevensDTO;
-	}
-	
-	private Sensorgegevens convertToEntity(SensorgegevensDTO sensorgegevensDTO) {
-		Sensorgegevens sensorgegevens = modelMapper.map(sensorgegevensDTO, Sensorgegevens.class);
-		return sensorgegevens;
-	}
-	
 }

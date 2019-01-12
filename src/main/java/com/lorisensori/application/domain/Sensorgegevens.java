@@ -33,8 +33,8 @@ public class Sensorgegevens {
     private int gpsLengteMinuut;
     private int gpsLengteSeconde;
     private int gpsLengteTiendeSec;
-    
-    
+
+
     @Column
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -43,11 +43,11 @@ public class Sensorgegevens {
     @OneToOne()
     @JoinColumn(name = "slot_geopend_door")
     private Medewerker medewerkerSlot;
-    
+
     @ManyToOne
     @JoinColumn(name = "tankId")
     private Tank tank;
-    
+
 
     public Sensorgegevens( 	int uplinkId,
     						int slotStatus,
@@ -62,8 +62,8 @@ public class Sensorgegevens {
     						int gpsLengteMinuut,
     						int gpsLengteSeconde,
     						int gpsLengteTiendeSec
-    						) 
-    
+    						)
+
     {
     	this. uplinkId = uplinkId;
     	this. slotStatus = slotStatus;
@@ -79,7 +79,7 @@ public class Sensorgegevens {
     	this. gpsLengteSeconde = gpsLengteSeconde;
     	this. gpsLengteTiendeSec = gpsLengteTiendeSec;
     }
-    
+
     public Sensorgegevens() {
     }
 

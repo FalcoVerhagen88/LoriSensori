@@ -129,7 +129,6 @@ public class TheThingsNetwork {
             try {
                 // Toggle the LED
                 DownlinkMessage response = new DownlinkMessage(1, new byte[]{0x00, 0x01});
-                System.out.println("hoe ist nou?");
                 /**
                  * If you don't have an encoder payload function:
                  * client.send(_devId, _data.equals("true") ? new byte[]{0x00} : new byte[]{0x01}, 0);

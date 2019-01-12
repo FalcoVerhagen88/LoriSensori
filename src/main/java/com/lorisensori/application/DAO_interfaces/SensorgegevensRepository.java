@@ -12,5 +12,4 @@ import org.springframework.stereotype.Repository;
 public interface SensorgegevensRepository extends JpaRepository<Sensorgegevens, Long> {
 	
 	Set<Sensorgegevens> findByTank(Tank tank);
-
 }

@@ -1,26 +1,31 @@
 package com.lorisensori.application.service;
 
 import com.lorisensori.application.DAO_interfaces.TankRepository;
+import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Bedrijf;
 
 import com.lorisensori.application.domain.Tank;
-import com.lorisensori.application.service.TankService;
 
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.data.domain.Page;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
+import org.thethingsnetwork.data.common.messages.DownlinkMessage;
 
 //Business logic goes here NOT in the repository
 @Service("tankService")
 public class TankServiceImpl implements TankService {
 
     private final TankRepository tankRepository;
+    private final ModelMapper modelMapper;
 
-    public TankServiceImpl(TankRepository tankRepository) {
+    public TankServiceImpl(TankRepository tankRepository, ModelMapper modelMapper) {
         this.tankRepository = tankRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -39,13 +44,8 @@ public class TankServiceImpl implements TankService {
     }
 
     @Override
-    public Tank findByTanknaam(String tanknaam) {
-        return null;
-    }
-
-    @Override
     public Tank findByTankId(Long id) {
-        return null;
+        return tankRepository.findByTankId(id);
     }
 
     @Override
@@ -54,19 +54,26 @@ public class TankServiceImpl implements TankService {
     }
 
 	@Override
-	public Tank findByDevId(String devId) {
-		
-		return tankRepository.findByDevId(devId);
+	public Tank findByDevId(String devId) { return tankRepository.findByDevId(devId);}
+	@Override
+	public void saveSensorgegevens(Sensorgegevens sensorgegevens) {
 	}
 
 	@Override
-	public void saveSensorgegevens(Sensorgegevens sensorgegevens) {
-		
-		
-		
-	}
+    public Set<Tank> findByBedrijf(Bedrijf bedrijf){return bedrijf.getTanks();}
 
-	public Set<Tank> findByBedrijf(Bedrijf bedrijf) {
-		return bedrijf.getTanks();
-	}
+    @Override
+    public TankDTO convertToDto(Tank tank) {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(tank, TankDTO.class);
+    }
+
+    @Override
+    public Tank convertToEntity(TankDTO tankDTO) throws ParseException {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(tankDTO, Tank.class);
+    }
+
 }

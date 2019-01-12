@@ -5,10 +5,8 @@ import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "bedrijf")
@@ -100,6 +98,8 @@ public class Bedrijf {
     }
 
     // getters en setters
+
+
     public String getBedrijfsnaam() {
         return bedrijfsnaam;
     }
@@ -108,28 +108,12 @@ public class Bedrijf {
         this.bedrijfsnaam = bedrijfsnaam;
     }
 
-    public Adres getAdres() {
-        return adres;
-    }
-
-    public void setAdres(Adres adres) {
-        this.adres = adres;
-    }
-
     public String getTelefoonnummer() {
         return telefoonnummer;
     }
 
     public void setTelefoonnummer(String telefoonnummer) {
         this.telefoonnummer = telefoonnummer;
-    }
-
-    public Medewerker getContactpersoon() {
-        return contactpersoon;
-    }
-
-    public void setContactpersoon(Medewerker contactpersoon) {
-        this.contactpersoon = contactpersoon;
     }
 
     public String getRekeningnummer() {
@@ -164,6 +148,22 @@ public class Bedrijf {
         this.kvkNummer = kvkNummer;
     }
 
+    public Adres getAdres() {
+        return adres;
+    }
+
+    public void setAdres(Adres adres) {
+        this.adres = adres;
+    }
+
+    public Medewerker getContactpersoon() {
+        return contactpersoon;
+    }
+
+    public void setContactpersoon(Medewerker contactpersoon) {
+        this.contactpersoon = contactpersoon;
+    }
+
     public Set<Tank> getTanks() {
         return tanks;
     }
@@ -171,7 +171,6 @@ public class Bedrijf {
     public void setTanks(Set<Tank> tanks) {
         this.tanks = tanks;
     }
-
 
     public String toString() {
         return bedrijfsnaam + "(" + adres + ")";

@@ -1,6 +1,7 @@
 package com.lorisensori.application.service;
 
 
+import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Sensorgegevens;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +18,6 @@ public interface TankService {
     
     Set<Tank> findByBedrijf(Bedrijf bedrijf);
 
-    Tank findByTanknaam(String tanknaam);
-
     Tank findByTankId(Long id);
     
     Tank findByDevId(String devId);
@@ -26,5 +25,8 @@ public interface TankService {
     void saveSensorgegevens(Sensorgegevens sensorgegevens);
 
     void delete(Tank tank);
-    
+
+    TankDTO convertToDto(Tank tank);
+
+    Tank convertToEntity(TankDTO tankDTO);
 }
