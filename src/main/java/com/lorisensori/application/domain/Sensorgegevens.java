@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "sensorgegevens")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
-public class Sensorgegevens {
+public class Sensorgegevens implements Comparable<Sensorgegevens>{
 
     @Id
     @Column
@@ -216,5 +216,12 @@ public class Sensorgegevens {
 	public void setUplinkId(int uplinkId) {
 		this.uplinkId = uplinkId;
 	}
-
+	
+		@Override 
+		public int compareTo(Sensorgegevens sensorg) {
+		
+		int compare = timestamp.compareTo(sensorg.getTimestamp());
+		return compare;
+		}
+		
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -99,6 +100,16 @@ public class TankController {
     public Set<SensorgegevensDTO> getAllSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
         Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
         return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////
+    
+    //SensorGegevensenkel
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/tank/laatstesensorgegevens/{tank_id}")
+    public SensorgegevensDTO getLaatsteSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
+        Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
+        return sensorgegevensService.convertToDto(Collections.max(sensorgegevens));
     }
 
     //////////////////////////////////////////////////////////////////////////////

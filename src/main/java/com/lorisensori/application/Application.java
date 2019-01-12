@@ -48,6 +48,7 @@ public class Application {
     private static final String APP_ID = "tanks_lorisensori";
     private static final String ACCESS_KEY = "ttn-account-v2.S4DKj7oir_lt9lLyXg_3yZU-UDdVkzlDgZfnoIFzbec";
     private static byte[] payload;
+    private static TankService tserv;
     private static Client CLIENT;
     private static DownlinkHandler downlinkHandler = new DownlinkHandler();
 
@@ -64,7 +65,12 @@ public class Application {
     public static void main(String[] args) {
 
         SpringApplication.run(Application.class, args);
-
+        try {
+        System.out.println(tserv.findByTankId((long) 1).getTanknaam());
+        }
+        catch(NullPointerException exc) {
+        	System.out.println("doet t niet");
+        }
 //        DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.setDieselNiveau(50));
 //        System.out.println("Sending: " + response);
 
@@ -97,7 +103,7 @@ public class Application {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        return new ModelMapper();    
     }
-
+   
 }
