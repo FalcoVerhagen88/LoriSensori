@@ -32,11 +32,4 @@ public class SensorgegevensController {
 		this.sensorgegevensService = sensorgegevensService;
 		this.tankService = tankService;
 	}
-
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/tank/sensorgegevens/{tank_id}")
-	public Set<SensorgegevensDTO> getAllSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
-		Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
-		return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
-	}
 }

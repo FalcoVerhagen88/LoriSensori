@@ -1,10 +1,14 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.annotations.CurrentUser;
 import com.lorisensori.application.domain.CustomUserDetails;
+import com.lorisensori.application.domain.SensorLog;
+import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
+import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,10 +25,12 @@ import java.util.stream.Collectors;
 public class TankController {
 
     private final TankService tankService;
+    private final SensorgegevensService sensorgegevensService;
 
     @Autowired
-    public TankController(TankService tankService) {
+    public TankController(TankService tankService, SensorgegevensService sensorgegevensService) {
         this.tankService = tankService;
+        this.sensorgegevensService = sensorgegevensService;
     }
 
     //Get all Tanks of current user from his Bedrijf
@@ -54,7 +60,7 @@ public class TankController {
     //TODO: niet zeker of dit de juiste manier is.
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/tank/updateTank/")
-    public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO) throws ParseException {
+    public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO){
         Tank tank = tankService.findByTankId(tankDTO.getTankId());
         tank.setBouwjaar(tankDTO.getBouwjaar());
         tank.setDiameter(tankDTO.getDiameter());
@@ -85,5 +91,18 @@ public class TankController {
             throw new EntityExistsException("Tank", "Tanknaam", tank.getTanknaam());
         }
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+    //SensorGegevens
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/tank/sensorgegevens/{tank_id}")
+    public Set<SensorgegevensDTO> getAllSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
+        Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
+        return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+    //SensorLog
+
 
 }
