@@ -8,11 +8,14 @@ import com.lorisensori.application.exceptions.EntityExistsException;
 import com.lorisensori.application.service.BedrijfService;
 import com.lorisensori.application.service.MedewerkerService;
 import com.lorisensori.application.service.TankService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -22,17 +25,21 @@ public class BedrijfController {
     private final BedrijfService bedrijfService;
     private final TankService tankService;
     private final MedewerkerService medewerkerService;
+    private final ModelMapper modelMapper;
 
-    public BedrijfController(BedrijfService bedrijfService, TankService tankService, MedewerkerService medewerkerService) {
+    public BedrijfController(BedrijfService bedrijfService, TankService tankService, MedewerkerService medewerkerService, ModelMapper modelMapper) {
         this.bedrijfService = bedrijfService;
         this.tankService = tankService;
         this.medewerkerService = medewerkerService;
+        this.modelMapper = modelMapper;
     }
 
     //Get all
-    @GetMapping("/bedrijf/")
+    @GetMapping("/bedrijf")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<BedrijfDTO> getAllBedrijf() {
-        return bedrijfService.findAll();
+        List<Bedrijf> bedrijven = bedrijfService.findAll();
+        return bedrijven.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     //Get one
@@ -111,6 +118,12 @@ public class BedrijfController {
 
         bedrijfService.delete(bedrijf);
         return ResponseEntity.ok().build();
+    }
+
+    private BedrijfDTO convertToDTO(Bedrijf bedrijf) {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+
+        return modelMapper.map(bedrijf, BedrijfDTO.class);
     }
 
 }

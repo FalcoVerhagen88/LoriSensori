@@ -1,5 +1,6 @@
 package com.lorisensori.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lorisensori.application.enums.LandEnums;
 
 import javax.persistence.*;
@@ -26,6 +27,7 @@ public class Adres {
     @Column
     private LandEnums land;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "adres", optional = false)
     private Bedrijf bedrijf;
 

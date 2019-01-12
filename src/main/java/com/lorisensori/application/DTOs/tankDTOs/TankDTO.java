@@ -1,13 +1,9 @@
 package com.lorisensori.application.DTOs.tankDTOs;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.enums.StatusEnums;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 public class TankDTO implements Serializable {
 
@@ -21,8 +17,6 @@ public class TankDTO implements Serializable {
 
     private StatusEnums status;
 
-    @JsonFormat(pattern = "HH:mm")
-    @DateTimeFormat(pattern = "HH:mm")
     private Date openingstijd, sluitingstijd;
 
     private int meldingTanken;

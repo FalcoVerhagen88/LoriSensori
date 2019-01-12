@@ -3,22 +3,19 @@ package com.lorisensori.application.rest_controllers;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.annotations.CurrentUser;
 import com.lorisensori.application.domain.CustomUserDetails;
-import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
+import com.lorisensori.application.service.TankService;
 import com.lorisensori.application.service.TankServiceImpl;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -26,51 +23,47 @@ import javax.validation.Valid;
 public class TankController {
 
 
-    @Autowired
-	private TankServiceImpl tankService;
+    private final TankService tankService;
+    private final ModelMapper modelMapper;
 
-
     @Autowired
-    private ModelMapper modelMapper;
+    public TankController(TankServiceImpl tankService, ModelMapper modelMapper) {
+        this.tankService = tankService;
+        this.modelMapper = modelMapper;
+    }
 
     //Get all Tanks of current user from his Bedrijf
 	@PreAuthorize("hasRole('USER')")
     @GetMapping("/tank/")
     public Set<TankDTO> getAllTank(@CurrentUser CustomUserDetails currentUser) {
         Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
-        return tanks.stream().map(tank -> convertToDto(tank)).collect(Collectors.toSet());
+        return tanks.stream().map(tankService::convertToDto).collect(Collectors.toSet());
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/allTanks")
+    public List<TankDTO> getAllTanks(){
+        List<Tank> tanks = tankService.findAll();
+        return tanks.stream().map(tankService::convertToDto).collect(Collectors.toList());
+    }
 
-    //Get tank by tankId
+
+    //Get tank by dev_Id
 	@PreAuthorize("hasRole('USER')")
-    @GetMapping("/tank/{tankid}")
-    public TankDTO getTankById(@PathVariable(value = "tankid") Long tankId) {
-        Tank tank = tankService.findByTankId(tankId);
-        return convertToDto(tank);
+    @GetMapping("/tank/{dev_id}")
+    public TankDTO getTankByDevId(@PathVariable(value = "dev_id") String devId) {
+        Tank tank = tankService.findByDevId(devId);
+        return tankService.convertToDto(tank);
     }
 
 	//Update tank
 	//TODO: niet zeker of dit de juiste manier is.
 	@PreAuthorize("hasRole('ADMIN')")
-	@PutMapping("/tank/updateTank/")
-	public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO) throws ParseException {
-		Tank tank = tankService.findByTankId(tankDTO.getTankId());
-		tank.setBouwjaar(tankDTO.getBouwjaar());
-		tank.setDiameter(tankDTO.getDiameter());
-		tank.setGewicht(tankDTO.getGewicht());
-		tank.setInhoudLiters(tankDTO.getInhoudLiters());
-		tank.setLengte(tankDTO.getLengte());
-		tank.setMeldingTanken(tankDTO.getMeldingTanken());
-		tank.setOpeningstijd(tankDTO.getOpeningstijd());
-		tank.setSluitingstijd(tankDTO.getSluitingstijd());
-		tank.setTanknummer(tankDTO.getTanknummer());
-		tank.setType(tankDTO.getType());
-		tank.setStatus(tankDTO.getStatus());
-		tank.setTanknaam(tankDTO.getTanknaam());
-		tankService.save(tank);
-		return convertToDto(tank);
+	@PutMapping("/tank/updateTank")
+	public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO) {
+
+        return tankService.updateTank(tankDTO);
 	}
 
     //Create a new Tank
@@ -85,16 +78,6 @@ public class TankController {
         } else {
             throw new EntityExistsException("Tank", "Tanknaam", tank.getTanknaam());
         }
-    }
-
-    private TankDTO convertToDto(Tank tank) {
-    	TankDTO tankDTO = modelMapper.map(tank, TankDTO.class);
-    	return tankDTO;
-    }
-
-    private Tank convertToEntity(TankDTO tankDTO) throws ParseException {
-    	Tank tank = modelMapper.map(tankDTO, Tank.class);
-    	return tank;
     }
 
 }

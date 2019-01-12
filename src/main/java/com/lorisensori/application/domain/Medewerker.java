@@ -1,15 +1,14 @@
 package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lorisensori.application.domain.audit.DateAudit;
 import com.lorisensori.application.validator.NullOrNotBlank;
-
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,6 +51,7 @@ public class Medewerker extends DateAudit {
     @JsonBackReference(value = "medewerkers")
     private Bedrijf bedrijf;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "tank_id")
     private Tank tank;

@@ -1,15 +1,12 @@
 	package com.lorisensori.application.domain;
 
-	import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	import org.springframework.data.annotation.CreatedDate;
-	import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-	import javax.persistence.*;
-	import java.io.Serializable;
-	import java.util.Date;
+import javax.persistence.*;
+import java.util.Date;
 
 	@Entity
-	@Table(name = "sensorlog")
+	@Table(name = "sensor_log")
 	//@EntityListeners(AuditingEntityListener.class)
 	//@JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
 
@@ -49,7 +46,7 @@ public class SensorLog {
 	    
 	    
 	    @ManyToOne()
-	    @JoinColumn(name = "devId")
+	    @JoinColumn(name = "dev_id")
 	    private Tank tank;
 	    
 	    

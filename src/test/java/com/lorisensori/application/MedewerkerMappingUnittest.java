@@ -19,21 +19,17 @@ public class MedewerkerMappingUnittest {
         medewerkerDTO.setGebruikersnaam("TestGebruikersnaam");
         medewerkerDTO.setVoornaam("TestVoornaam");
         medewerkerDTO.setAchternaam("TestAchternaam");
-        medewerkerDTO.setPassword("TestPassword");
         medewerkerDTO.setEmail("TestEmail");
         medewerkerDTO.setTelefoonnummer("TestTelefoonnummer");
         medewerkerDTO.setActive(true);
         medewerkerDTO.setEmailVerified(true);
         medewerkerDTO.setRechten(null);
-        medewerkerDTO.setBedrijf(null);
-        medewerkerDTO.setTank(null);
 
         Medewerker medewerker = modelMapper.map(medewerkerDTO, Medewerker.class);
 
         Assert.assertEquals(medewerkerDTO.getVoornaam(), medewerker.getVoornaam());
         Assert.assertEquals(medewerkerDTO.getAchternaam(), medewerker.getAchternaam());
         Assert.assertEquals(medewerkerDTO.getGebruikersnaam(), medewerker.getGebruikersnaam());
-        Assert.assertEquals(medewerkerDTO.getPassword(), medewerker.getPassword());
         Assert.assertEquals(medewerkerDTO.getEmail(), medewerker.getEmail());
         Assert.assertEquals(medewerkerDTO.getTelefoonnummer(), medewerker.getTelefoonnummer());
 

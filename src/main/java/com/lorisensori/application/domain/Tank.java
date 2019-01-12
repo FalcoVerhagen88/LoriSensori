@@ -1,18 +1,19 @@
 package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lorisensori.application.enums.StatusEnums;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "tank")
-public class Tank implements Serializable {
+public class Tank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +41,9 @@ public class Tank implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusEnums status;
 
-    private Date openingstijd;
-    private Date sluitingstijd;
+    @JsonFormat(pattern = "HH:mm")
+    @DateTimeFormat(pattern = "HH:mm")
+    private Date openingstijd, sluitingstijd;
 
     private int meldingTanken;
 
@@ -63,54 +65,21 @@ public class Tank implements Serializable {
 
     }
 
+    public void addSensorLog(SensorLog sensorlog)  // gebruiken we om de sensorlog bij te houden
+    {
+        getSensorLog().add(sensorlog);
+    }
+
+    public void addSensorGegevens(Sensorgegevens sensorgegevens){
+        getSensorgegevens().add(sensorgegevens);
+    }
+
     public Long getTankId() {
         return tankId;
     }
 
     public void setTankId(Long tankId) {
         this.tankId = tankId;
-    }
-
-    public Bedrijf getBedrijf() {
-        return bedrijf;
-    }
-
-    public void setBedrijf(Bedrijf bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public Long getTankid() {
-        return tankId;
-    }
-
-    public void setTankid(Long tankId) {
-        this.tankId = tankId;
-    }
-
-    public Set<Sensorgegevens> getSensorgegevens() {
-        return sensorgegevens;
-    }
-
-    public void setSensorgegevens(Set<Sensorgegevens> sensorgegevens) {
-        this.sensorgegevens = sensorgegevens;
-    }
-
-    public void addSensorGegevens(Sensorgegevens sensorgegevens) // kunnen we sensorgegevens mee opslaan bij een tank
-    {
-    	getSensorgegevens().add(sensorgegevens);
-    }
-
-    public List<SensorLog> getSensorLog() {
-        return sensorLog;
-    }
-
-    public void setSensorLog(List<SensorLog> sensorLog) {
-        this.sensorLog = sensorLog;
-    }
-
-    public void addSensorLog(SensorLog sensorlog)  // gebruiken we om de sensorlog bij te houden
-    {
-    	getSensorLog().add(sensorlog);
     }
 
     public String getTanknaam() {
@@ -121,12 +90,28 @@ public class Tank implements Serializable {
         this.tanknaam = tanknaam;
     }
 
+    public int getTanknummer() {
+        return tanknummer;
+    }
+
+    public void setTanknummer(int tanknummer) {
+        this.tanknummer = tanknummer;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDevId() {
+        return devId;
+    }
+
+    public void setDevId(String devId) {
+        this.devId = devId;
     }
 
     public int getInhoudLiters() {
@@ -201,24 +186,28 @@ public class Tank implements Serializable {
         this.meldingTanken = meldingTanken;
     }
 
-    public void setdevId(String devId)
-    {
-    	this.devId = devId;
+    public Bedrijf getBedrijf() {
+        return bedrijf;
     }
 
-
-    public String getdevId()
-    {
-    	return devId;
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
     }
 
-	public int getTanknummer() {
-		return tanknummer;
-	}
+    public Set<Sensorgegevens> getSensorgegevens() {
+        return sensorgegevens;
+    }
 
-	public void setTanknummer(int tanknummer) {
-		this.tanknummer = tanknummer;
-	}
+    public void setSensorgegevens(Set<Sensorgegevens> sensorgegevens) {
+        this.sensorgegevens = sensorgegevens;
+    }
 
+    public List<SensorLog> getSensorLog() {
+        return sensorLog;
+    }
+
+    public void setSensorLog(List<SensorLog> sensorLog) {
+        this.sensorLog = sensorLog;
+    }
 }
 

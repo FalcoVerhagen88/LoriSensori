@@ -1,11 +1,13 @@
 package com.lorisensori.application.service;
 
 
+import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
+import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.Sensorgegevens;
+import com.lorisensori.application.domain.Tank;
+
 import java.util.List;
 import java.util.Set;
-import com.lorisensori.application.domain.Bedrijf;
-import com.lorisensori.application.domain.Tank;
 
 public interface TankService {
 
@@ -26,5 +28,10 @@ public interface TankService {
     void saveSensorgegevens(Sensorgegevens sensorgegevens);
 
     void delete(Tank tank);
+
+    TankDTO updateTank(TankDTO tankDTO);
+
+    TankDTO convertToDto(Tank tank);
+    Tank convertToEntity(TankDTO tankDTO);
     
 }

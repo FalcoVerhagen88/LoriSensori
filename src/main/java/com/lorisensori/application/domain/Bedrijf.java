@@ -1,12 +1,11 @@
 package com.lorisensori.application.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 
@@ -24,6 +23,7 @@ public class Bedrijf {
     @Column
     private String telefoonnummer, rekeningnummer, btwNummer, vatNummer, kvkNummer;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "adrescode")
     private Adres adres;
