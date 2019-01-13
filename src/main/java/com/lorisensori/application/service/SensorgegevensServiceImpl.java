@@ -2,6 +2,7 @@ package com.lorisensori.application.service;
 
 import com.lorisensori.application.DAO_interfaces.SensorgegevensRepository;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
+import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensExtraDTO;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import org.modelmapper.ModelMapper;
@@ -48,6 +49,12 @@ public class SensorgegevensServiceImpl implements SensorgegevensService{
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 		return modelMapper.map(sensorgegevensDTO, Sensorgegevens.class);
 	}
+
+	@Override
+	public SensorgegevensExtraDTO convertToExtraDto(Sensorgegevens sensorgegevens) {
+		return modelMapper.map(sensorgegevens, SensorgegevensExtraDTO.class);
+	}
+	
 }
 
 

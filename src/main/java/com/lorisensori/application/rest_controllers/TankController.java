@@ -1,6 +1,7 @@
 package com.lorisensori.application.rest_controllers;
 
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
+import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensExtraDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.annotations.CurrentUser;
@@ -8,7 +9,6 @@ import com.lorisensori.application.domain.CustomUserDetails;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
-import com.lorisensori.application.service.BedrijfService;
 import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,11 @@ public class TankController {
 
     private final TankService tankService;
     private final SensorgegevensService sensorgegevensService;
-    private final BedrijfService bedrijfService;
 
     @Autowired
-    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, BedrijfService bedrijfService) {
+    public TankController(TankService tankService, SensorgegevensService sensorgegevensService) {
         this.tankService = tankService;
         this.sensorgegevensService = sensorgegevensService;
-        this.bedrijfService = bedrijfService;
     }
 
     //Get all Tanks of current user from his Bedrijf
@@ -110,8 +108,13 @@ public class TankController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/laatstesensorgegevens/{tank_id}")
     public SensorgegevensDTO getLaatsteSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
-        Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
-        return sensorgegevensService.convertToDto(Collections.max(sensorgegevens));
+    	Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
+    	SensorgegevensExtraDTO sensorgegevensExtraDTO = sensorgegevensService.convertToExtraDto(Collections.max(sensorgegevens));
+    	sensorgegevensExtraDTO.setDevId(tankService.findByTankId(tankId).getDevId());
+    	sensorgegevensExtraDTO.setOpeningstijd(tankService.findByTankId(tankId).getOpeningstijd());
+    	sensorgegevensExtraDTO.setSluitingstijd(tankService.findByTankId(tankId).getSluitingstijd());
+    	sensorgegevensExtraDTO.setTankId(tankId);
+    	return sensorgegevensExtraDTO; 
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -122,13 +125,6 @@ public class TankController {
     	Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
     	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
-    
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping ("/tank/test/{devId}")
-    public TankDTO getTestDevId(@PathVariable(value = "devId") String devId) {
-    	return tankService.convertToDto(tankService.findByDevId(devId));
-    }
-
-    
+ 
 
 }
