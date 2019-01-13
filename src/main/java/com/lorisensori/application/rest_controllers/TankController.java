@@ -1,14 +1,17 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.lorisensori.application.DTOs.tankDTOs.SensorLogDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensExtraDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.annotations.CurrentUser;
 import com.lorisensori.application.domain.CustomUserDetails;
+import com.lorisensori.application.domain.SensorLog;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
+import com.lorisensori.application.service.SensorLogService;
 import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +30,13 @@ public class TankController {
 
     private final TankService tankService;
     private final SensorgegevensService sensorgegevensService;
+    private final SensorLogService sensorLogService;
 
     @Autowired
-    public TankController(TankService tankService, SensorgegevensService sensorgegevensService) {
+    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, SensorLogService sensorLogService) {
         this.tankService = tankService;
         this.sensorgegevensService = sensorgegevensService;
+        this.sensorLogService = sensorLogService;
     }
 
     //Get all Tanks of current user from his Bedrijf
@@ -100,6 +105,14 @@ public class TankController {
     public Set<SensorgegevensDTO> getAllSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
         Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
         return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/tank/sensorlog/{tank_id}")
+    public Set<SensorLogDTO> getAllSensorLog(@PathVariable(value = "tank_id") Long tankId) {
+    	Set<SensorLog> sensorLog = sensorLogService.findByTank(tankService.findByTankId(tankId));
+    	return sensorLog.stream().map(sensorLogService::convertToDto).collect(Collectors.toSet());
+    	
     }
     
     /////////////////////////////////////////////////////////////////////////////
