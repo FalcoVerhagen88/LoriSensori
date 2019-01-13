@@ -66,10 +66,9 @@ public class Application {
 
         SpringApplication.run(Application.class, args);
         try {
-        System.out.println(tserv.findByTankId((long) 1).getTanknaam());
-        }
-        catch(NullPointerException exc) {
-        	System.out.println("doet t niet");
+            System.out.println(tserv.findByTankId((long) 1).getTanknaam());
+        } catch (NullPointerException exc) {
+            System.out.println("doet t niet");
         }
 //        DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.setDieselNiveau(50));
 //        System.out.println("Sending: " + response);
@@ -80,10 +79,10 @@ public class Application {
             try {
 //                Thread uplink = new Thread(new TtnUplinkHandler(CLIENT, data, devId));
 //                uplink.start();
-                DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.setSluitingsTijd(17, 0));
-                System.out.println("Sending: " + response);
-
-                CLIENT.send(devId, response);
+//                DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.setSluitingsTijd(17, 0));
+//                System.out.println("Sending: " + response);
+//
+//                CLIENT.send(devId, response);
 
             } catch (Exception ex) {
                 System.out.println("Response failed: " + ex.getMessage());
@@ -103,7 +102,12 @@ public class Application {
 
     @Bean
     public ModelMapper modelMapper() {
-        return new ModelMapper();    
+        return new ModelMapper();
     }
-   
+
+    @Bean
+    public Client client() throws URISyntaxException {
+        return new Client(REGION, APP_ID, ACCESS_KEY);
+    }
+
 }

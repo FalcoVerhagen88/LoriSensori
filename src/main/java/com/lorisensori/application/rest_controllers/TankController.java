@@ -1,8 +1,11 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
+import com.lorisensori.application.TTN.DownlinkHandler;
+import com.lorisensori.application.TTN.TtnClient;
 import com.lorisensori.application.annotations.CurrentUser;
 import com.lorisensori.application.domain.CustomUserDetails;
 import com.lorisensori.application.domain.Sensorgegevens;
@@ -14,9 +17,13 @@ import com.lorisensori.application.service.TankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.thethingsnetwork.data.common.messages.DownlinkMessage;
+import org.thethingsnetwork.data.mqtt.Client;
 
 import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,12 +35,14 @@ public class TankController {
     private final TankService tankService;
     private final SensorgegevensService sensorgegevensService;
     private final BedrijfService bedrijfService;
+    private final TtnClient client;
 
     @Autowired
-    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, BedrijfService bedrijfService) {
+    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, BedrijfService bedrijfService, TtnClient client) {
         this.tankService = tankService;
         this.sensorgegevensService = sensorgegevensService;
         this.bedrijfService = bedrijfService;
+        this.client = client;
     }
 
     //Get all Tanks of current user from his Bedrijf
@@ -122,13 +131,35 @@ public class TankController {
     	Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
     	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
-    
+
     @PreAuthorize("hasRole('USER')")
     @GetMapping ("/tank/test/{devId}")
     public TankDTO getTestDevId(@PathVariable(value = "devId") String devId) {
     	return tankService.convertToDto(tankService.findByDevId(devId));
     }
 
-    
+    /////////////////////////////////////////////////////////////////////////////
 
+    //DownlinkMessage
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/tank/downlink", consumes = "application/json")
+    public void getDownlinkFromRequest(@RequestBody Map<String, Object> payload) throws JsonProcessingException, URISyntaxException {
+
+        System.out.println(payload);
+        DownlinkHandler downlinkHandler = new DownlinkHandler();
+        String dev_id = downlinkHandler.getDevIdTank(payload);
+        System.out.println(dev_id);
+        Client ttnClient = client.getInstanceOfClient();
+        try {
+
+            ttnClient.start();
+            DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.getDownlinkMessage(payload));
+            System.out.println("Sending: " + response);
+            ttnClient.send(dev_id, response);
+
+
+        } catch (Exception ex) {
+            System.out.println("Response failed: " + ex.getMessage());
+        }
+    }
 }
