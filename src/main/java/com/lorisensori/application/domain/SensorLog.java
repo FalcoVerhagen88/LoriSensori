@@ -42,9 +42,8 @@ public class SensorLog {
     @CreatedDate
     private Date timestamp;
 
-//TODO: is dit nodig? gaan op geen moment toch terug vanuit sensorlog naar de tank? dit is puur declaratie om terug te kunnen navigeren namelijk
     @ManyToOne()
-    @JoinColumn(name = "dev_id")
+    @JoinColumn(name = "tank_id")
     private Tank tank;
 
 
