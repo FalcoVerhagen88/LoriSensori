@@ -1,6 +1,7 @@
 package com.lorisensori.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
@@ -21,13 +22,13 @@ public class Tank implements Serializable {
     @NotBlank
     @Column
     private String tanknaam;
-    
+
     private int tanknummer;
 
     private String type;
-    
-    @Column(unique=true)
-    private String devId; // TTN device ID
+
+    @Column(unique = true)
+    private String devId;//TTN device ID
 
     private int inhoudLiters;
 
@@ -50,11 +51,11 @@ public class Tank implements Serializable {
     @JsonBackReference(value = "tanks")
     private Bedrijf bedrijf;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tank", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Sensorgegevens> sensorgegevens;
-    
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<SensorLog> sensorLog;
+
+    @OneToMany(mappedBy = "tank", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<SensorLog> sensorLog;
 
 
     //TODO: LoRa informatie toevoegen
@@ -62,6 +63,17 @@ public class Tank implements Serializable {
     public Tank() {
 
     }
+
+    public void addSensorLog(SensorLog sensorLog){ //gebruiken we om de sensorlog bij te houden
+        getSensorLog().add(sensorLog);
+    }
+
+    public void addSensorGegevens(Sensorgegevens sensorgegevens){
+        getSensorgegevens().add(sensorgegevens);
+    }
+///////////////////////////////////////////////////////////////////
+    //GETTERS & SETTERS
+
 
     public Long getTankId() {
         return tankId;
@@ -71,48 +83,6 @@ public class Tank implements Serializable {
         this.tankId = tankId;
     }
 
-    public Bedrijf getBedrijf() {
-        return bedrijf;
-    }
-
-    public void setBedrijf(Bedrijf bedrijf) {
-        this.bedrijf = bedrijf;
-    }
-
-    public Long getTankid() {
-        return tankId;
-    }
-
-    public void setTankid(Long tankId) {
-        this.tankId = tankId;
-    }
-
-    public Set<Sensorgegevens> getSensorgegevens() {
-        return sensorgegevens;
-    }
-
-    public void setSensorgegevens(Set<Sensorgegevens> sensorgegevens) {
-        this.sensorgegevens = sensorgegevens;
-    }
-    
-    public void addSensorGegevens(Sensorgegevens sensorgegevens) // kunnen we sensorgegevens mee opslaan bij een tank
-    {
-    	getSensorgegevens().add(sensorgegevens);
-    }
-    
-    public List<SensorLog> getSensorLog() {
-        return sensorLog;
-    }
-
-    public void setSensorLog(List<SensorLog> sensorLog) {
-        this.sensorLog = sensorLog;
-    }
-
-    public void addSensorLog(SensorLog sensorlog)  // gebruiken we om de sensorlog bij te houden
-    {
-    	getSensorLog().add(sensorlog);
-    }
-    
     public String getTanknaam() {
         return tanknaam;
     }
@@ -121,12 +91,28 @@ public class Tank implements Serializable {
         this.tanknaam = tanknaam;
     }
 
+    public int getTanknummer() {
+        return tanknummer;
+    }
+
+    public void setTanknummer(int tanknummer) {
+        this.tanknummer = tanknummer;
+    }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getDevId() {
+        return devId;
+    }
+
+    public void setDevId(String devId) {
+        this.devId = devId;
     }
 
     public int getInhoudLiters() {
@@ -200,25 +186,29 @@ public class Tank implements Serializable {
     public void setMeldingTanken(int meldingTanken) {
         this.meldingTanken = meldingTanken;
     }
-    
-    public void setdevId(String devId)
-    {
-    	this.devId = devId;
+
+    public Bedrijf getBedrijf() {
+        return bedrijf;
     }
 
-
-    public String getdevId()
-    {
-    	return devId;
+    public void setBedrijf(Bedrijf bedrijf) {
+        this.bedrijf = bedrijf;
     }
 
-	public int getTanknummer() {
-		return tanknummer;
-	}
+    public Set<Sensorgegevens> getSensorgegevens() {
+        return sensorgegevens;
+    }
 
-	public void setTanknummer(int tanknummer) {
-		this.tanknummer = tanknummer;
-	}
+    public void setSensorgegevens(Set<Sensorgegevens> sensorgegevens) {
+        this.sensorgegevens = sensorgegevens;
+    }
 
+    public Set<SensorLog> getSensorLog() {
+        return sensorLog;
+    }
+
+    public void setSensorLog(Set<SensorLog> sensorLog) {
+        this.sensorLog = sensorLog;
+    }
 }
 

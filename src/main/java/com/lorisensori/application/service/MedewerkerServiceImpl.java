@@ -6,24 +6,28 @@ import com.lorisensori.application.DTOs.medewerkerDTOs.UpdateMedewerkerDTO;
 import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.Medewerker;
 import com.lorisensori.application.exceptions.EntityExistsException;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 //Business logic goes here NOT in the repository
 @Service("medewerkerService")
 public class MedewerkerServiceImpl implements MedewerkerService {
 
     private final MedewerkerRepository medewerkerRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public MedewerkerServiceImpl(MedewerkerRepository medewerkerRepository) {
+    public MedewerkerServiceImpl(MedewerkerRepository medewerkerRepository, ModelMapper modelMapper) {
         this.medewerkerRepository = medewerkerRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -88,4 +92,17 @@ public class MedewerkerServiceImpl implements MedewerkerService {
         medewerkerRepository.delete(medewerker);
     }
 
+    @Override
+    public MedewerkerDTO convertToDto(Medewerker medewerker) {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(medewerker, MedewerkerDTO.class);
+    }
+
+    @Override
+    public Medewerker convertToEntity(MedewerkerDTO medewerkerDTO) throws ParseException {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(medewerkerDTO, Medewerker.class);
+    }
 }

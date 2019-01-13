@@ -27,6 +27,8 @@ public class TankDTO implements Serializable {
 
     private int meldingTanken;
     
+    private String devId;
+    
     //TODO: LoRa informatie toevoegen
 
     //////////////////////////////////////
@@ -155,4 +157,14 @@ public class TankDTO implements Serializable {
     public void setMeldingTanken(int meldingTanken) {
         this.meldingTanken = meldingTanken;
     }
+
+	public String getDevId() {
+		return devId;
+	}
+
+	public void setDevId(String devId) {
+		this.devId = devId;
+	}
+    
+    
 }

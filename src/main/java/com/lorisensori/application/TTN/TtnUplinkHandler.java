@@ -85,47 +85,47 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
 					  {
 				  case ALIVEBERICHTID :
 					  saveAlivebericht(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n alivebericht");
+					  System.out.println("\n" + "alivebericht");
 					  break;
 				  case DIESELALARMNINEAUID :
 					  saveDieselniveauAlarm(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n DieselAalrmniveau");
+					  System.out.println("\n" + "DieselAlarmniveau");
 					  break;
 				  case DIEFSTALALARMID :
 					  saveDiefstalAlarm(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n DiefstalAlarm");
+					  System.out.println("\n" + "DiefstalAlarm");
 					  break;
 				  case ACCUNIVEAUID :
 					  saveAccuAlarm(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n Accuniveau");
+					  System.out.println("\n" + "Accuniveau");
 					  break;
 				  case SLOTSTANDALARMID :
 					  saveSlotstandAlarm(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n SlotstandAlarm");
+					  System.out.println("\n SlotstandAlarm");
 					  break;
 				  case ACKDIESELNIVEAUID :
 					  saveAckDieselniveau(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n wijziging dieselniveau");
+					  System.out.println("\n" + "wijziging dieselniveau");
 					  break;
 				  case ACKSLUITINGSTIJDWID :
 					  saveAckSluitingstijdW(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n wijziging sluitingstijd");
+					  System.out.println("\n" + "wijziging sluitingstijd");
 					  break;
 				  case ACKOPENINGSTIJDWID :
 					  saveAckOpeningstijdW(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n wijziging openingstijd");
+					  System.out.println("\n" + "wijziging openingstijd");
 					  break;
 				  case ACKSLOTSTANDWID :
 					  saveAckSlotstand(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n wijziging slotstand");
+					  System.out.println("\n" + "wijziging slotstand");
 					  break;
 				  case ACKWEEKENDSETTINGID :
 					  saveAckWeekendSetting(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n wijziging weekendsetting");
+					  System.out.println("\n" + "wijziging weekendsetting");
 					  break;
 				  case CHECKBERICHTID :
 					  saveCheckBericht(((UplinkMessage) data).getPayloadRaw(), devId);
-					  System.out.println("/n checkbericht");
+					  System.out.println("\n" + "checkbericht");
 					  break;
 					  }
 			
