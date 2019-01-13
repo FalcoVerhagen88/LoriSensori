@@ -2,37 +2,26 @@ package com.lorisensori.application.DTOs.tankDTOs;
 
 import java.util.Set;
 
-public class TankBedrijfDTO {
-
-	private TankDTO tankDTO;
+public class TankBedrijfDTO extends TankDTO{
 	
-	private Set<SensorgegevensDTO> sensorgegevensDTO;
+	private Set<SensorgegevensDTO> sensorgegevens;
 	
-	private Set<SensorLogDTO> sensorLogDTO;
-
-	public TankDTO getTankDTO() {
-		return tankDTO;
-	}
-
-	public void setTankDTO(TankDTO tankDTO) {
-		this.tankDTO = tankDTO;
-	}
+	private Set<SensorLogDTO> sensorLog;
 
 	public Set<SensorgegevensDTO> getSensorgegevensDTO() {
-		return sensorgegevensDTO;
+		return sensorgegevens;
 	}
 
 	public void setSensorgegevensDTO(Set<SensorgegevensDTO> sensorgegevensDTO) {
-		this.sensorgegevensDTO = sensorgegevensDTO;
+		this.sensorgegevens = sensorgegevensDTO;
 	}
 
 	public Set<SensorLogDTO> getSensorLogDTO() {
-		return sensorLogDTO;
+		return sensorLog;
 	}
 
 	public void setSensorLogDTO(Set<SensorLogDTO> sensorLogDTO) {
-		this.sensorLogDTO = sensorLogDTO;
+		this.sensorLog = sensorLogDTO;
 	}
-	
 	
 }
