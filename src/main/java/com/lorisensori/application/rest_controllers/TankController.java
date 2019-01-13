@@ -117,12 +117,18 @@ public class TankController {
     //////////////////////////////////////////////////////////////////////////////
     //SensorLog
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/tank/vanBedrijf/{bedrijfsnaam}")
-    public Set<TankBedrijfDTO> getTanksFromBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam) {
-    	Set<Tank> tanks = tankService.findByBedrijf(bedrijfService.findByBedrijfsnaam(bedrijfsnaam));
+    @GetMapping("/tank/vanBedrijf/")
+    public Set<TankBedrijfDTO> getTanksFromBedrijf(@CurrentUser CustomUserDetails currentUser) {
+    	Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
     	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
     
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping ("/tank/test/{devId}")
+    public TankDTO getTestDevId(@PathVariable(value = "devId") String devId) {
+    	return tankService.convertToDto(tankService.findByDevId(devId));
+    }
 
+    
 
 }
