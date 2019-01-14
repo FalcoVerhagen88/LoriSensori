@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lorisensori.application.DAO_interfaces.SensorLogRepository;
 import com.lorisensori.application.DTOs.tankDTOs.SensorLogDTO;
 import com.lorisensori.application.domain.SensorLog;
+import com.lorisensori.application.domain.Tank;
 
 @Service("SensorLogService")
 public class SensorLogServiceImpl implements SensorLogService {
@@ -23,12 +24,11 @@ public class SensorLogServiceImpl implements SensorLogService {
 		this.modelMapper = modelMapper;
 	}
 	
-/*	@Override
-	public Set<SensorLog> findNewest25() {
-		// TODO Auto-generated method stub
-		return null;
+	@Override
+	public Set<SensorLog> findByTank(Tank tank) {
+		return sensorLogRepository.findByTank(tank);
 	}
-*/	
+	
 	@Override
 	public SensorLogDTO convertToDto(SensorLog sensorLog) {
 		modelMapper.getConfiguration().setAmbiguityIgnored(true);
