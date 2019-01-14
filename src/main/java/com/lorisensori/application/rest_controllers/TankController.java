@@ -14,6 +14,7 @@ import com.lorisensori.application.domain.SensorLog;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
+import com.lorisensori.application.service.BedrijfService;
 import com.lorisensori.application.service.SensorLogService;
 import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankService;
@@ -42,8 +43,7 @@ public class TankController {
     private final SensorLogService sensorLogService;
 
     @Autowired
-    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, BedrijfService bedrijfService, TtnClient client) {
-    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, SensorLogService sensorLogService) {
+    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, BedrijfService bedrijfService, TtnClient client, SensorLogService sensorLogService) {
         this.tankService = tankService;
         this.sensorgegevensService = sensorgegevensService;
         this.bedrijfService = bedrijfService;
