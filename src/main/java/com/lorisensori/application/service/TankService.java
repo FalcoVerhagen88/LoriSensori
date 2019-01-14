@@ -32,4 +32,6 @@ public interface TankService {
     Tank convertToEntity(TankDTO tankDTO);
 
 	TankBedrijfDTO convertToTankBedrijfDTO(Tank tank);
+
+    void geefstring();
 }

@@ -4,41 +4,39 @@ package com.lorisensori.application;
 import java.net.URISyntaxException;
 
 import com.lorisensori.application.TTN.DownlinkHandler;
-import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.service.TankService;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.modelmapper.ModelMapper;
 
+import com.lorisensori.application.service.TankServiceImpl;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.thethingsnetwork.data.common.messages.DataMessage;
 import org.thethingsnetwork.data.mqtt.Client;
 
-import com.lorisensori.application.DAO_interfaces.TankRepository;
 import com.lorisensori.application.TTN.TtnUplinkHandler;
 
-import org.thethingsnetwork.data.common.Connection;
-import org.thethingsnetwork.data.common.messages.ActivationMessage;
-import org.thethingsnetwork.data.common.messages.DataMessage;
-import org.thethingsnetwork.data.common.messages.DownlinkMessage;
-import org.thethingsnetwork.data.common.messages.RawMessage;
-import org.thethingsnetwork.data.common.messages.UplinkMessage;
-import org.thethingsnetwork.data.mqtt.Client;
-
-import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Base64;
+import java.util.concurrent.Executor;
 
 
 @SpringBootApplication
+@EnableAsync
+@ComponentScan("com.lorisensori.application.service")
+@ComponentScan("com.lorisensori.application.TTN")
 @EntityScan(basePackageClasses = {
         Application.class,
-        Jsr310JpaConverters.class //used for converting JDK8 Dates to spring boot standards
+        Jsr310JpaConverters.class, //used for converting JDK8 Dates to spring boot standards
+        TtnUplinkHandler.class
+
+
 })
 
 
@@ -49,6 +47,8 @@ public class Application {
     private static final String ACCESS_KEY = "ttn-account-v2.S4DKj7oir_lt9lLyXg_3yZU-UDdVkzlDgZfnoIFzbec";
     private static byte[] payload;
     private static TankService tserv;
+
+
     private static Client CLIENT;
     private static DownlinkHandler downlinkHandler = new DownlinkHandler();
 
@@ -61,43 +61,42 @@ public class Application {
         }
     }
 
-
     public static void main(String[] args) {
+//        SpringApplication.run(Application.class, args);
+        ApplicationContext context = SpringApplication.run(Application.class, args);
+        TankService tankService = (TankService) context.getBean("tankService");
 
-        SpringApplication.run(Application.class, args);
-        try {
-            System.out.println(tserv.findByTankId((long) 1).getTanknaam());
-        } catch (NullPointerException exc) {
-            System.out.println("doet t niet");
-        }
-//        DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.setDieselNiveau(50));
-//        System.out.println("Sending: " + response);
 
         CLIENT.onMessage((String devId, DataMessage data) -> {
-
-//            System.out.println("/n kom ik tot hier?");
             try {
-//                Thread uplink = new Thread(new TtnUplinkHandler(CLIENT, data, devId));
-//                uplink.start();
-//                DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.setSluitingsTijd(17, 0));
-//                System.out.println("Sending: " + response);
-//
-//                CLIENT.send(devId, response);
+                System.out.println("haha");
+                TtnUplinkHandler handle = new TtnUplinkHandler(CLIENT, data, devId);
+                handle.setdevId(devId);
+                handle.setUplinkMessage(data);
+                handle.setClient(CLIENT);
+                handle.ontvangBericht(devId, data);
+                Thread draadje = new Thread(handle);
+                draadje.start();
+            }
+            catch (NullPointerException enull) {
+                enull.printStackTrace();
+            }
 
-            } catch (Exception ex) {
+            catch (Exception ex) {
+                ex.printStackTrace();
                 System.out.println("Response failed: " + ex.getMessage());
             }
         });
 
         try {
             CLIENT.start();
-        } catch (MqttException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            // e.printStackTrace();
         }
+
+
+
     }
 
     @Bean
@@ -106,8 +105,19 @@ public class Application {
     }
 
     @Bean
+    public Executor asyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("JDAsync-");
+        executor.initialize();
+        return executor;
+    }
+    @Bean
     public Client client() throws URISyntaxException {
         return new Client(REGION, APP_ID, ACCESS_KEY);
     }
 
 }
+

@@ -69,7 +69,7 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
     	this.client = client;
     	this.uplink = uplink;
 
-    	
+
     }
 
     public void setpayload(byte[] payload)
@@ -457,4 +457,7 @@ public void setdevId(String devId)
 	this.devId = devId;
 }
 
+	public void setClient(Client client) {
+    	this.client = client;
+	}
 }

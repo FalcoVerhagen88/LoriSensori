@@ -161,7 +161,7 @@ public class TankController {
 
     //DownlinkMessage
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping(value = "/tank/downlink", consumes = "application/json")
+    @PostMapping(value = "/tank/downlink", consumes = "application/json")
     public void getDownlinkFromRequest(@RequestBody Map<String, Object> payload) throws JsonProcessingException, URISyntaxException {
 
         System.out.println(payload);
@@ -172,9 +172,6 @@ public class TankController {
         try {
 
             ttnClient.start();
-//            DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.getDownlinkMessage(payload));
-
-           // System.out.println("Sending: " + response);
             ttnClient.send(dev_id, downlinkHandler.getDownlinkMessage(payload));
 
         } catch (Exception ex) {
