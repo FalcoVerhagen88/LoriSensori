@@ -138,6 +138,6 @@ public class TankController {
     	Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
     	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
- 
+    
 
 }
