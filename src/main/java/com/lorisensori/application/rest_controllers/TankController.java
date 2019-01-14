@@ -153,10 +153,10 @@ public class TankController {
         try {
 
             ttnClient.start();
-            DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.getDownlinkMessage(payload));
-            System.out.println("Sending: " + response);
-            ttnClient.send(dev_id, response);
+//            DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.getDownlinkMessage(payload));
 
+           // System.out.println("Sending: " + response);
+            ttnClient.send(dev_id, downlinkHandler.getDownlinkMessage(payload));
 
         } catch (Exception ex) {
             System.out.println("Response failed: " + ex.getMessage());

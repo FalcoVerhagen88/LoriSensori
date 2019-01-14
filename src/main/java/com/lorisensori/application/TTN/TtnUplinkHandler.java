@@ -1,6 +1,7 @@
 package com.lorisensori.application.TTN;
 
 
+import com.lorisensori.application.service.TankService;
 import org.springframework.data.annotation.CreatedDate;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.events.UplinkHandler;
@@ -37,7 +38,7 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
 	private SensorgegevensService sensorservice;
 	private Client client;
 	private byte[] payload;
-	private TankServiceImpl tankService;
+	private TankService tankService;
 	private DataMessage uplink;
 	private String devId;
 	private final byte ALIVEBERICHTID = 0;
