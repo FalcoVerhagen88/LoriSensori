@@ -6,154 +6,155 @@ import java.util.Date;
 import com.lorisensori.application.domain.Medewerker;
 
 public class SensorgegevensDTO implements Serializable {
-	private Long sensorId;
-	
-	   private int uplinkId;
-	   private int slotStatus;
-	   private int dieselniveau;
-	   private int accuniveau;
-	   private int vermogenZonnepaneel;
-	   private int gpsBreedtegraad;
-	   private int gpsBreedteMinuut;
-	   private int gpsBreedteSeconde;
-	   private int gpsBreedteTiendeSec;
-	   private int gpsLengtegraad;
-	   private int gpsLengteMinuut;
-	   private int gpsLengteSeconde;
-	   private int gpsLengteTiendeSec;
-	   private Date timestamp;
-	
-	public SensorgegevensDTO() {
-		
-	}
+    private Long sensorId;
 
-	public Long getSensorId() {
-		return sensorId;
-	}
+    private int uplinkId;
+    private int slotStatus;
+    private int dieselniveau;
+    private int accuniveau;
+    private int vermogenZonnepaneel;
+    private int gpsBreedtegraad;
+    private int gpsBreedteMinuut;
+    private int gpsBreedteSeconde;
+    private int gpsBreedteTiendeSec;
+    private int gpsLengtegraad;
+    private int gpsLengteMinuut;
+    private int gpsLengteSeconde;
+    private int gpsLengteTiendeSec;
+    private Date timestamp;
 
-	public void setSensorId(Long sensorId) {
-		this.sensorId = sensorId;
-	}
+    public SensorgegevensDTO() {
 
-	public int isSlotStatus() {
-		return slotStatus;
-	}
+    }
 
-	public void setSlotStatus(int slotStatus) {
-		this.slotStatus = slotStatus;
-	}
+    public Long getSensorId() {
+        return sensorId;
+    }
 
-	public int getDieselniveau() {
-		return dieselniveau;
-	}
+    public void setSensorId(Long sensorId) {
+        this.sensorId = sensorId;
+    }
 
-	public void setDieselniveau(int dieselniveau) {
-		this.dieselniveau = dieselniveau;
-	}
+    public int isSlotStatus() {
+        return slotStatus;
+    }
 
-	public int getAccuniveau() {
-		return accuniveau;
-	}
+    public void setSlotStatus(int slotStatus) {
+        this.slotStatus = slotStatus;
+    }
 
-	public void setAccuniveau(int accuniveau) {
-		this.accuniveau = accuniveau;
-	}
+    public int getDieselniveau() {
+        return dieselniveau;
+    }
 
-	public int getVermogenZonnepaneel() {
-		return vermogenZonnepaneel;
-	}
+    public void setDieselniveau(int dieselniveau) {
+        this.dieselniveau = dieselniveau;
+    }
 
-	public void setVermogenZonnepaneel(int vermogenZonnepaneel) {
-		this.vermogenZonnepaneel = vermogenZonnepaneel;
-	}
+    public int getAccuniveau() {
+        return accuniveau;
+    }
 
-	public int getGpsBreedtegraad() {
-		return gpsBreedtegraad;
-	}
+    public void setAccuniveau(int accuniveau) {
+        this.accuniveau = accuniveau;
+    }
 
-	public void setGpsBreedtegraad(int gpsBreedtegraad) {
-		this.gpsBreedtegraad = gpsBreedtegraad;
-	}
+    public int getVermogenZonnepaneel() {
+        return vermogenZonnepaneel;
+    }
 
-	public int getGpsLengtegraad() {
-		return gpsLengtegraad;
-	}
+    public void setVermogenZonnepaneel(int vermogenZonnepaneel) {
+        this.vermogenZonnepaneel = vermogenZonnepaneel;
+    }
 
-	public void setGpsLengtegraad(int gpsLengtegraad) {
-		this.gpsLengtegraad = gpsLengtegraad;
-	}
+    public int getGpsBreedtegraad() {
+        return gpsBreedtegraad;
+    }
 
-	public Date getTimestamp() {
-		return timestamp;
-	}
+    public void setGpsBreedtegraad(int gpsBreedtegraad) {
+        this.gpsBreedtegraad = gpsBreedtegraad;
+    }
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
-/*
-	public Medewerker getMedewerkerSlot() {
-		return medewerkerSlot;
-	}
+    public int getGpsLengtegraad() {
+        return gpsLengtegraad;
+    }
 
-	public void setMedewerkerSlot(Medewerker medewerkerSlot) {
-		this.medewerkerSlot = medewerkerSlot;
-	}
-*/
-	public int getUplinkId() {
-		return uplinkId;
-	}
+    public void setGpsLengtegraad(int gpsLengtegraad) {
+        this.gpsLengtegraad = gpsLengtegraad;
+    }
 
-	public void setUplinkId(int uplinkId) {
-		this.uplinkId = uplinkId;
-	}
+    public Date getTimestamp() {
+        return timestamp;
+    }
 
-	public int getGpsBreedteMinuut() {
-		return gpsBreedteMinuut;
-	}
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
 
-	public void setGpsBreedteMinuut(int gpsBreedteMinuut) {
-		this.gpsBreedteMinuut = gpsBreedteMinuut;
-	}
+    /*
+        public Medewerker getMedewerkerSlot() {
+            return medewerkerSlot;
+        }
 
-	public int getGpsBreedteSeconde() {
-		return gpsBreedteSeconde;
-	}
+        public void setMedewerkerSlot(Medewerker medewerkerSlot) {
+            this.medewerkerSlot = medewerkerSlot;
+        }
+    */
+    public int getUplinkId() {
+        return uplinkId;
+    }
 
-	public void setGpsBreedteSeconde(int gpsBreedteSeconde) {
-		this.gpsBreedteSeconde = gpsBreedteSeconde;
-	}
+    public void setUplinkId(int uplinkId) {
+        this.uplinkId = uplinkId;
+    }
 
-	public int getGpsBreedteTiendeSec() {
-		return gpsBreedteTiendeSec;
-	}
+    public int getGpsBreedteMinuut() {
+        return gpsBreedteMinuut;
+    }
 
-	public void setGpsBreedteTiendeSec(int gpsBreedteTiendeSec) {
-		this.gpsBreedteTiendeSec = gpsBreedteTiendeSec;
-	}
+    public void setGpsBreedteMinuut(int gpsBreedteMinuut) {
+        this.gpsBreedteMinuut = gpsBreedteMinuut;
+    }
 
-	public int getGpsLengteMinuut() {
-		return gpsLengteMinuut;
-	}
+    public int getGpsBreedteSeconde() {
+        return gpsBreedteSeconde;
+    }
 
-	public void setGpsLengteMinuut(int gpsLengteMinuut) {
-		this.gpsLengteMinuut = gpsLengteMinuut;
-	}
+    public void setGpsBreedteSeconde(int gpsBreedteSeconde) {
+        this.gpsBreedteSeconde = gpsBreedteSeconde;
+    }
 
-	public int getGpsLengteSeconde() {
-		return gpsLengteSeconde;
-	}
+    public int getGpsBreedteTiendeSec() {
+        return gpsBreedteTiendeSec;
+    }
 
-	public void setGpsLengteSeconde(int gpsLengteSeconde) {
-		this.gpsLengteSeconde = gpsLengteSeconde;
-	}
+    public void setGpsBreedteTiendeSec(int gpsBreedteTiendeSec) {
+        this.gpsBreedteTiendeSec = gpsBreedteTiendeSec;
+    }
 
-	public int getGpsLengteTiendeSec() {
-		return gpsLengteTiendeSec;
-	}
+    public int getGpsLengteMinuut() {
+        return gpsLengteMinuut;
+    }
 
-	public void setGpsLengteTiendeSec(int gpsLengteTiendeSec) {
-		this.gpsLengteTiendeSec = gpsLengteTiendeSec;
-	}
+    public void setGpsLengteMinuut(int gpsLengteMinuut) {
+        this.gpsLengteMinuut = gpsLengteMinuut;
+    }
 
-	
+    public int getGpsLengteSeconde() {
+        return gpsLengteSeconde;
+    }
+
+    public void setGpsLengteSeconde(int gpsLengteSeconde) {
+        this.gpsLengteSeconde = gpsLengteSeconde;
+    }
+
+    public int getGpsLengteTiendeSec() {
+        return gpsLengteTiendeSec;
+    }
+
+    public void setGpsLengteTiendeSec(int gpsLengteTiendeSec) {
+        this.gpsLengteTiendeSec = gpsLengteTiendeSec;
+    }
+
+
 }

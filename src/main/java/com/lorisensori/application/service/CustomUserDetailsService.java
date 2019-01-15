@@ -17,29 +17,29 @@ import java.util.Optional;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-	private final MedewerkerRepository medewerkerRepository;
+    private final MedewerkerRepository medewerkerRepository;
 
-	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class);
+    private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class);
 
-	@Autowired
-	public CustomUserDetailsService(MedewerkerRepository medewerkerRepository) {
-		this.medewerkerRepository = medewerkerRepository;
-	}
+    @Autowired
+    public CustomUserDetailsService(MedewerkerRepository medewerkerRepository) {
+        this.medewerkerRepository = medewerkerRepository;
+    }
 
-	@Override
-	public UserDetails loadUserByUsername(String gebruikersnaam) throws UsernameNotFoundException {
-		Optional<Medewerker> dbUser = medewerkerRepository.findByGebruikersnaam(gebruikersnaam);
-		logger.info("Got user: " + dbUser + " for " + gebruikersnaam);
-		return dbUser.map(CustomUserDetails::new)
-				.orElseThrow(() -> new UsernameNotFoundException("Couldn't find a matching gebruikersnaam in the " +
-						"database for " + gebruikersnaam));
-	}
+    @Override
+    public UserDetails loadUserByUsername(String gebruikersnaam) throws UsernameNotFoundException {
+        Optional<Medewerker> dbUser = medewerkerRepository.findByGebruikersnaam(gebruikersnaam);
+        logger.info("Got user: " + dbUser + " for " + gebruikersnaam);
+        return dbUser.map(CustomUserDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException("Couldn't find a matching gebruikersnaam in the " +
+                        "database for " + gebruikersnaam));
+    }
 
-	public UserDetails loadUserById(Long id) {
-		Optional<Medewerker> dbUser = medewerkerRepository.findById(id);
-		logger.info("Got user: " + dbUser + " for " + id);
-		return dbUser.map(CustomUserDetails::new)
-				.orElseThrow(() -> new UsernameNotFoundException("Couldn't find a matching id in the " +
-						"database for " + id));
-	}
+    public UserDetails loadUserById(Long id) {
+        Optional<Medewerker> dbUser = medewerkerRepository.findById(id);
+        logger.info("Got user: " + dbUser + " for " + id);
+        return dbUser.map(CustomUserDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException("Couldn't find a matching id in the " +
+                        "database for " + id));
+    }
 }

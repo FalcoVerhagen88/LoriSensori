@@ -26,34 +26,34 @@ public class TankDTO implements Serializable {
     private Date openingstijd, sluitingstijd;
 
     private int meldingTanken;
-    
+
     private String devId;
-    
+
     //TODO: LoRa informatie toevoegen
 
     //////////////////////////////////////
     //GETTERS AND SETTERS
     public TankDTO(Long tankId, int tanknummer, int diameter, int lengte, int inhoudLiters, int bouwjaar, String tanknaam, String type, double gewicht, StatusEnums status, Date openingstijd, Date sluitingstijd, int meldingTanken) {
-    	this.tankId = tankId;
-    	this.tanknummer = tanknummer;
-    	this.diameter = diameter;
-    	this.lengte = lengte;
-    	this.inhoudLiters = inhoudLiters;
-    	this.bouwjaar = bouwjaar;
-    	this.tanknaam = tanknaam;
-    	this.type = type;
-    	this.gewicht = gewicht;
-    	this.status = status;
-    	this.openingstijd = openingstijd;
-    	this.sluitingstijd = sluitingstijd;
-    	this.meldingTanken = meldingTanken;
-    	
+        this.tankId = tankId;
+        this.tanknummer = tanknummer;
+        this.diameter = diameter;
+        this.lengte = lengte;
+        this.inhoudLiters = inhoudLiters;
+        this.bouwjaar = bouwjaar;
+        this.tanknaam = tanknaam;
+        this.type = type;
+        this.gewicht = gewicht;
+        this.status = status;
+        this.openingstijd = openingstijd;
+        this.sluitingstijd = sluitingstijd;
+        this.meldingTanken = meldingTanken;
+
     }
-    
+
     public TankDTO() {
-    	
+
     }
-    
+
     public Long getTankId() {
         return tankId;
     }
@@ -158,13 +158,13 @@ public class TankDTO implements Serializable {
         this.meldingTanken = meldingTanken;
     }
 
-	public String getDevId() {
-		return devId;
-	}
+    public String getDevId() {
+        return devId;
+    }
 
-	public void setDevId(String devId) {
-		this.devId = devId;
-	}
-    
-    
+    public void setDevId(String devId) {
+        this.devId = devId;
+    }
+
+
 }

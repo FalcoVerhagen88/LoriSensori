@@ -9,7 +9,7 @@ import com.lorisensori.application.domain.Tank;
 public interface SensorLogService {
 //	Set<SensorLog> findNewest25();
 
-	SensorLogDTO convertToDto(SensorLog sensorLog);
+    SensorLogDTO convertToDto(SensorLog sensorLog);
 
-	Set<SensorLog> findByTank(Tank findByTankId);
+    Set<SensorLog> findByTank(Tank findByTankId);
 }

@@ -17,55 +17,55 @@ import org.hibernate.annotations.NaturalId;
 @Entity(name = "PASSWORD_RESET_TOKEN")
 public class PasswordResetToken {
 
-	@Id
-	@Column(name = "TOKEN_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pwd_reset_token_seq")
-	@SequenceGenerator(name = "pwd_reset_token_seq", allocationSize = 1)
-	private Long id;
+    @Id
+    @Column(name = "TOKEN_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pwd_reset_token_seq")
+    @SequenceGenerator(name = "pwd_reset_token_seq", allocationSize = 1)
+    private Long id;
 
-	@NaturalId
-	@Column(name = "TOKEN_NAME", nullable = false, unique = true)
-	private String token;
+    @NaturalId
+    @Column(name = "TOKEN_NAME", nullable = false, unique = true)
+    private String token;
 
-	@Column(name = "EXPIRY_DT", nullable = false)
-	private Instant expiryDate;
-	
-	@OneToOne(targetEntity = Medewerker.class, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false, name = "MEDEWERKERID")
-	private Medewerker medewerker;
+    @Column(name = "EXPIRY_DT", nullable = false)
+    private Instant expiryDate;
 
-	public PasswordResetToken(Long id, String token, Instant expiryDate, Medewerker medewerker) {
-		this.id = id;
-		this.token = token;
-		this.expiryDate = expiryDate;
-		this.medewerker = medewerker;
-	}
+    @OneToOne(targetEntity = Medewerker.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "MEDEWERKERID")
+    private Medewerker medewerker;
 
-	public PasswordResetToken() {
-	}
+    public PasswordResetToken(Long id, String token, Instant expiryDate, Medewerker medewerker) {
+        this.id = id;
+        this.token = token;
+        this.expiryDate = expiryDate;
+        this.medewerker = medewerker;
+    }
 
-	public Instant getExpiryDate() {
-		return expiryDate;
-	}
+    public PasswordResetToken() {
+    }
 
-	public void setExpiryDate(Instant expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    public Instant getExpiryDate() {
+        return expiryDate;
+    }
 
-	public Medewerker getMedewerker() {
-		return medewerker;
-	}
+    public void setExpiryDate(Instant expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
-	public void setMedewerker(Medewerker medewerker) {
-		this.medewerker = medewerker;
-	}
+    public Medewerker getMedewerker() {
+        return medewerker;
+    }
 
-	public String getToken() {
-		return token;
-	}
+    public void setMedewerker(Medewerker medewerker) {
+        this.medewerker = medewerker;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
 }

@@ -7,7 +7,7 @@ public class FunctioneelBeheerder extends Medewerker {
     //Constructors
 
     public FunctioneelBeheerder() {
-    	super();
+        super();
     }
 
     public void afmeldenMedewerker(Medewerker testMedewerker) {

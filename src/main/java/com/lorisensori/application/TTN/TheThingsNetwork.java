@@ -118,7 +118,7 @@ public class TheThingsNetwork {
         //  CLIENT.onMessage((String devId, DataMessage data) ->
 //        CLIENT.onMessage((String _devId, DataMessage _data) -> {
 //            try {
-                // Toggle the LED
+        // Toggle the LED
 //                DownlinkMessage response = new DownlinkMessage(1, new byte[]{0x00, 0x01});
 //
 //                System.out.println("Sending: " + response);
@@ -128,18 +128,5 @@ public class TheThingsNetwork {
 //            }
 //        });
 
-    }
-
-    public static void testDecoder() throws Exception {
-        byte[] key = new byte[]{0x2B, 0x7E, 0x15, 0x16, 0x28, (byte) 0xAE, (byte) 0xD2, (byte) 0xA6, (byte) 0xAB, (byte) 0xF7, 0x15, (byte) 0x88, 0x09, (byte) 0xCF, 0x4F, 0x3C};
-        byte[] iv = new byte[]{0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-
-        String message = "thisisverysecret";
-
-        byte[] encrypted = Crypto.encryptAES(message.getBytes(), key, iv);
-        String encoded = Base64.getEncoder().encodeToString(encrypted);
-        String decrypted = Crypto.decrypt(encoded, key, iv);
-
-        System.out.println(decrypted);
     }
 }

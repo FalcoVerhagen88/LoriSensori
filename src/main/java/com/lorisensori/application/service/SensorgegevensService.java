@@ -11,12 +11,12 @@ public interface SensorgegevensService {
 
     Sensorgegevens save(Sensorgegevens sensorgegevens);
 
-	Set<Sensorgegevens> findByTank(Tank tank);
+    Set<Sensorgegevens> findByTank(Tank tank);
 
     SensorgegevensDTO convertToDto(Sensorgegevens sensorgegevens);
 
     Sensorgegevens convertToEntity(SensorgegevensDTO sensorgegevensDTO);
 
-	SensorgegevensExtraDTO convertToExtraDto(Sensorgegevens sensorgegevens);
+    SensorgegevensExtraDTO convertToExtraDto(Sensorgegevens sensorgegevens);
 
 }

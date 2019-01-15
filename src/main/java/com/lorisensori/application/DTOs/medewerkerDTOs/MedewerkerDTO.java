@@ -21,8 +21,8 @@ public class MedewerkerDTO implements Serializable {
 
     private Boolean isEmailVerified;
 
-    public MedewerkerDTO(){}
-
+    public MedewerkerDTO() {
+    }
 
 
     ////////////////////////////////////////////////////////////
@@ -103,16 +103,14 @@ public class MedewerkerDTO implements Serializable {
     }
 
 
-
-	public String getBedrijfsnaam() {
-		return bedrijfsnaam;
-	}
-
+    public String getBedrijfsnaam() {
+        return bedrijfsnaam;
+    }
 
 
-	public void setBedrijfsnaam(String bedrijfsnaam) {
-		this.bedrijfsnaam = bedrijfsnaam;
-	}
+    public void setBedrijfsnaam(String bedrijfsnaam) {
+        this.bedrijfsnaam = bedrijfsnaam;
+    }
 
 
 }

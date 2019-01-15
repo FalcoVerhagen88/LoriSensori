@@ -15,14 +15,14 @@ public interface MedewerkerRepository extends JpaRepository<Medewerker, Long> {
 
     Medewerker findByVoornaam(String voornaam);
 
-    Optional<Medewerker> findByGebruikersnaam (String gebruikersnaam);
+    Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam);
 
-	boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
 
     Optional<Medewerker> findByEmail(String email);
 
     @Override
     Medewerker getOne(Long id);
 
-	Set<Medewerker> findByBedrijf(Bedrijf bedrijf);
+    Set<Medewerker> findByBedrijf(Bedrijf bedrijf);
 }

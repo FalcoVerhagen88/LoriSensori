@@ -9,8 +9,8 @@ import com.lorisensori.application.domain.SensorLog;
 import com.lorisensori.application.domain.Tank;
 
 @Repository
-public interface SensorLogRepository extends JpaRepository<SensorLog, Long>{
+public interface SensorLogRepository extends JpaRepository<SensorLog, Long> {
 
-	Set<SensorLog> findByTank(Tank tank);
-	
+    Set<SensorLog> findByTank(Tank tank);
+
 }

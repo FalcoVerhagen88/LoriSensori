@@ -9,14 +9,14 @@ import java.util.Optional;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
-	@Override
-	Optional<RefreshToken> findById(Long id);
+    @Override
+    Optional<RefreshToken> findById(Long id);
 
-	Optional<String> findTokenById(Long id);
+    Optional<String> findTokenById(Long id);
 
-	Optional<RefreshToken> findByToken(String token);
+    Optional<RefreshToken> findByToken(String token);
 
-	Optional<UserDevice> findUserDeviceById(Long id);
+    Optional<UserDevice> findUserDeviceById(Long id);
 
-	Optional<UserDevice> findUserDeviceByToken(String token);
+    Optional<UserDevice> findUserDeviceByToken(String token);
 }

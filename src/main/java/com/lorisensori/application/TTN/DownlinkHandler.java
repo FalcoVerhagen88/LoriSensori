@@ -19,15 +19,15 @@ public class DownlinkHandler {
 
         JSONArray jsonArray = jsonObject.getJSONObject("downlink").getJSONArray("bytes");
 
-        byte [] downlinkPayload = new byte[jsonArray.length()];
+        byte[] downlinkPayload = new byte[jsonArray.length()];
 
-        for (int i = 0; i < jsonArray.length(); i++){
+        for (int i = 0; i < jsonArray.length(); i++) {
             downlinkPayload[i] = (byte) jsonArray.getInt(i);
         }
-        return new DownlinkMessage(1, downlinkPayload );
+        return new DownlinkMessage(1, downlinkPayload);
     }
 
-    public String getDevIdTank(Map<String, Object> payload)throws JsonProcessingException{
+    public String getDevIdTank(Map<String, Object> payload) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
 

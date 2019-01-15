@@ -20,36 +20,36 @@ import java.io.IOException;
 @Component
 public class OnRegenerateEmailVerificationListener implements ApplicationListener<OnRegenerateEmailVerificationEvent> {
 
-	@Autowired
-	private MailService mailService;
+    @Autowired
+    private MailService mailService;
 
-	private static final Logger logger = Logger.getLogger(OnRegenerateEmailVerificationListener.class);
+    private static final Logger logger = Logger.getLogger(OnRegenerateEmailVerificationListener.class);
 
-	/**
-	 * As soon as a registration event is complete, invoke the email verification
-	 */
-	@Override
-	@Async
-	public void onApplicationEvent(OnRegenerateEmailVerificationEvent onRegenerateEmailVerificationEvent) {
-		resendEmailVerification(onRegenerateEmailVerificationEvent);
-	}
+    /**
+     * As soon as a registration event is complete, invoke the email verification
+     */
+    @Override
+    @Async
+    public void onApplicationEvent(OnRegenerateEmailVerificationEvent onRegenerateEmailVerificationEvent) {
+        resendEmailVerification(onRegenerateEmailVerificationEvent);
+    }
 
-	/**
-	 * Send email verification to the user and persist the token in the database.
-	 */
-	private void resendEmailVerification(OnRegenerateEmailVerificationEvent event) {
-		Medewerker medewerker = event.getMedewerker();
-		EmailVerificationToken emailVerificationToken = event.getToken();
-		String recipientAddress = medewerker.getEmail();
+    /**
+     * Send email verification to the user and persist the token in the database.
+     */
+    private void resendEmailVerification(OnRegenerateEmailVerificationEvent event) {
+        Medewerker medewerker = event.getMedewerker();
+        EmailVerificationToken emailVerificationToken = event.getToken();
+        String recipientAddress = medewerker.getEmail();
 
-		String emailConfirmationUrl =
-				event.getRedirectUrl().queryParam("token", emailVerificationToken.getToken()).toUriString();
-		try {
-			mailService.sendEmailVerification(emailConfirmationUrl, recipientAddress);
-		} catch (IOException | TemplateException | MessagingException e) {
-			logger.error(e);
-			throw new MailSendException(recipientAddress, "Email Verification");
-		}
-	}
+        String emailConfirmationUrl =
+                event.getRedirectUrl().queryParam("token", emailVerificationToken.getToken()).toUriString();
+        try {
+            mailService.sendEmailVerification(emailConfirmationUrl, recipientAddress);
+        } catch (IOException | TemplateException | MessagingException e) {
+            logger.error(e);
+            throw new MailSendException(recipientAddress, "Email Verification");
+        }
+    }
 
 }

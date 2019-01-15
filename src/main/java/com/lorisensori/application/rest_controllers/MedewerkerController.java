@@ -28,26 +28,26 @@ public class MedewerkerController {
     }
 
     //Krijg gegevens ingelogde gebruiker
-	@PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/medewerker/huidigeGebruiker")
     public MedewerkerDTO getCurrentUser(@CurrentUser CustomUserDetails currentUser) {
-		Medewerker medewerker = medewerkerService.findById(currentUser.getId());
-		return medewerkerService.convertToDto(medewerker);
+        Medewerker medewerker = medewerkerService.findById(currentUser.getId());
+        return medewerkerService.convertToDto(medewerker);
     }
 
     //Get a single Medewerker
-	@PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/medewerker/{medewerkerId}")
     public MedewerkerDTO getMedewerkerByid(@PathVariable(value = "medewerkerId") Long medewerkerId) {
         Medewerker medewerker = medewerkerService.findById(medewerkerId);
         return medewerkerService.convertToDto(medewerker);
     }
 
-	//Get all medewerkers from Bedrijf
-	@PreAuthorize("hasRole('ADMIN')")
-	@GetMapping("/medewerker/{bedrijfsnaam}")
-	public Set<MedewerkerDTO> getAllMedewerkersFromBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam) {
-		Set<Medewerker> medewerkers = medewerkerService.findByBedrijf(bedrijfService.findByBedrijfsnaam(bedrijfsnaam));
-		return medewerkers.stream().map(medewerkerService::convertToDto).collect(Collectors.toSet());
-	}
+    //Get all medewerkers from Bedrijf
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/medewerker/{bedrijfsnaam}")
+    public Set<MedewerkerDTO> getAllMedewerkersFromBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam) {
+        Set<Medewerker> medewerkers = medewerkerService.findByBedrijf(bedrijfService.findByBedrijfsnaam(bedrijfsnaam));
+        return medewerkers.stream().map(medewerkerService::convertToDto).collect(Collectors.toSet());
+    }
 }

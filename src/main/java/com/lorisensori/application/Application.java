@@ -62,7 +62,7 @@ public class Application {
     }
 
     public static void main(String[] args) {
-//        SpringApplication.run(Application.class, args);
+
         ApplicationContext context = SpringApplication.run(Application.class, args);
         TankService tankService = (TankService) context.getBean("tankService");
 
@@ -73,16 +73,14 @@ public class Application {
                 TtnUplinkHandler handle = new TtnUplinkHandler(CLIENT, data, devId);
                 handle.setdevId(devId);
                 handle.setUplinkMessage(data);
+                System.out.println(data);
                 handle.setClient(CLIENT);
                 handle.ontvangBericht(devId, data);
                 Thread draadje = new Thread(handle);
                 draadje.start();
-            }
-            catch (NullPointerException enull) {
+            } catch (NullPointerException enull) {
                 enull.printStackTrace();
-            }
-
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 System.out.println("Response failed: " + ex.getMessage());
             }
@@ -94,7 +92,6 @@ public class Application {
             // TODO Auto-generated catch block
             // e.printStackTrace();
         }
-
 
 
     }
@@ -114,6 +111,7 @@ public class Application {
         executor.initialize();
         return executor;
     }
+
     @Bean
     public Client client() throws URISyntaxException {
         return new Client(REGION, APP_ID, ACCESS_KEY);

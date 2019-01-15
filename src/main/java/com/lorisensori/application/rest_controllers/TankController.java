@@ -69,7 +69,7 @@ public class TankController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank")
-    public TankDTO getTankByDevId(@RequestParam(value = "dev_id") String devId){
+    public TankDTO getTankByDevId(@RequestParam(value = "dev_id") String devId) {
         Tank tank = tankService.findByDevId(devId);
         return tankService.convertToDto(tank);
     }
@@ -78,7 +78,7 @@ public class TankController {
     //TODO: niet zeker of dit de juiste manier is.
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/tank/updateTank/")
-    public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO){
+    public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO) {
         Tank tank = tankService.findByTankId(tankDTO.getTankId());
         tank.setBouwjaar(tankDTO.getBouwjaar());
         tank.setDiameter(tankDTO.getDiameter());
@@ -118,28 +118,28 @@ public class TankController {
         Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
         return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
     }
-    
+
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/sensorlog/{tank_id}")
     public Set<SensorLogDTO> getAllSensorLog(@PathVariable(value = "tank_id") Long tankId) {
-    	Set<SensorLog> sensorLog = sensorLogService.findByTank(tankService.findByTankId(tankId));
-    	return sensorLog.stream().map(sensorLogService::convertToDto).collect(Collectors.toSet());
+        Set<SensorLog> sensorLog = sensorLogService.findByTank(tankService.findByTankId(tankId));
+        return sensorLog.stream().map(sensorLogService::convertToDto).collect(Collectors.toSet());
 
     }
 
     /////////////////////////////////////////////////////////////////////////////
-    
+
     //SensorGegevensenkel
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/laatstesensorgegevens/{tank_id}")
     public SensorgegevensDTO getLaatsteSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
-    	Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
-    	SensorgegevensExtraDTO sensorgegevensExtraDTO = sensorgegevensService.convertToExtraDto(Collections.max(sensorgegevens));
-    	sensorgegevensExtraDTO.setDevId(tankService.findByTankId(tankId).getDevId());
-    	sensorgegevensExtraDTO.setOpeningstijd(tankService.findByTankId(tankId).getOpeningstijd());
-    	sensorgegevensExtraDTO.setSluitingstijd(tankService.findByTankId(tankId).getSluitingstijd());
-    	sensorgegevensExtraDTO.setTankId(tankId);
-    	return sensorgegevensExtraDTO;
+        Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
+        SensorgegevensExtraDTO sensorgegevensExtraDTO = sensorgegevensService.convertToExtraDto(Collections.max(sensorgegevens));
+        sensorgegevensExtraDTO.setDevId(tankService.findByTankId(tankId).getDevId());
+        sensorgegevensExtraDTO.setOpeningstijd(tankService.findByTankId(tankId).getOpeningstijd());
+        sensorgegevensExtraDTO.setSluitingstijd(tankService.findByTankId(tankId).getSluitingstijd());
+        sensorgegevensExtraDTO.setTankId(tankId);
+        return sensorgegevensExtraDTO;
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -147,14 +147,14 @@ public class TankController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/vanBedrijf/")
     public Set<TankBedrijfDTO> getTanksFromBedrijf(@CurrentUser CustomUserDetails currentUser) {
-    	Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
-    	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
+        Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
+        return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
 
     @PreAuthorize("hasRole('USER')")
-    @GetMapping ("/tank/test/{devId}")
+    @GetMapping("/tank/test/{devId}")
     public TankDTO getTestDevId(@PathVariable(value = "devId") String devId) {
-    	return tankService.convertToDto(tankService.findByDevId(devId));
+        return tankService.convertToDto(tankService.findByDevId(devId));
     }
 
     /////////////////////////////////////////////////////////////////////////////

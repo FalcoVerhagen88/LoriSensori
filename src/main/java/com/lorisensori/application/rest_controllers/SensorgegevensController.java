@@ -22,17 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SensorgegevensController {
 
     private final SensorgegevensService sensorgegevensService;
-    
-    @Autowired
-    private TankService tankService;
-/*  STAAT OOKAL IN TankController
-	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/tank/sensorgegevens/{tankid}")
-	public Set<SensorgegevensDTO> getAllSensorgegeven(@PathVariable(value = "tankId") Long tankId) {
-		Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
-		return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
-	}
-*/
+
+    private final TankService tankService;
+
 	@Autowired
 	public SensorgegevensController(SensorgegevensService sensorgegevensService, TankService tankService) {
 		this.sensorgegevensService = sensorgegevensService;

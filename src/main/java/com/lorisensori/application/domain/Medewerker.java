@@ -17,8 +17,8 @@ import java.util.Set;
 public class Medewerker extends DateAudit {
     @Id
     @Column(name = "MEDEWERKERID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-	@SequenceGenerator(name = "user_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", allocationSize = 1)
     private Long id;
 
     @NaturalId
@@ -59,37 +59,36 @@ public class Medewerker extends DateAudit {
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean active;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "MEDEWERKER_RECHTEN", joinColumns = {
-			@JoinColumn(name = "MEDEWERKERID", referencedColumnName = "MEDEWERKERID") }, inverseJoinColumns = {
-					@JoinColumn(name = "RECHT_ID", referencedColumnName = "RECHT_ID") })
-	private Set<Recht> rechten = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(name = "MEDEWERKER_RECHTEN", joinColumns = {
+            @JoinColumn(name = "MEDEWERKERID", referencedColumnName = "MEDEWERKERID")}, inverseJoinColumns = {
+            @JoinColumn(name = "RECHT_ID", referencedColumnName = "RECHT_ID")})
+    private Set<Recht> rechten = new HashSet<>();
 
-	@Column(name = "IS_EMAIL_VERIFIED", nullable = false)
-	private Boolean isEmailVerified;
+    @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
+    private Boolean isEmailVerified;
 
 
     /////////////////////////////////////////
     //CONSTRUCTORS
 
     public Medewerker() {
-    	super();
+        super();
     }
 
     public Medewerker(Medewerker medewerker) {
-    	id = medewerker.getId();
-    	gebruikersnaam = medewerker.getGebruikersnaam();
-    	voornaam = medewerker.getVoornaam();
-    	achternaam = medewerker.getAchternaam();
-    	password = medewerker.getPassword();
-    	email = medewerker.getEmail();
-    	telefoonnummer = medewerker.getTelefoonnummer();
-    	bedrijf = medewerker.getBedrijf();
-    	tank = medewerker.getTank();
-    	active = medewerker.getActive();
-    	rechten = medewerker.getRechten();
-    	isEmailVerified = medewerker.getEmailVerified();
-
+        id = medewerker.getId();
+        gebruikersnaam = medewerker.getGebruikersnaam();
+        voornaam = medewerker.getVoornaam();
+        achternaam = medewerker.getAchternaam();
+        password = medewerker.getPassword();
+        email = medewerker.getEmail();
+        telefoonnummer = medewerker.getTelefoonnummer();
+        bedrijf = medewerker.getBedrijf();
+        tank = medewerker.getTank();
+        active = medewerker.getActive();
+        rechten = medewerker.getRechten();
+        isEmailVerified = medewerker.getEmailVerified();
 
 
     }
@@ -112,22 +111,22 @@ public class Medewerker extends DateAudit {
     }
 
     public void confirmVerificiation() {
-    	setEmailVerified(true);
+        setEmailVerified(true);
     }
 
 
     public void addRecht(Recht recht) {
-    	rechten.add(recht);
-    	recht.getUserList().add(this);
+        rechten.add(recht);
+        recht.getUserList().add(this);
     }
 
     public void addRechten(Set<Recht> rechten) {
-    	rechten.forEach(this::addRecht);
+        rechten.forEach(this::addRecht);
     }
 
     public void removeRecht(Recht recht) {
-    	rechten.remove(recht);
-    	recht.getUserList().remove(this);
+        rechten.remove(recht);
+        recht.getUserList().remove(this);
     }
 
     public Long getId() {
@@ -202,27 +201,27 @@ public class Medewerker extends DateAudit {
         this.tank = tank;
     }
 
-	public Boolean getActive() {
-		return active;
-	}
+    public Boolean getActive() {
+        return active;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
-	public Set<Recht> getRechten() {
-		return rechten;
-	}
+    public Set<Recht> getRechten() {
+        return rechten;
+    }
 
-	public void setRechten(Set<Recht> rechten) {
-		this.rechten = rechten;
-	}
+    public void setRechten(Set<Recht> rechten) {
+        this.rechten = rechten;
+    }
 
-	public Boolean getEmailVerified() {
-		return isEmailVerified;
-	}
+    public Boolean getEmailVerified() {
+        return isEmailVerified;
+    }
 
-	public void setEmailVerified(Boolean isEmailVerified) {
-		this.isEmailVerified = isEmailVerified;
-	}
+    public void setEmailVerified(Boolean isEmailVerified) {
+        this.isEmailVerified = isEmailVerified;
+    }
 }

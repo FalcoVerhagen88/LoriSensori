@@ -54,15 +54,19 @@ public class TankServiceImpl implements TankService {
         tankRepository.delete(tank);
     }
 
-	@Override
-	public Tank findByDevId(String devId) { return tankRepository.findByDevId(devId);}
+    @Override
+    public Tank findByDevId(String devId) {
+        return tankRepository.findByDevId(devId);
+    }
 
-	@Override
-	public void saveSensorgegevens(Sensorgegevens sensorgegevens) {
-	}
+    @Override
+    public void saveSensorgegevens(Sensorgegevens sensorgegevens) {
+    }
 
-	@Override
-    public Set<Tank> findByBedrijf(Bedrijf bedrijf){return bedrijf.getTanks();}
+    @Override
+    public Set<Tank> findByBedrijf(Bedrijf bedrijf) {
+        return bedrijf.getTanks();
+    }
 
     @Override
     public TankDTO convertToDto(Tank tank) {
@@ -77,16 +81,11 @@ public class TankServiceImpl implements TankService {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper.map(tankDTO, Tank.class);
     }
-    
-    @Override
-    public TankBedrijfDTO convertToTankBedrijfDTO(Tank tank) {
-    	modelMapper.getConfiguration().setAmbiguityIgnored(true);
-    	modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
-    	return modelMapper.map(tank, TankBedrijfDTO.class);
-    }
 
     @Override
-    public void geefstring() {
-        System.out.println("HALLO");
+    public TankBedrijfDTO convertToTankBedrijfDTO(Tank tank) {
+        modelMapper.getConfiguration().setAmbiguityIgnored(true);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+        return modelMapper.map(tank, TankBedrijfDTO.class);
     }
 }

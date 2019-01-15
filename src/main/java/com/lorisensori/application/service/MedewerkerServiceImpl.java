@@ -47,16 +47,16 @@ public class MedewerkerServiceImpl implements MedewerkerService {
 
     @Override
     public List<Medewerker> findAll() {
-    	return medewerkerRepository.findAll();
+        return medewerkerRepository.findAll();
     }
 
     @Override
     public Set<Medewerker> findByBedrijf(Bedrijf bedrijf) {
-    	return medewerkerRepository.findByBedrijf(bedrijf);
+        return medewerkerRepository.findByBedrijf(bedrijf);
     }
 
     @Transactional
-    public UpdateMedewerkerDTO update(Long id, UpdateMedewerkerDTO updateMedewerkerDTO){
+    public UpdateMedewerkerDTO update(Long id, UpdateMedewerkerDTO updateMedewerkerDTO) {
 
         Medewerker entity = findById(id);
 

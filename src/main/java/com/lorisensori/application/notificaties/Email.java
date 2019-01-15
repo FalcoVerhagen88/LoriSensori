@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public class Email extends Bericht {
 
-    Session mailSession;
+    private Session mailSession;
 
     public static void main(String args[]) {
         ArrayList<String> emailAdressen = new ArrayList<>();//enter the email addresses you want to send the notification to here
@@ -75,11 +75,6 @@ public class Email extends Bericht {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public boolean medewerkerGeupdate(Medewerker medewerker) {
-        return false;
     }
 
 }

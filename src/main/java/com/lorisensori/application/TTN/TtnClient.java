@@ -4,6 +4,7 @@ package com.lorisensori.application.TTN;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.thethingsnetwork.data.mqtt.Client;
+
 import java.net.URISyntaxException;
 
 

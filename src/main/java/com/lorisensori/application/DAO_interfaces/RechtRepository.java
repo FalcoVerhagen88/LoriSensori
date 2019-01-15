@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface RechtRepository extends JpaRepository<Recht, Long> {
 
-	Optional<Recht> findByRecht(RechtEnums recht);
+    Optional<Recht> findByRecht(RechtEnums recht);
 }

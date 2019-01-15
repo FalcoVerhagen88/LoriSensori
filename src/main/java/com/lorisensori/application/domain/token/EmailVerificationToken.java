@@ -19,82 +19,81 @@ import com.lorisensori.application.domain.audit.DateAudit;
 import com.lorisensori.application.enums.TokenStatus;
 
 
-
 @Entity(name = "EMAIL_VERIFICATION_TOKEN")
 public class EmailVerificationToken extends DateAudit {
 
-	@Id
-	@Column(name = "TOKEN_ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_token_seq")
-	@SequenceGenerator(name = "email_token_seq", allocationSize = 1)
-	private Long id;
+    @Id
+    @Column(name = "TOKEN_ID")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_token_seq")
+    @SequenceGenerator(name = "email_token_seq", allocationSize = 1)
+    private Long id;
 
-	@Column(name = "TOKEN", nullable = false, unique = true)
-	private String token;
+    @Column(name = "TOKEN", nullable = false, unique = true)
+    private String token;
 
-	@OneToOne(targetEntity = Medewerker.class, fetch = FetchType.EAGER)
-	@JoinColumn(nullable = false, name = "MEDEWERKERID")
-	private Medewerker medewerker;
+    @OneToOne(targetEntity = Medewerker.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "MEDEWERKERID")
+    private Medewerker medewerker;
 
-	@Column(name = "TOKEN_STATUS")
-	@Enumerated(EnumType.STRING)
-	private TokenStatus tokenStatus;
+    @Column(name = "TOKEN_STATUS")
+    @Enumerated(EnumType.STRING)
+    private TokenStatus tokenStatus;
 
-	@Column(name = "EXPIRY_DT", nullable = false)
-	private Instant expiryDate;
+    @Column(name = "EXPIRY_DT", nullable = false)
+    private Instant expiryDate;
 
-	public EmailVerificationToken() {
-	}
+    public EmailVerificationToken() {
+    }
 
-	public EmailVerificationToken(Long id, String token, Medewerker medewerker, TokenStatus tokenStatus, Instant expiryDate) {
-		this.id = id;
-		this.token = token;
-		this.medewerker = medewerker;
-		this.tokenStatus = tokenStatus;
-		this.expiryDate = expiryDate;
-	}
+    public EmailVerificationToken(Long id, String token, Medewerker medewerker, TokenStatus tokenStatus, Instant expiryDate) {
+        this.id = id;
+        this.token = token;
+        this.medewerker = medewerker;
+        this.tokenStatus = tokenStatus;
+        this.expiryDate = expiryDate;
+    }
 
-	public void confirmStatus() {
-		setTokenStatus(TokenStatus.STATUS_CONFIRMED);
-	}
+    public void confirmStatus() {
+        setTokenStatus(TokenStatus.STATUS_CONFIRMED);
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getToken() {
-		return token;
-	}
+    public String getToken() {
+        return token;
+    }
 
-	public void setToken(String token) {
-		this.token = token;
-	}
+    public void setToken(String token) {
+        this.token = token;
+    }
 
-	public Medewerker getMedewerker() {
-		return medewerker;
-	}
+    public Medewerker getMedewerker() {
+        return medewerker;
+    }
 
-	public void setMedewerker(Medewerker medewerker) {
-		this.medewerker = medewerker;
-	}
+    public void setMedewerker(Medewerker medewerker) {
+        this.medewerker = medewerker;
+    }
 
-	public Instant getExpiryDate() {
-		return expiryDate;
-	}
+    public Instant getExpiryDate() {
+        return expiryDate;
+    }
 
-	public void setExpiryDate(Instant expiryDate) {
-		this.expiryDate = expiryDate;
-	}
+    public void setExpiryDate(Instant expiryDate) {
+        this.expiryDate = expiryDate;
+    }
 
-	public TokenStatus getTokenStatus() {
-		return tokenStatus;
-	}
+    public TokenStatus getTokenStatus() {
+        return tokenStatus;
+    }
 
-	public void setTokenStatus(TokenStatus tokenStatus) {
-		this.tokenStatus = tokenStatus;
-	}
+    public void setTokenStatus(TokenStatus tokenStatus) {
+        this.tokenStatus = tokenStatus;
+    }
 }

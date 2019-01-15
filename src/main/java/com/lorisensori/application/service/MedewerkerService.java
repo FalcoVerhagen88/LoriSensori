@@ -13,14 +13,22 @@ import java.util.Set;
 public interface MedewerkerService {
 
     Medewerker save(Medewerker medewerker);
+
     boolean existsByVoornaam(String voornaam);
+
     List<Medewerker> findAll();
+
     Medewerker findById(Long id);
+
     Medewerker findByVoornaam(String voornaam);
+
     Optional<Medewerker> findByGebruikersnaam(String gebruikersnaam);
+
     void delete(Medewerker medewerker);
-	Set<Medewerker> findByBedrijf(Bedrijf bedrijf);
+
+    Set<Medewerker> findByBedrijf(Bedrijf bedrijf);
 
     MedewerkerDTO convertToDto(Medewerker medewerker);
+
     Medewerker convertToEntity(MedewerkerDTO medewerkerDTO);
 }

@@ -64,11 +64,11 @@ public class Tank implements Serializable {
 
     }
 
-    public void addSensorLog(SensorLog sensorLog){ //gebruiken we om de sensorlog bij te houden
+    public void addSensorLog(SensorLog sensorLog) { //gebruiken we om de sensorlog bij te houden
         getSensorLog().add(sensorLog);
     }
 
-    public void addSensorGegevens(Sensorgegevens sensorgegevens){
+    public void addSensorGegevens(Sensorgegevens sensorgegevens) {
         getSensorgegevens().add(sensorgegevens);
     }
 ///////////////////////////////////////////////////////////////////

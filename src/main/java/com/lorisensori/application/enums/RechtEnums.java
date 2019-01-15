@@ -12,7 +12,7 @@ public enum RechtEnums {
      * Rechten Administrator
      */
     ROLE_ADMIN,
-    
+
     /**
      * Rechten Technisch Beheerder
      */

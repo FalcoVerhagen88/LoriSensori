@@ -16,7 +16,8 @@ public class UpdateMedewerkerDTO {
         this.isEmailVerified = isEmailVerified;
     }
 
-    public UpdateMedewerkerDTO(){}
+    public UpdateMedewerkerDTO() {
+    }
 
     ////////////////////////////////////////////////////////////
     //GETTERS AND SETTERS

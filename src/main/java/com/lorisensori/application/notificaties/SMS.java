@@ -32,9 +32,4 @@ public class SMS extends Bericht {
             System.out.println(message.getSid());
         }
     }
-
-    @Override
-    public boolean medewerkerGeupdate(Medewerker medewerker) {
-        return false;
-    }
 }

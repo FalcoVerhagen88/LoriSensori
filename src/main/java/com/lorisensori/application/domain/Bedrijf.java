@@ -56,7 +56,8 @@ public class Bedrijf {
         if (medewerkers == null){
             medewerkers = new ArrayList<>();
         }
-*/        if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
+*/
+        if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
         else {
             throw new EntityExistsException();
         }
