@@ -1,25 +1,35 @@
 package com.lorisensori.application.rest_controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lorisensori.application.DTOs.tankDTOs.SensorLogDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensExtraDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
+import com.lorisensori.application.TTN.DownlinkHandler;
+import com.lorisensori.application.TTN.TtnClient;
 import com.lorisensori.application.annotations.CurrentUser;
+import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.CustomUserDetails;
 import com.lorisensori.application.domain.SensorLog;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Tank;
 import com.lorisensori.application.exceptions.EntityExistsException;
+import com.lorisensori.application.service.BedrijfService;
 import com.lorisensori.application.service.SensorLogService;
 import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.thethingsnetwork.data.common.messages.DownlinkMessage;
+import org.thethingsnetwork.data.mqtt.Client;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
+import java.net.URISyntaxException;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,12 +40,16 @@ public class TankController {
 
     private final TankService tankService;
     private final SensorgegevensService sensorgegevensService;
+    private final BedrijfService bedrijfService;
+    private final TtnClient client;
     private final SensorLogService sensorLogService;
 
     @Autowired
-    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, SensorLogService sensorLogService) {
+    public TankController(TankService tankService, SensorgegevensService sensorgegevensService, BedrijfService bedrijfService, TtnClient client, SensorLogService sensorLogService) {
         this.tankService = tankService;
         this.sensorgegevensService = sensorgegevensService;
+        this.bedrijfService = bedrijfService;
+        this.client = client;
         this.sensorLogService = sensorLogService;
     }
 
@@ -112,9 +126,9 @@ public class TankController {
     public Set<SensorLogDTO> getAllSensorLog(@PathVariable(value = "tank_id") Long tankId) {
     	Set<SensorLog> sensorLog = sensorLogService.findByTank(tankService.findByTankId(tankId));
     	return sensorLog.stream().map(sensorLogService::convertToDto).collect(Collectors.toSet());
-    	
+
     }
-    
+
     /////////////////////////////////////////////////////////////////////////////
     
     //SensorGegevensenkel
@@ -127,7 +141,7 @@ public class TankController {
     	sensorgegevensExtraDTO.setOpeningstijd(tankService.findByTankId(tankId).getOpeningstijd());
     	sensorgegevensExtraDTO.setSluitingstijd(tankService.findByTankId(tankId).getSluitingstijd());
     	sensorgegevensExtraDTO.setTankId(tankId);
-    	return sensorgegevensExtraDTO; 
+    	return sensorgegevensExtraDTO;
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -139,5 +153,47 @@ public class TankController {
     	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
     
+    //Tank toevoegen
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/tank/addTank/{bedrijfsnaam}")
+    public TankDTO addTankToBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @RequestBody TankDTO tankDTO) {
+    	Bedrijf bedrijf = bedrijfService.findByBedrijfsnaam(bedrijfsnaam);
+    	Tank tank = tankService.convertToEntity(tankDTO);
+    	tankService.save(tank);
+    	bedrijf.addTank(tank);
+    	bedrijfService.save(bedrijf);
+    	return tankService.convertToDto(tank);
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/tank/removeTank/{tank_id}")
+    public void removeTank(@PathVariable(value = "tank_id") Long tankId) {
+    	Bedrijf bedrijf = tankService.findByTankId(tankId).getBedrijf();
+    	bedrijf.removeTank(tankService.findByTankId(tankId));
+    	bedrijfService.save(bedrijf);
+    	
+    }
 
+    //DownlinkMessage
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(value = "/tank/downlink", consumes = "application/json")
+    public void getDownlinkFromRequest(@RequestBody Map<String, Object> payload) throws JsonProcessingException, URISyntaxException {
+
+        System.out.println(payload);
+        DownlinkHandler downlinkHandler = new DownlinkHandler();
+        String dev_id = downlinkHandler.getDevIdTank(payload);
+        System.out.println(dev_id);
+        Client ttnClient = client.getInstanceOfClient();
+        try {
+
+            ttnClient.start();
+//            DownlinkMessage response = new DownlinkMessage(1, downlinkHandler.getDownlinkMessage(payload));
+
+           // System.out.println("Sending: " + response);
+            ttnClient.send(dev_id, downlinkHandler.getDownlinkMessage(payload));
+
+        } catch (Exception ex) {
+            System.out.println("Response failed: " + ex.getMessage());
+        }
+    }
 }

@@ -38,7 +38,7 @@ public class TheThingsNetwork {
     private static final String ACCESS_KEY = "ttn-account-v2.S4DKj7oir_lt9lLyXg_3yZU-UDdVkzlDgZfnoIFzbec";
     private static byte[] payload;
     private static Client CLIENT;
-   
+
 
     static {
         try {
@@ -51,37 +51,34 @@ public class TheThingsNetwork {
     public TheThingsNetwork() {
     }
 
-    public static void setpayload(byte[] payload)
-    {
-    	TheThingsNetwork.payload = payload;
+    public static void setpayload(byte[] payload) {
+        TheThingsNetwork.payload = payload;
     }
-    
-    public static byte[] getpayload()
-    {
-    	return TheThingsNetwork.payload;
+
+    public static byte[] getpayload() {
+        return TheThingsNetwork.payload;
     }
-    
+
     public static void main(String[] args) throws Exception {
-    	 
-    	int counter = 0;
+
+        int counter = 0;
 //        Client client = new Client(REGION, APP_ID, ACCESS_KEY);
-    	
-    	
-        CLIENT.onError((Throwable _error) -> System.err.println("error: " + _error.getMessage()));
 
-        CLIENT.onConnected((Connection _client) -> System.out.println("connected !"));
 
-       // CLIENT.onActivation((String _devId, ActivationMessage _data) ->
-               // System.out.println("Activation: " + _devId + ", data: " + _data));
+//        CLIENT.onError((Throwable _error) -> System.err.println("error: " + _error.getMessage()));
 
-       // CLIENT.onMessage((String _devId, DataMessage _data) ->
-               // System.out.println("Message: " + _devId + " " + _data));
-       // CLIENT.onMessage((String devId, DataMessage data) -> System.out.println("Message: " + devId + " " + Arrays.toString(((UplinkMessage) data).getPayloadRaw())));
-        
-        CLIENT.onMessage((String devId, DataMessage data) -> {
-			  
-			  try
-			  {
+//        CLIENT.onConnected((Connection _client) -> System.out.println("connected !"));
+
+        // CLIENT.onActivation((String _devId, ActivationMessage _data) ->
+        // System.out.println("Activation: " + _devId + ", data: " + _data));
+
+        // CLIENT.onMessage((String _devId, DataMessage _data) ->
+        // System.out.println("Message: " + _devId + " " + _data));
+        // CLIENT.onMessage((String devId, DataMessage data) -> System.out.println("Message: " + devId + " " + Arrays.toString(((UplinkMessage) data).getPayloadRaw())));
+
+//        CLIENT.onMessage((String devId, DataMessage data) -> {
+
+//            try {
 				  
 				/*
 				  payload = new byte[((UplinkMessage) data).getPayloadRaw().length];
@@ -99,49 +96,38 @@ public class TheThingsNetwork {
 				        	System.out.println("");
 				        }
 					   */
-				  
-				  	System.out.print("Message: " + devId ); // zo werkt het, dat scheelt weer
-				  	System.out.println(" ");
-					  for(int i = 0; i < ((UplinkMessage) data).getPayloadRaw().length; i++)
-					  {
-						  System.out.print("Waarde van de " + i + " byte is : ");
-				        	System.out.print(((UplinkMessage) data).getPayloadRaw()[i]);
-				        	System.out.println("");
-						  
-					  }
-					  
-					  System.out.println("einde bericht");
-					  System.out.print(" ");
-					
-			  }
-			  catch(Exception ex)
-			  {
-				  System.out.println("Response failed: " + ex.getMessage());  
-			  }
-			  });
-        
-        
-     
-        
-        
-      //  CLIENT.onMessage((String devId, DataMessage data) -> 
-       /* CLIENT.onMessage((String _devId, DataMessage _data) /*-> {
-            try {
-                // Toggle the LED
-                DownlinkMessage response = new DownlinkMessage(1, new byte[]{0x00, 0x01});
-                /**
-                 * If you don't have an encoder payload function:
-                 * client.send(_devId, _data.equals("true") ? new byte[]{0x00} : new byte[]{0x01}, 0);
-                 *//*
-                System.out.println("Sending: " + response);
-                CLIENT.send(_devId, response);
-            } catch (Exception ex) {
-                System.out.println("Response failed: " + ex.getMessage());
-            }
-        });*/
 
-       CLIENT.start();
-        //testDecoder();
+//                System.out.print("Message: " + devId); // zo werkt het, dat scheelt weer
+//                System.out.println(" ");
+//                for (int i = 0; i < ((UplinkMessage) data).getPayloadRaw().length; i++) {
+//                    System.out.print("Waarde van de " + i + " byte is : ");
+//                    System.out.print(((UplinkMessage) data).getPayloadRaw()[i]);
+//                    System.out.println("");
+//
+//                }
+//
+//                System.out.println("einde bericht");
+//                System.out.print(" ");
+//
+//            } catch (Exception ex) {
+//                System.out.println("Response failed: " + ex.getMessage());
+//            }
+//        });
+
+
+        //  CLIENT.onMessage((String devId, DataMessage data) ->
+//        CLIENT.onMessage((String _devId, DataMessage _data) -> {
+//            try {
+                // Toggle the LED
+//                DownlinkMessage response = new DownlinkMessage(1, new byte[]{0x00, 0x01});
+//
+//                System.out.println("Sending: " + response);
+//                CLIENT.send(_devId, response);
+//            } catch (Exception ex) {
+//                System.out.println("Response failed: " + ex.getMessage());
+//            }
+//        });
+
     }
 
     public static void testDecoder() throws Exception {
