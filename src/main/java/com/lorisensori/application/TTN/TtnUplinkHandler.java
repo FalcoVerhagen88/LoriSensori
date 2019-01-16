@@ -2,7 +2,12 @@ package com.lorisensori.application.TTN;
 
 
 import com.lorisensori.application.service.TankService;
+
+import org.apache.tomcat.jni.Lock;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.thethingsnetwork.data.common.Connection;
 import org.thethingsnetwork.data.common.events.UplinkHandler;
 import org.thethingsnetwork.data.common.messages.ActivationMessage;
@@ -16,6 +21,7 @@ import com.lorisensori.application.domain.SensorLog;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.enums.BerichtEnums;
 import com.lorisensori.application.notificaties.Email;
+import com.lorisensori.application.service.SensorLogService;
 import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankServiceImpl;
 
@@ -31,45 +37,30 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 
-
-public class TtnUplinkHandler extends RawMessage implements Runnable{
+@Component("UplinkHandler")
+public class TtnUplinkHandler implements Runnable {
 	
 	//private TtnClient client = new TtnClient();
 	private SensorgegevensService sensorservice;
+	private SensorLogService sensorlogservice;
 	private Client client;
 	private byte[] payload;
 	private TankService tankService;
 	private DataMessage uplink;
 	private String devId;
 	private final byte ALIVEBERICHTID = 0;
-	//private final int ALIVEBERICHTLENGTE = 13; //berichtlengtes ook final int van maken
 	private final byte DIESELALARMNINEAUID = 1;
-	//private final int DIESELALARMNIVEAULENGTE = 2; //berichtlengtes ook final int van maken
 	private final byte DIEFSTALALARMID = 2;
-	//private final int DIEFSTALALARMLENGTE = 11; //berichtlengtes ook final int van maken
 	private final byte ACCUNIVEAUID = 3;
-	//private final int ACCUNIVEAULENGTE = 2; //berichtlengtes ook final int van maken
 	private final byte SLOTSTANDALARMID = 4;
-	//private final int SLOTSTANDALARMLENGTE = 2; //berichtlengtes ook final int van maken
 	private final byte ACKDIESELNIVEAUID = 5;
-	//private final int ACKDIESELNIVEAULENGTE = 1; //berichtlengtes ook final int van maken
 	private final byte ACKSLUITINGSTIJDWID = 6;
-	//private final int ACKSLUITINGSTIJDWIDLENGTE = 1; //berichtlengtes ook final int van maken
 	private final byte ACKOPENINGSTIJDWID = 7;
-	//private final int ACKOPENINGSTIJDWIDLENGTE = 1; //berichtlengtes ook final int van maken
 	private final byte ACKSLOTSTANDWID = 8;
-	//private final int ACKSLOTSTANDWIDLENGTE = 1; //berichtlengtes ook final int van maken
 	private final byte ACKWEEKENDSETTINGID = 10;
-	//private final int ACKWEEKENDSETTINGIDLENGTE = 1; //berichtlengtes ook final int van maken
 	private final byte CHECKBERICHTID = 9;
-	//private final int CHECKBERICHTIDLENGTE = 1; //berichtlengtes ook final int van maken
 
-    public TtnUplinkHandler(Client client, DataMessage uplink, String devId) {
-    	
-    	this.client = client;
-    	this.uplink = uplink;
-
-
+    public TtnUplinkHandler() {
     }
 
     public void setpayload(byte[] payload)
@@ -142,8 +133,9 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
    
    public void saveAlivebericht (byte[] alivebericht, String devId) {  // bericht en devid gaan mee, sensorgegevens worden opgeslagen in list in tank
 	   
+	   synchronized(this) {
 	   try {
-	   tankService.findByDevId(devId).addSensorGegevens( new Sensorgegevens(Byte.toUnsignedInt(alivebericht[0]), //this.uplinkId;
+	   sensorservice.save( new Sensorgegevens(Byte.toUnsignedInt(alivebericht[0]), //this.uplinkId;
 			   																Byte.toUnsignedInt(alivebericht[2]), //this.slotStatus = slotStatus;
    																			Byte.toUnsignedInt(alivebericht[1]),//this. dieselniveau = dieselniveau;
    																			Byte.toUnsignedInt(alivebericht[3]),//this. accuniveau = accuniveau;
@@ -155,22 +147,42 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
    																			Byte.toUnsignedInt(alivebericht[9]),//this. gpsLengtegraad = gpsLengtegraad;
    																			Byte.toUnsignedInt(alivebericht[10]),//this. gpsLengteMinuut = gpsLengteMinuut;
    																			Byte.toUnsignedInt(alivebericht[11]),//this. gpsLengteSeconde = gpsLengteTiendeSec;
-   																			Byte.toUnsignedInt(alivebericht[12])//this. gpsLengteTiendeSec = gpsLengteTiendeSec;
+   																			Byte.toUnsignedInt(alivebericht[12]),//this. gpsLengteTiendeSec = gpsLengteTiendeSec;
+   																			tankService.findByDevId(devId)		// tank van sensorgegevens
 			   																)); // sla het bericht op in de lijst met sensorgegevens in tank gezocht op tankId
 	   
-	 tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
-   }
+	   sensorlogservice.sensorLogSave(new SensorLog(	Byte.toString(alivebericht[0]), //this.uplinkId;
+														Byte.toString(alivebericht[2]), //this.slotStatus = slotStatus;
+														Byte.toString(alivebericht[1]),//this. dieselniveau = dieselniveau;
+														Byte.toString(alivebericht[3]),//this. accuniveau = accuniveau;
+														Byte.toString(alivebericht[4]),//this. vermogenZonnepaneel = vermogenZonnepaneel;
+														Byte.toString(alivebericht[5]),//this. gpsBreedtegraad = gpsBreedtegraad;
+														Byte.toString(alivebericht[6]),//this. gpsBreedteMinuut = gpsBreedteMinuut;
+														Byte.toString(alivebericht[7]),//this. gpsBreedteSeconde = gpsBreedteSeconde;
+														Byte.toString(alivebericht[8]),//this. gpsBreedteTiendeSec = gpsBreedteTiendeSec;
+														Byte.toString(alivebericht[9]),//this. gpsLengtegraad = gpsLengtegraad;
+														Byte.toString(alivebericht[10]),//this. gpsLengteMinuut = gpsLengteMinuut;
+														Byte.toString(alivebericht[11]),//this. gpsLengteSeconde = gpsLengteTiendeSec;
+														Byte.toString(alivebericht[12]),//this. gpsLengteTiendeSec = gpsLengteTiendeSec;
+														null,
+														tankService.findByDevId(devId)		// tank van sensorgegevens
+														));
+	}
+   
 	catch(NullPointerException enull)
 	{System.out.println("verkeerde verwijzing naar array");}
 	catch(Exception e) 
 	{System.out.println("er is iets mis gegaan");}
-	 
+	  
+	   }
    }
    
-   public void saveDieselniveauAlarm (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
+ 
+   public void saveDieselniveauAlarm (byte[] alarmAndAckBericht, String devId) { 
 	   
+	   synchronized(this) {
 	   try {
-	   		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+		   sensorlogservice.sensorLogSave(new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
 																		Byte.toString(alarmAndAckBericht[1]),//String slotStatus 
 																		null,								//String dieselniveau
 																		null,								//String accuniveau
@@ -183,22 +195,23 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
 																		null,								//String gpsLengteMinuut
 																		null,								//String gpsLengteSeconde
 																		null,								//String gpsLengteTiendeSec
-																		null								// String weekendsetting
+																		null,								// String weekendsetting
+																		tankService.findByDevId(devId)		// tank van sensorlog
 																		));
 
-	   		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
 	   }
 	catch(NullPointerException enull)
 	{System.out.println("verkeerde verwijzing naar array");}
 	catch(Exception e) 
 	{System.out.println("er is iets mis gegaan");}
+	   }
 }
    
    public void saveDiefstalAlarm (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
-	   
+	   synchronized(this) {
   		try {
-  		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+  			sensorlogservice.sensorLogSave(new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
   																	Byte.toString(alarmAndAckBericht[2]),//String slotStatus 
   																	Byte.toString(alarmAndAckBericht[1]),//String dieselniveau
   																	null,								 //String accuniveau
@@ -211,21 +224,23 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
   																	Byte.toString(alarmAndAckBericht[8]),//String gpsLengteMinuut
   																	Byte.toString(alarmAndAckBericht[9]),//String gpsLengteSeconde
   																	Byte.toString(alarmAndAckBericht[10]), //String gpsLengteTiendeSec
-  																	null								// String weekendsetting
+  																	null,								// String weekendsetting
+  																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
-  		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
   		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
   
 }
 
    public void saveAccuAlarm (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
+	   synchronized(this) {
  	try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 		sensorlogservice.sensorLogSave( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	null								,//String slotStatus 
  																	null,								 //String dieselniveau
  																	Byte.toString(alarmAndAckBericht[1]),//String accuniveau
@@ -238,20 +253,21 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	Byte.toString(alarmAndAckBericht[7]),//String gpsLengteMinuut
  																	Byte.toString(alarmAndAckBericht[8]),//String gpsLengteSeconde
  																	Byte.toString(alarmAndAckBericht[9]), //String gpsLengteTiendeSec
- 																	null								// String weekendsetting
+ 																	null,								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 							));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
 }
    
    public void saveSlotstandAlarm (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
-	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 			sensorlogservice.sensorLogSave(new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	Byte.toString(alarmAndAckBericht[1]),//String slotStatus 
  																	null,								//String dieselniveau
  																	null,								//String accuniveau
@@ -264,20 +280,22 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	null,								//String gpsLengteMinuut
  																	null,								//String gpsLengteSeconde
  																	null,								//String gpsLengteTiendeSec
- 																	null								// String weekendsetting
+ 																	null,								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
 }
    
    public void saveAckDieselniveau (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 			sensorlogservice.sensorLogSave( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	null,								 //String slotStatus 
  																	Byte.toString(alarmAndAckBericht[1]),//String dieselniveau
  																	null,								//String accuniveau
@@ -290,20 +308,22 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	null,								//String gpsLengteMinuut
  																	null,								//String gpsLengteSeconde
  																	null,								//String gpsLengteTiendeSec
- 																	null								// String weekendsetting
+ 																	null,								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
  	}
    
    public void saveAckSluitingstijdW (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 			sensorlogservice.sensorLogSave(new SensorLog(Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	null,								//String slotStatus 
  																	null,								//String dieselniveau
  																	null,								//String accuniveau
@@ -316,20 +336,22 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	null,								//String gpsLengteMinuut
  																	null,								//String gpsLengteSeconde
  																	null,								//String gpsLengteTiendeSec
- 																	null								// String weekendsetting
+ 																	null,								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
  }
    
    public void saveAckOpeningstijdW (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 			sensorlogservice.sensorLogSave( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	null,								//String slotStatus 
  																	null,								//String dieselniveau
  																	null,								//String accuniveau
@@ -342,20 +364,22 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	null,								//String gpsLengteMinuut
  																	null,								//String gpsLengteSeconde
  																	null,								//String gpsLengteTiendeSec
- 																	null								// String weekendsetting
+ 																	null,								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
 }
    
    public void saveAckSlotstand (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 			sensorlogservice.sensorLogSave(new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	null,								//String slotStatus 
  																	null,								//String dieselniveau
  																	null,								//String accuniveau
@@ -368,20 +392,22 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	null,								//String gpsLengteMinuut
  																	null,								//String gpsLengteSeconde
  																	null,								//String gpsLengteTiendeSec
- 																	null								// String weekendsetting
+ 																	null,								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
  	}
    
    public void saveAckWeekendSetting (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
+ 			sensorlogservice.sensorLogSave(new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
  																	null,								//String slotStatus 
  																	null,								//String dieselniveau
  																	null,								//String accuniveau
@@ -394,58 +420,45 @@ public class TtnUplinkHandler extends RawMessage implements Runnable{
  																	null,								//String gpsLengteMinuut
  																	null,								//String gpsLengteSeconde
  																	null,								//String gpsLengteTiendeSec
- 																	Byte.toString(alarmAndAckBericht[1])								// String weekendsetting
+ 																	Byte.toString(alarmAndAckBericht[1]),								// String weekendsetting
+ 																	tankService.findByDevId(devId)		// tank van sensorlog
 																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
    }
 	catch(NullPointerException enull)
 	{System.out.println("verkeerde verwijzing naar array");}
 	catch(Exception e) 
 	{System.out.println("er is iets mis gegaan");}
+	   }
 }
    
    public void saveCheckBericht (byte[] alarmAndAckBericht, String devId) { //kunnen we beter een int van maken
 
-	   
+	   synchronized(this) {
  		try {
- 		tankService.findByDevId(devId).addSensorLog( new SensorLog(	Byte.toString(alarmAndAckBericht[0]),//String uplinkId
- 																	null,								//String slotStatus 
- 																	null,								//String dieselniveau
- 																	null,								//String accuniveau
- 																	null,								//String vermogenZonnepaneel
- 																	null,								//String gpsBreedtegraad
- 																	null,								//String gpsBreedteMinuut
- 																	null,								//String gpsBreedteSeconde
- 																	null,								//String gpsBreedteTiendeSec
- 																	null,								//String gpsLengtegraad
- 																	null,								//String gpsLengteMinuut
- 																	null,								//String gpsLengteSeconde
- 																	null,								//String gpsLengteTiendeSec
- 																	null								//String weekendsetting
-																));
- 		tankService.save(tankService.findByDevId(devId)); // sla de tank met de aangepaste lijst op, gezocht op devID. devId is de benaming zoals gegeven op TTN
+
+ 			
+ 			/*
+ 			 * enkel gebruiken voor debug checkbericht hoeft niet te worden opgeslsagen
+ 			 */
+ 		System.out.println("einde save checkbericht");
  		}
  		catch(NullPointerException enull)
  		{System.out.println("verkeerde verwijzing naar array");}
  		catch(Exception e) 
  		{System.out.println("er is iets mis gegaan");}
+	   }
  		
 }
 
  @Override
 public void run() {
 		
-		System.out.println("ik ga proberen een berichtje te vangen");
 		ontvangBericht(devId, uplink);
-		System.out.println("gelukt?");
+		System.out.println("gelukt!");
 	
 }
 
-@Override
-public String asString() {
-	// TODO Auto-generated method stub
-	return null;
-}
+
 
 public void setUplinkMessage(DataMessage uplink)
 {
@@ -454,10 +467,32 @@ public void setUplinkMessage(DataMessage uplink)
 
 public void setdevId(String devId)
 {
+	   synchronized(this) {
 	this.devId = devId;
+	   }
 }
 
 	public void setClient(Client client) {
+		   synchronized(this) {
     	this.client = client;
+		   }
+	}
+	
+	public void setTankService(TankService tserv) {
+		   synchronized(this) {
+    	this.tankService = tserv;
+		   }
+	}
+	
+	public void setSensorgegevensService(SensorgegevensService sensorservice) {
+		   synchronized(this) {
+    	this.sensorservice = sensorservice;
+		   }
+	}
+	
+	public void setSensorLogService(SensorLogService sensorlog) {
+		   synchronized(this) {
+    	this.sensorlogservice = sensorlog;
+		   }
 	}
 }

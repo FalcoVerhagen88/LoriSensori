@@ -12,4 +12,7 @@ public interface SensorLogService {
 	SensorLogDTO convertToDto(SensorLog sensorLog);
 
 	Set<SensorLog> findByTank(Tank findByTankId);
+	
+	SensorLog sensorLogSave(SensorLog sensorlog);
+	
 }

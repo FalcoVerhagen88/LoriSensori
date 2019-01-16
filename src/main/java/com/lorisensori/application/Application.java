@@ -4,6 +4,8 @@ package com.lorisensori.application;
 import java.net.URISyntaxException;
 
 import com.lorisensori.application.TTN.DownlinkHandler;
+import com.lorisensori.application.service.SensorLogService;
+import com.lorisensori.application.service.SensorgegevensService;
 import com.lorisensori.application.service.TankService;
 
 import com.lorisensori.application.service.TankServiceImpl;
@@ -21,6 +23,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.thethingsnetwork.data.common.messages.DataMessage;
 import org.thethingsnetwork.data.mqtt.Client;
+
 
 import com.lorisensori.application.TTN.TtnUplinkHandler;
 
@@ -45,12 +48,10 @@ public class Application {
     private static final String REGION = "eu";
     private static final String APP_ID = "tanks_lorisensori";
     private static final String ACCESS_KEY = "ttn-account-v2.S4DKj7oir_lt9lLyXg_3yZU-UDdVkzlDgZfnoIFzbec";
-    private static byte[] payload;
-    private static TankService tserv;
+
 
 
     private static Client CLIENT;
-    private static DownlinkHandler downlinkHandler = new DownlinkHandler();
 
 
     static {
@@ -65,18 +66,23 @@ public class Application {
 //        SpringApplication.run(Application.class, args);
         ApplicationContext context = SpringApplication.run(Application.class, args);
         TankService tankService = (TankService) context.getBean("tankService");
-
+        SensorgegevensService sensorservice = (SensorgegevensService) context.getBean("SensorgegevensService");
+        SensorLogService sensorlog = (SensorLogService) context.getBean("SensorLogService");
+        TtnUplinkHandler handler = (TtnUplinkHandler) context.getBean("UplinkHandler");
 
         CLIENT.onMessage((String devId, DataMessage data) -> {
             try {
                 System.out.println("haha");
-                TtnUplinkHandler handle = new TtnUplinkHandler(CLIENT, data, devId);
-                handle.setdevId(devId);
-                handle.setUplinkMessage(data);
-                handle.setClient(CLIENT);
-                handle.ontvangBericht(devId, data);
-                Thread draadje = new Thread(handle);
-                draadje.start();
+                
+              
+                handler.setdevId(devId);
+                handler.setUplinkMessage(data);
+                handler.setClient(CLIENT);
+                handler.setTankService(tankService);
+                handler.setSensorgegevensService(sensorservice);
+                handler.setSensorLogService(sensorlog);
+                Thread receiveUplink = new Thread(handler);
+                receiveUplink.start();
             }
             catch (NullPointerException enull) {
                 enull.printStackTrace();
@@ -120,4 +126,3 @@ public class Application {
     }
 
 }
-

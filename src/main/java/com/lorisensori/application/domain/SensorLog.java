@@ -3,6 +3,8 @@ package com.lorisensori.application.domain;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -37,6 +39,7 @@ public class SensorLog {
     private String gpsLengteSeconde;
     private String gpsLengteTiendeSec;
     private String weekendSetting;
+    
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
@@ -52,7 +55,7 @@ public class SensorLog {
 
 
     public SensorLog(String uplinkId, String slotStatus, String dieselniveau, String accuniveau, String vermogenZonnepaneel, String gpsBreedtegraad, String gpsBreedteMinuut,
-                     String gpsBreedteSeconde, String gpsBreedteTiendeSec, String gpsLengtegraad, String gpsLengteMinuut, String gpsLengteSeconde, String gpsLengteTiendeSec, String weekendSetting) {
+                     String gpsBreedteSeconde, String gpsBreedteTiendeSec, String gpsLengtegraad, String gpsLengteMinuut, String gpsLengteSeconde, String gpsLengteTiendeSec, String weekendSetting, Tank tank) {
 
         this.uplinkId = uplinkId;
         this.slotStatus = slotStatus;
@@ -68,6 +71,8 @@ public class SensorLog {
         this.gpsLengteSeconde = gpsLengteSeconde;
         this.gpsLengteTiendeSec = gpsLengteTiendeSec;
         this.weekendSetting = weekendSetting;
+        this.tank = tank;
+        this.timestamp = new Timestamp(System.currentTimeMillis());
 
     }
 
