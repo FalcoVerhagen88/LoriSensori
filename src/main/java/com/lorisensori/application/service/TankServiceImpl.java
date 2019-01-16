@@ -14,9 +14,9 @@ import java.util.Set;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ParseException;
 import org.springframework.stereotype.Service;
-import org.thethingsnetwork.data.common.messages.DownlinkMessage;
 
 //Business logic goes here NOT in the repository
 @Service("tankService")
@@ -99,5 +99,9 @@ public class TankServiceImpl implements TankService {
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 		return modelMapper.map(tankCreateDTO, Tank.class);
 	}
-
+//TODO for debugging
+    @Override
+    public void geefstring() {
+        System.out.println("HALLO");
+    }
 }

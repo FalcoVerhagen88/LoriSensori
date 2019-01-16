@@ -223,5 +223,4 @@ public class Sensorgegevens implements Comparable<Sensorgegevens>{
 		int compare = timestamp.compareTo(sensorg.getTimestamp());
 		return compare;
 		}
-		
 }

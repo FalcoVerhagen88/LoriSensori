@@ -46,7 +46,6 @@ public class SensorLog {
     @JoinColumn(name = "tank_id")
     private Tank tank;
 
-
     //@OneToOne()
     //@JoinColumn(name = "slot_geopend_door")
     //private Medewerker medewerkerSlot;

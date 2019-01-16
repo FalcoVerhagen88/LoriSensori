@@ -40,4 +40,6 @@ public interface TankService {
 	TankCreateDTO convertToCreateDto(Tank tank);
 
 	Tank convertToEntityCreate(TankCreateDTO tankCreateDTO) throws ParseException;
+
+	void geefstring();
 }
