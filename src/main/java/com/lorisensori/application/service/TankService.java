@@ -2,10 +2,14 @@ package com.lorisensori.application.service;
 
 
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
+import com.lorisensori.application.DTOs.tankDTOs.TankCreateDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Sensorgegevens;
 import java.util.List;
 import java.util.Set;
+
+import org.springframework.expression.ParseException;
+
 import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.Tank;
 
@@ -32,4 +36,8 @@ public interface TankService {
     Tank convertToEntity(TankDTO tankDTO);
 
 	TankBedrijfDTO convertToTankBedrijfDTO(Tank tank);
+
+	TankCreateDTO convertToCreateDto(Tank tank);
+
+	Tank convertToEntityCreate(TankCreateDTO tankCreateDTO) throws ParseException;
 }

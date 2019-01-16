@@ -5,6 +5,7 @@ import com.lorisensori.application.DTOs.tankDTOs.SensorLogDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensExtraDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
+import com.lorisensori.application.DTOs.tankDTOs.TankCreateDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.TTN.DownlinkHandler;
 import com.lorisensori.application.TTN.TtnClient;
@@ -156,9 +157,9 @@ public class TankController {
     //Tank toevoegen
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/tank/addTank/{bedrijfsnaam}")
-    public TankDTO addTankToBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @RequestBody TankDTO tankDTO) {
+    public TankDTO addTankToBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @RequestBody TankCreateDTO tankCreateDTO) {
     	Bedrijf bedrijf = bedrijfService.findByBedrijfsnaam(bedrijfsnaam);
-    	Tank tank = tankService.convertToEntity(tankDTO);
+    	Tank tank = tankService.convertToEntityCreate(tankCreateDTO);
     	tankService.save(tank);
     	bedrijf.addTank(tank);
     	bedrijfService.save(bedrijf);

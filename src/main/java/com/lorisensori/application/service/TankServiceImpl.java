@@ -2,6 +2,7 @@ package com.lorisensori.application.service;
 
 import com.lorisensori.application.DAO_interfaces.TankRepository;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
+import com.lorisensori.application.DTOs.tankDTOs.TankCreateDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.domain.Sensorgegevens;
 import com.lorisensori.application.domain.Bedrijf;
@@ -84,5 +85,19 @@ public class TankServiceImpl implements TankService {
     	modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
     	return modelMapper.map(tank, TankBedrijfDTO.class);
     }
+
+	@Override
+	public TankCreateDTO convertToCreateDto(Tank tank) {
+		modelMapper.getConfiguration().setAmbiguityIgnored(true);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		return modelMapper.map(tank, TankCreateDTO.class);
+	}
+	
+	@Override 
+	public Tank convertToEntityCreate(TankCreateDTO tankCreateDTO) throws ParseException {
+		modelMapper.getConfiguration().setAmbiguityIgnored(true);
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
+		return modelMapper.map(tankCreateDTO, Tank.class);
+	}
 
 }
