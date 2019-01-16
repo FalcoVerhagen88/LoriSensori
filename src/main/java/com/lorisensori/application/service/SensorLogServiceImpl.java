@@ -36,4 +36,10 @@ public class SensorLogServiceImpl implements SensorLogService {
 		return modelMapper.map(sensorLog, SensorLogDTO.class);
 	}
 
+	@Override
+	public SensorLog sensorLogSave(SensorLog sensorlog) {
+		sensorLogRepository.save(sensorlog);
+		return sensorlog;
+	}
+
 }

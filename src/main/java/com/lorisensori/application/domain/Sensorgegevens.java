@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,10 +18,14 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"timestamp"}, allowGetters = true)
 public class Sensorgegevens implements Comparable<Sensorgegevens>{
 
+    private static final long serialVersionUID = 10L;
+	
     @Id
-    @Column
+    @Column(name = "sensor_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sensorId;
 
+    @Column(updatable = false)
     private int uplinkId;
     private int slotStatus;
     private int dieselniveau;
@@ -35,14 +41,14 @@ public class Sensorgegevens implements Comparable<Sensorgegevens>{
     private int gpsLengteTiendeSec;
 
 
-    @Column
+    @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date timestamp;
 
-    @OneToOne()
-    @JoinColumn(name = "slot_geopend_door")
-    private Medewerker medewerkerSlot;
+//    @OneToOne()
+//    @JoinColumn(name = "slot_geopend_door")
+//    private Medewerker medewerkerSlot;
 
     @ManyToOne
     @JoinColumn(name = "tankId")
@@ -61,7 +67,8 @@ public class Sensorgegevens implements Comparable<Sensorgegevens>{
     						int gpsLengtegraad,
     						int gpsLengteMinuut,
     						int gpsLengteSeconde,
-    						int gpsLengteTiendeSec
+    						int gpsLengteTiendeSec,
+    						Tank tank
     						)
 
     {
@@ -78,6 +85,8 @@ public class Sensorgegevens implements Comparable<Sensorgegevens>{
     	this. gpsLengteMinuut = gpsLengteMinuut;
     	this. gpsLengteSeconde = gpsLengteSeconde;
     	this. gpsLengteTiendeSec = gpsLengteTiendeSec;
+    	this.tank = tank;
+    	this.timestamp = new Timestamp(System.currentTimeMillis());
     }
 
     public Sensorgegevens() {
