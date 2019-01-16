@@ -62,6 +62,17 @@ public class Bedrijf {
             throw new EntityExistsException();
         }
     }
+    
+    public void addTank(Tank tank) {
+    	if (!tanks.contains(tank)) tanks.add(tank);
+    	else {
+    		throw new EntityExistsException();
+    	}
+    }
+    
+    public void removeTank(Tank tank) {
+    	tanks.remove(tank);
+    }
 
 
     public Bedrijf() {

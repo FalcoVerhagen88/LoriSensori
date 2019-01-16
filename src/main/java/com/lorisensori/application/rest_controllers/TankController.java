@@ -5,10 +5,12 @@ import com.lorisensori.application.DTOs.tankDTOs.SensorLogDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensDTO;
 import com.lorisensori.application.DTOs.tankDTOs.SensorgegevensExtraDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankBedrijfDTO;
+import com.lorisensori.application.DTOs.tankDTOs.TankCreateDTO;
 import com.lorisensori.application.DTOs.tankDTOs.TankDTO;
 import com.lorisensori.application.TTN.DownlinkHandler;
 import com.lorisensori.application.TTN.TtnClient;
 import com.lorisensori.application.annotations.CurrentUser;
+import com.lorisensori.application.domain.Bedrijf;
 import com.lorisensori.application.domain.CustomUserDetails;
 import com.lorisensori.application.domain.SensorLog;
 import com.lorisensori.application.domain.Sensorgegevens;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thethingsnetwork.data.common.messages.DownlinkMessage;
 import org.thethingsnetwork.data.mqtt.Client;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.Collections;
@@ -69,7 +72,7 @@ public class TankController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank")
-    public TankDTO getTankByDevId(@RequestParam(value = "dev_id") String devId) {
+    public TankDTO getTankByDevId(@RequestParam(value = "dev_id") String devId){
         Tank tank = tankService.findByDevId(devId);
         return tankService.convertToDto(tank);
     }
@@ -78,7 +81,7 @@ public class TankController {
     //TODO: niet zeker of dit de juiste manier is.
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/tank/updateTank/")
-    public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO) {
+    public TankDTO updateTank(@Valid @RequestBody TankDTO tankDTO){
         Tank tank = tankService.findByTankId(tankDTO.getTankId());
         tank.setBouwjaar(tankDTO.getBouwjaar());
         tank.setDiameter(tankDTO.getDiameter());
@@ -118,28 +121,28 @@ public class TankController {
         Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
         return sensorgegevens.stream().map(sensorgegevensService::convertToDto).collect(Collectors.toSet());
     }
-
+    
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/sensorlog/{tank_id}")
     public Set<SensorLogDTO> getAllSensorLog(@PathVariable(value = "tank_id") Long tankId) {
-        Set<SensorLog> sensorLog = sensorLogService.findByTank(tankService.findByTankId(tankId));
-        return sensorLog.stream().map(sensorLogService::convertToDto).collect(Collectors.toSet());
+    	Set<SensorLog> sensorLog = sensorLogService.findByTank(tankService.findByTankId(tankId));
+    	return sensorLog.stream().map(sensorLogService::convertToDto).collect(Collectors.toSet());
 
     }
 
     /////////////////////////////////////////////////////////////////////////////
-
+    
     //SensorGegevensenkel
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/laatstesensorgegevens/{tank_id}")
     public SensorgegevensDTO getLaatsteSensorgegeven(@PathVariable(value = "tank_id") Long tankId) {
-        Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
-        SensorgegevensExtraDTO sensorgegevensExtraDTO = sensorgegevensService.convertToExtraDto(Collections.max(sensorgegevens));
-        sensorgegevensExtraDTO.setDevId(tankService.findByTankId(tankId).getDevId());
-        sensorgegevensExtraDTO.setOpeningstijd(tankService.findByTankId(tankId).getOpeningstijd());
-        sensorgegevensExtraDTO.setSluitingstijd(tankService.findByTankId(tankId).getSluitingstijd());
-        sensorgegevensExtraDTO.setTankId(tankId);
-        return sensorgegevensExtraDTO;
+    	Set<Sensorgegevens> sensorgegevens = sensorgegevensService.findByTank(tankService.findByTankId(tankId));
+    	SensorgegevensExtraDTO sensorgegevensExtraDTO = sensorgegevensService.convertToExtraDto(Collections.max(sensorgegevens));
+    	sensorgegevensExtraDTO.setDevId(tankService.findByTankId(tankId).getDevId());
+    	sensorgegevensExtraDTO.setOpeningstijd(tankService.findByTankId(tankId).getOpeningstijd());
+    	sensorgegevensExtraDTO.setSluitingstijd(tankService.findByTankId(tankId).getSluitingstijd());
+    	sensorgegevensExtraDTO.setTankId(tankId);
+    	return sensorgegevensExtraDTO;
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -147,17 +150,30 @@ public class TankController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/tank/vanBedrijf/")
     public Set<TankBedrijfDTO> getTanksFromBedrijf(@CurrentUser CustomUserDetails currentUser) {
-        Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
-        return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
+    	Set<Tank> tanks = tankService.findByBedrijf(currentUser.getBedrijf());
+    	return tanks.stream().map(tankService::convertToTankBedrijfDTO).collect(Collectors.toSet());
     }
-
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/tank/test/{devId}")
-    public TankDTO getTestDevId(@PathVariable(value = "devId") String devId) {
-        return tankService.convertToDto(tankService.findByDevId(devId));
+    
+    //Tank toevoegen
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/tank/addTank/{bedrijfsnaam}")
+    public TankDTO addTankToBedrijf(@PathVariable(value = "bedrijfsnaam") String bedrijfsnaam, @RequestBody TankCreateDTO tankCreateDTO) {
+    	Bedrijf bedrijf = bedrijfService.findByBedrijfsnaam(bedrijfsnaam);
+    	Tank tank = tankService.convertToEntityCreate(tankCreateDTO);
+    	tankService.save(tank);
+    	bedrijf.addTank(tank);
+    	bedrijfService.save(bedrijf);
+    	return tankService.convertToDto(tank);
     }
-
-    /////////////////////////////////////////////////////////////////////////////
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/tank/removeTank/{tank_id}")
+    public void removeTank(@PathVariable(value = "tank_id") Long tankId) {
+    	Bedrijf bedrijf = tankService.findByTankId(tankId).getBedrijf();
+    	bedrijf.removeTank(tankService.findByTankId(tankId));
+    	bedrijfService.save(bedrijf);
+    	
+    }
 
     //DownlinkMessage
     @PreAuthorize("hasRole('ADMIN')")

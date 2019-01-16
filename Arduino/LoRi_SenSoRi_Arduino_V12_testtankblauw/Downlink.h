@@ -8,24 +8,14 @@
 #include "Sensoren.h"
 #include "Uplink.h"
 
-  
-
-// ---------------------------------------- Id's definiëren ----------------------------------------//
-
-
-
 // ---------------------------------------- Class downlink ----------------------------------------//
 class Downlink
 {
   private:
 
-
-  
   public:
   Downlink();
   void ontvangDownlink(Sensoren *S, Actuatoren *A, Uplink *U);
-
 };
-
 
 #endif //Downlink.h
