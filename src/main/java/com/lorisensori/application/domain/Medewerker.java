@@ -72,6 +72,21 @@ public class Medewerker extends DateAudit {
     /////////////////////////////////////////
     //CONSTRUCTORS
 
+
+    public Medewerker(@NotNull(message = "gebruikersnaam kan niet leeg zijn") String gebruikersnaam, String voornaam, String achternaam, @NotNull(message = "wachtwoord kan niet leeg zijn") String password, @NotBlank(message = "Gebruikers email kan niet leeg zijn") String email, String telefoonnummer, Bedrijf bedrijf, Tank tank, Boolean active, Set<Recht> rechten, Boolean isEmailVerified) {
+        this.gebruikersnaam = gebruikersnaam;
+        this.voornaam = voornaam;
+        this.achternaam = achternaam;
+        this.password = password;
+        this.email = email;
+        this.telefoonnummer = telefoonnummer;
+        this.bedrijf = bedrijf;
+        this.tank = tank;
+        this.active = active;
+        this.rechten = rechten;
+        this.isEmailVerified = isEmailVerified;
+    }
+
     public Medewerker() {
         super();
     }

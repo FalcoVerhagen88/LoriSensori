@@ -103,4 +103,9 @@ public class TankServiceImpl implements TankService {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
         return modelMapper.map(tank, TankBedrijfDTO.class);
     }
+
+    @Override
+    public void geefstring() {
+        System.out.println("HALLO");
+    }
 }

@@ -5,6 +5,8 @@ import com.lorisensori.application.enums.LandEnums;
 import com.lorisensori.application.enums.StatusEnums;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -52,26 +54,89 @@ public class Bedrijf {
     }
 
     public void addMedewerker(Medewerker medewerker) {
-/*
         if (medewerkers == null){
-            medewerkers = new ArrayList<>();
+            medewerkers = new Set<Medewerker>() {
+                @Override
+                public int size() {
+                    return 0;
+                }
+
+                @Override
+                public boolean isEmpty() {
+                    return false;
+                }
+
+                @Override
+                public boolean contains(Object o) {
+                    return false;
+                }
+
+                @Override
+                public Iterator<Medewerker> iterator() {
+                    return null;
+                }
+
+                @Override
+                public Object[] toArray() {
+                    return new Object[0];
+                }
+
+                @Override
+                public <T> T[] toArray(T[] a) {
+                    return null;
+                }
+
+                @Override
+                public boolean add(Medewerker medewerker) {
+                    return false;
+                }
+
+                @Override
+                public boolean remove(Object o) {
+                    return false;
+                }
+
+                @Override
+                public boolean containsAll(Collection<?> c) {
+                    return false;
+                }
+
+                @Override
+                public boolean addAll(Collection<? extends Medewerker> c) {
+                    return false;
+                }
+
+                @Override
+                public boolean retainAll(Collection<?> c) {
+                    return false;
+                }
+
+                @Override
+                public boolean removeAll(Collection<?> c) {
+                    return false;
+                }
+
+                @Override
+                public void clear() {
+
+                }
+            };
         }
-*/
         if (!medewerkers.contains(medewerker)) medewerkers.add(medewerker);
         else {
             throw new EntityExistsException();
         }
     }
-    
+
     public void addTank(Tank tank) {
-    	if (!tanks.contains(tank)) tanks.add(tank);
-    	else {
-    		throw new EntityExistsException();
-    	}
+        if (!tanks.contains(tank)) tanks.add(tank);
+        else {
+            throw new EntityExistsException();
+        }
     }
-    
+
     public void removeTank(Tank tank) {
-    	tanks.remove(tank);
+        tanks.remove(tank);
     }
 
 
